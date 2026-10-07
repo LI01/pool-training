@@ -12,7 +12,7 @@ export function unlockAudio(): void {
       if (!Ctor) return;
       ctx = new Ctor();
     }
-    void ctx!.resume();
+    ctx!.resume().catch(() => {});
   } catch {
     /* ignore */
   }
@@ -22,6 +22,7 @@ export function playChime(): void {
   if (!enabled || !ctx) return;
   try {
     const c = ctx;
+    if (c.state === 'suspended' || (c.state as string) === 'interrupted') c.resume().catch(() => {});
     const start = c.currentTime;
     for (let i = 0; i < 3; i++) {
       const t = start + i * 0.25;

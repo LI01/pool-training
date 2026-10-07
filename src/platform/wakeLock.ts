@@ -19,7 +19,14 @@ export async function acquireWakeLock(): Promise<boolean> {
   ensureListener();
   if (!wakeLockSupported()) return false;
   try {
-    sentinel = await navigator.wakeLock.request('screen');
+    const next = await navigator.wakeLock.request('screen');
+    if (!wanted) {
+      await next.release().catch(() => {});
+      return false;
+    }
+    const old = sentinel;
+    sentinel = next;
+    if (old && old !== next) await old.release().catch(() => {});
     return true;
   } catch {
     return false;
