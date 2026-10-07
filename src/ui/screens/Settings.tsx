@@ -3,6 +3,7 @@ import { BackupError, buildBackup, validateBackup } from '../../db/store';
 import type { Backup } from '../../db/types';
 import { getLang, t, type Lang } from '../../i18n';
 import { setChimeEnabled } from '../../platform/chime';
+import { setAutoSpeak } from '../../platform/speech';
 import { resolveStartDate } from '../../stats';
 import { localDate } from '../../stats/dates';
 import { type NowFn } from '../nav';
@@ -47,6 +48,14 @@ export function Settings({ now }: { now: NowFn }) {
     await store.saveSettings({ ...settings, soundOn });
     await refresh();
     return soundOn ? t('settings.soundOn') : t('settings.soundOff');
+  });
+
+  const toggleVoice = () => run(t('common.save'), async () => {
+    const voiceOn = settings.voiceOn === false;
+    setAutoSpeak(voiceOn);
+    await store.saveSettings({ ...settings, voiceOn });
+    await refresh();
+    return voiceOn ? t('settings.voiceOn') : t('settings.voiceOff');
   });
 
   // The app re-renders in the new language once the saved settings are reloaded.
@@ -164,6 +173,10 @@ export function Settings({ now }: { now: NowFn }) {
         <label class="row row--between toggle">
           <span>{t('settings.sound')}</span>
           <input type="checkbox" role="switch" checked={settings.soundOn} onChange={toggleSound} />
+        </label>
+        <label class="row row--between toggle">
+          <span>{t('settings.voice')}</span>
+          <input type="checkbox" role="switch" checked={settings.voiceOn !== false} onChange={toggleVoice} />
         </label>
       </section>
 

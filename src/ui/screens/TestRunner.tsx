@@ -5,12 +5,14 @@ import type { Shot } from '../../db/types';
 import { t, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { unlockAudio } from '../../platform/chime';
+import { speakAuto, stopSpeaking, testScript } from '../../platform/speech';
 import {
   advance, currentTest, isComplete, LIMITS, nextCutSide, recordShot, setDraw, skip, startTest, tagLast,
   toTestRecord, undo, type TestRunState,
 } from '../../runner/test';
 import { errorTotals, testScores } from '../../stats';
 import { BigButton } from '../components/BigButton';
+import { ReadAloud } from '../components/ReadAloud';
 import { Sheet } from '../components/Sheet';
 import { TagPicker } from '../components/TagPicker';
 import { navigate, type NowFn } from '../nav';
@@ -134,6 +136,7 @@ export function TestRunner({ now }: { now: NowFn }) {
     void acquireWakeLock();
     return () => { void releaseWakeLock(); };
   }, [running]);
+  useEffect(() => () => stopSpeaking(), []);
 
   const update = (s: RunState) => {
     stateRef.current = s;
@@ -167,6 +170,7 @@ export function TestRunner({ now }: { now: NowFn }) {
           <BigButton variant="good" onClick={() => {
             unlockAudio();
             update(startTest(now()));
+            speakAuto(testScript(getTestDef(TEST_ORDER[0])));
           }}>{t('test.start')}</BigButton>
         </div>
       </main>
@@ -281,12 +285,19 @@ export function TestRunner({ now }: { now: NowFn }) {
     const cur = stateRef.current!;
     if (currentTest(cur) === id) update(f(cur));
   };
+  /** After Next/Skip/End: reads the next test's setup, or stops reading when the test is over. */
+  const announce = () => {
+    const nid = currentTest(stateRef.current!);
+    if (nid === id) return;
+    if (nid) speakAuto(testScript(getTestDef(nid)));
+    else stopSpeaking();
+  };
   const miss = () => {
     const before = stateRef.current;
     apply((s) => recordShot(s, false));
     if (stateRef.current !== before) setSheet('tag');
   };
-  const skipNow = () => { setSheet(null); apply(skip); };
+  const skipNow = () => { setSheet(null); apply(skip); announce(); };
   const pickTag = (tag: ErrorCodeId | null) => {
     setSheet(null);
     if (tag) apply((s) => tagLast(s, tag));
@@ -311,7 +322,10 @@ export function TestRunner({ now }: { now: NowFn }) {
         </div>
         <div class="runner__body" key={id}>
           {saveError && <p class="notice notice--error" role="status">{saveError}</p>}
-          <h2 class="runner__name">{def.name}</h2>
+          <div class="runner__row">
+            <h2 class="runner__name">{def.name}</h2>
+            <ReadAloud key={id} text={testScript(def)} />
+          </div>
           <p class="test-setup">{def.setup}</p>
           <p class="test-chip">{t('test.chip')}</p>
           <p class="test-progress" aria-live="polite">{t('test.progress', { done, limit })}</p>
@@ -337,7 +351,7 @@ export function TestRunner({ now }: { now: NowFn }) {
         <div class="controls">
           <button type="button" class="control" disabled={id === 'draw' || shots.length === 0} onClick={() => apply(undo)}>{t('test.undo')}</button>
           <button type="button" class="control" onClick={() => (done > 0 ? setSheet('skip') : skipNow())}>{t('test.skip')}</button>
-          <button type="button" class="control control--next" disabled={!isComplete(state, id)} onClick={() => apply((s) => (isComplete(s, id) ? advance(s) : s))}>
+          <button type="button" class="control control--next" disabled={!isComplete(state, id)} onClick={() => { apply((s) => (isComplete(s, id) ? advance(s) : s)); announce(); }}>
             {isLast ? t('test.finish') : t('test.next')}
           </button>
         </div>
@@ -362,7 +376,7 @@ export function TestRunner({ now }: { now: NowFn }) {
           <p class="sheet__text">{t('test.endText')}</p>
           <div class="sheet__actions sheet__actions--row">
             <BigButton onClick={() => setSheet(null)}>{t('common.keepGoing')}</BigButton>
-            <BigButton variant="bad" onClick={() => { setSheet(null); apply((s) => ({ ...s, index: TEST_ORDER.length })); }}>{t('test.endNow')}</BigButton>
+            <BigButton variant="bad" onClick={() => { setSheet(null); apply((s) => ({ ...s, index: TEST_ORDER.length })); announce(); }}>{t('test.endNow')}</BigButton>
           </div>
         </Sheet>
       )}

@@ -5,12 +5,14 @@ import type { BlockResult } from '../../db/types';
 import { t, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { playChime, unlockAudio } from '../../platform/chime';
+import { blockScript, speakAuto, stopSpeaking } from '../../platform/speech';
 import {
   addTime, back, endSession, next, pause, remainingMs, resume, startSession, toRecord,
   type EntryInput, type SessionRunState,
 } from '../../runner/session';
 import { BigButton } from '../components/BigButton';
 import { EntrySheet } from '../components/EntrySheet';
+import { ReadAloud } from '../components/ReadAloud';
 import { Sheet } from '../components/Sheet';
 import { Timer } from '../components/Timer';
 import { navigate, type NowFn } from '../nav';
@@ -90,6 +92,10 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     return () => clearInterval(id);
   }, [running, finished]);
 
+  // Stop reading when the session finishes or the runner closes.
+  useEffect(() => { if (finished) stopSpeaking(); }, [finished]);
+  useEffect(() => () => stopSpeaking(), []);
+
   // Chime once when the clock crosses zero. Keyed by block run and added time,
   // so +2 min after zero re-arms one more chime; restoring a block already in overtime never chimes.
   useEffect(() => {
@@ -135,6 +141,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
           <BigButton variant="good" onClick={() => {
             unlockAudio();
             update(startSession(sessionId, now()));
+            speakAuto(blockScript(blocks[0]));
           }}>{t('session.start')}</BigButton>
         </div>
       </main>
@@ -194,7 +201,12 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
   const rem = remainingMs(state, blocks, now());
 
   const ref = block.drillRefId ? getDrillRef(block.drillRefId) : undefined;
-  const advance = (entry?: EntryInput) => { setSheetOpen(false); update(next(state, blocks, now(), entry)); };
+  const advance = (entry?: EntryInput) => {
+    setSheetOpen(false);
+    const s = next(state, blocks, now(), entry);
+    update(s);
+    if (!s.finished) speakAuto(blockScript(blocks[s.blockIndex]));
+  };
   const paused = state.pausedAt !== null;
 
   const details: [Key, string][] = [
@@ -214,7 +226,10 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
               <LeaveButton onLeave={leave} />
             </span>
           </div>
-          <h2 class="runner__name">{block.name}</h2>
+          <div class="runner__row">
+            <h2 class="runner__name">{block.name}</h2>
+            <ReadAloud key={block.id} text={blockScript(block)} />
+          </div>
           <Timer ms={rem} paused={paused} />
         </div>
         <div class="runner__body" key={block.id}>
@@ -235,8 +250,8 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
           )}
         </div>
         <div class="controls">
-          <button type="button" class="control" disabled={state.blockIndex === 0} onClick={() => update(back(state, now()))}>{t('common.back')}</button>
-          <button type="button" class="control" onClick={() => update(paused ? resume(state, now()) : pause(state, now()))}>{paused ? t('session.resume') : t('session.pause')}</button>
+          <button type="button" class="control" disabled={state.blockIndex === 0} onClick={() => { stopSpeaking(); update(back(state, now())); }}>{t('common.back')}</button>
+          <button type="button" class="control" onClick={() => { if (!paused) stopSpeaking(); update(paused ? resume(state, now()) : pause(state, now())); }}>{paused ? t('session.resume') : t('session.pause')}</button>
           <button type="button" class="control" onClick={() => update(addTime(state, 120000))}>{t('session.addTime')}</button>
           <button type="button" class="control control--next" onClick={() => (block.record === 'no' || !block.recordKind ? advance() : setSheetOpen(true))}>{t('session.next')}</button>
         </div>

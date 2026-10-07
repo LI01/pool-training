@@ -76,6 +76,8 @@ export function validateBackup(data: unknown): Backup {
   if (!isObj(data.settings) || typeof data.settings.soundOn !== 'boolean') fail('invalid settings');
   const lang = (data.settings as Record<string, unknown>).lang;
   if (lang !== undefined && lang !== 'en' && lang !== 'zh') fail('invalid settings.lang');
+  const voiceOn = (data.settings as Record<string, unknown>).voiceOn;
+  if (voiceOn !== undefined && typeof voiceOn !== 'boolean') fail('invalid settings.voiceOn');
   return data as unknown as Backup;
 }
 

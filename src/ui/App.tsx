@@ -4,6 +4,7 @@ import { createStore, type Store } from '../db/store';
 import type { SessionId } from '../plan';
 import { detectLang, getLang, setLang, t } from '../i18n';
 import { setChimeEnabled } from '../platform/chime';
+import { setAutoSpeak } from '../platform/speech';
 import { DiagramsReview } from './screens/DiagramsReview';
 import { SessionRunner } from './screens/SessionRunner';
 import { Progress } from './screens/Progress';
@@ -35,6 +36,7 @@ export function App({ store, now = Date.now }: { store?: Store; now?: NowFn }) {
   // Set before the screens render, which read the language through t() and the plan/diagram getters.
   const lang = data.settings.lang ?? detectLang();
   if (getLang() !== lang) setLang(lang);
+  setAutoSpeak(data.settings.voiceOn !== false);
   const known = ROUTES.includes(hash);
   useEffect(() => { if (!known) navigate('#/'); }, [known]);
 
