@@ -98,6 +98,7 @@ export function validateEntry(kind: RecordKind, raw: Record<string, string>): V 
       if (sc === null || at === null || at === 0) return { ok: false, error: 'Enter whole numbers; attempts at least 1.' };
       if (sc > at) return { ok: false, error: 'Successes cannot exceed attempts.' };
       const failTags = (raw.failTags ?? '').split(',').map((x) => x.trim()).filter((x): x is ErrorCodeId => ['P', 'C', 'S', 'D'].includes(x));
+      if (failTags.length > at - sc) return { ok: false, error: 'More tags than failed runs; remove a tag.' };
       return { ok: true, entry: { runs: { success: sc, attempts: at, failTags } } };
     }
     case 'generic': {

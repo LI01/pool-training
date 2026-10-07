@@ -18,13 +18,19 @@ export interface EntrySheetProps {
   onClose?: () => void;
 }
 
-function Stepper({ label, value, onChange }: { label: string; value: number; onChange: (v: number) => void }) {
+/** − / typed number / + ; the raw text is kept so the field can be cleared while typing. */
+function Stepper({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  const n = Number(value) || 0;
   return (
     <div class="stepper">
       <span class="stepper__label">{label}</span>
-      <button type="button" aria-label={`Decrease ${label}`} onClick={() => onChange(Math.max(0, value - 1))}>−</button>
-      <output class="stepper__value" aria-label={label}>{value}</output>
-      <button type="button" aria-label={`Increase ${label}`} onClick={() => onChange(value + 1)}>+</button>
+      <button type="button" aria-label={`Decrease ${label}`} onClick={() => onChange(String(Math.max(0, n - 1)))}>−</button>
+      <input
+        class="stepper__value" type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" aria-label={label} value={value}
+        onFocus={(e) => e.currentTarget.select()}
+        onInput={(e) => onChange(e.currentTarget.value.replace(/\D/g, ''))}
+      />
+      <button type="button" aria-label={`Increase ${label}`} onClick={() => onChange(String(n + 1))}>+</button>
     </div>
   );
 }
@@ -45,6 +51,7 @@ export function EntrySheet({ kind, record, title, initial, onSubmit, onSkip, onC
   const [error, setError] = useState<string | null>(null);
   const set = (k: string, v: string) => setRaw((r) => ({ ...r, [k]: v }));
   const int = (k: string) => Number(raw[k]) || 0;
+  const tagsFull = tags.length >= int('attempts') - int('success');
 
   const save = () => {
     const v = validateEntry(kind, kind === 'runs' ? { ...raw, failTags: tags.join(',') } : raw);
@@ -70,10 +77,10 @@ export function EntrySheet({ kind, record, title, initial, onSubmit, onSkip, onC
         )}
         {kind === 'runs' && (
           <>
-            <Stepper label="Successful runs" value={int('success')} onChange={(v) => set('success', String(v))} />
-            <Stepper label="Layouts attempted" value={int('attempts')} onChange={(v) => set('attempts', String(v))} />
+            <Stepper label="Successful runs" value={raw.success} onChange={(v) => set('success', v)} />
+            <Stepper label="Layouts attempted" value={raw.attempts} onChange={(v) => set('attempts', v)} />
             <p class="entry__hint">Failed runs — tap a tag for each (optional)</p>
-            <TagPicker noTag={false} onPick={(t) => t && setTags((ts) => [...ts, t])} />
+            <TagPicker noTag={false} disabled={tagsFull} onPick={(t) => t && !tagsFull && setTags((ts) => [...ts, t])} />
             {tags.length > 0 && (
               <div class="chips">
                 {tags.map((t, i) => (
@@ -87,8 +94,8 @@ export function EntrySheet({ kind, record, title, initial, onSubmit, onSkip, onC
         )}
         {kind === 'generic' && (
           <>
-            <Stepper label="Made" value={int('made')} onChange={(v) => set('made', String(v))} />
-            <Stepper label="Attempts" value={int('attempts')} onChange={(v) => set('attempts', String(v))} />
+            <Stepper label="Made" value={raw.made} onChange={(v) => set('made', v)} />
+            <Stepper label="Attempts" value={raw.attempts} onChange={(v) => set('attempts', v)} />
           </>
         )}
         {kind === 'notes' && (

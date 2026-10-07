@@ -144,6 +144,10 @@ describe('validateEntry', () => {
     expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'C, D' })).toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: ['C', 'D'] } } });
     expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'C,C' })).toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: ['C', 'C'] } } });
   });
+  test('runs: more fail tags than failed runs rejected', () => {
+    expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'P,C,S' }).ok).toBe(false);
+    expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'P,C' }).ok).toBe(true);
+  });
   test('runs: zero attempts rejected', () => expect(validateEntry('runs', { success: '0', attempts: '0' }).ok).toBe(false));
   test('generic: blank field rejected', () => expect(validateEntry('generic', { made: '', attempts: '10' }).ok).toBe(false));
 

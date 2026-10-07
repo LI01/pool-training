@@ -96,8 +96,8 @@ test('runs sheet records fail tags; Back pre-fills; Leave keeps the active sessi
   fireEvent.click(screen.getByRole('button', { name: 'Increase Layouts attempted' }));
   fireEvent.click(screen.getByRole('button', { name: 'Increase Successful runs' }));
   fireEvent.click(screen.getByRole('button', { name: /^P Potting/ }));
-  fireEvent.click(screen.getByRole('button', { name: /^S Spin/ }));
   fireEvent.click(screen.getByRole('button', { name: 'Remove P' }));
+  fireEvent.click(screen.getByRole('button', { name: /^S Spin/ }));     // 1 failed run → 1 tag max
   fireEvent.click(screen.getByRole('button', { name: /save/i }));
   expect(await screen.findByText('5-ball clearance')).toBeInTheDocument();
   await waitFor(async () => {
@@ -106,7 +106,7 @@ test('runs sheet records fail tags; Back pre-fills; Leave keeps the active sessi
   });
   fireEvent.click(screen.getByRole('button', { name: 'Back' }));
   fireEvent.click(await screen.findByRole('button', { name: /^next/i }));
-  expect(screen.getByLabelText('Layouts attempted')).toHaveTextContent('2');
+  expect(screen.getByLabelText('Layouts attempted')).toHaveValue('2');
   expect(screen.getByRole('button', { name: 'Remove S' })).toBeInTheDocument();
   fireEvent.keyDown(document, { key: 'Escape' });
   fireEvent.click(screen.getByRole('button', { name: /leave session/i }));

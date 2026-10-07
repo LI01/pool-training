@@ -8,11 +8,11 @@ export const TAGS: { code: ErrorCodeId; label: string }[] = [
 ];
 
 /** P/C/S/D error tag buttons (accessible names "P Potting" …) plus an optional "No tag". */
-export function TagPicker({ onPick, noTag = true }: { onPick: (t: ErrorCodeId | null) => void; noTag?: boolean }) {
+export function TagPicker({ onPick, noTag = true, disabled = false }: { onPick: (t: ErrorCodeId | null) => void; noTag?: boolean; disabled?: boolean }) {
   return (
     <div class="tag-picker">
       {TAGS.map(({ code, label }) => (
-        <button type="button" key={code} class="tag-picker__tag" onClick={() => onPick(code)}>
+        <button type="button" key={code} class="tag-picker__tag" disabled={disabled} onClick={() => onPick(code)}>
           <span class="tag-picker__code">{code}</span> <span>{label}</span>
         </button>
       ))}
