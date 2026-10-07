@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import { DiagramViewer } from './DiagramViewer';
+import { t } from '../i18n';
 import { getDiagram } from './diagrams';
 import { TableDiagram } from './TableSvg';
 import './diagram.css';
@@ -16,7 +17,7 @@ export function DiagramCard({ diagramId, panel }: { diagramId: string; panel?: n
   const [open, setOpen] = useState(false);
   return (
     <figure class="diagram-card">
-      <button type="button" class="diagram-card__open" aria-label="Open diagram" onClick={() => setOpen(true)}>
+      <button type="button" class="diagram-card__open" aria-label={t('diagram.open')} onClick={() => setOpen(true)}>
         <TableDiagram diagram={diagram} panel={panel} textScale={INLINE_TEXT_SCALE} />
       </button>
       <figcaption>{diagram.caption}</figcaption>

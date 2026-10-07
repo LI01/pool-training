@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'preact/hooks';
+import { t } from '../../i18n';
 import { mountChart } from './chartSetup';
 
 export interface BarSeries { label: string; data: number[]; color: string }
@@ -18,7 +19,7 @@ export function BarChart({ labels, series, stacked, title }: { labels: string[];
   return (
     <figure class="chart">
       {title && <h3>{title}</h3>}
-      <canvas ref={ref} role="img" aria-label={title ?? 'Bar chart'} />
+      <canvas ref={ref} role="img" aria-label={title ?? t('chart.bar')} />
     </figure>
   );
 }

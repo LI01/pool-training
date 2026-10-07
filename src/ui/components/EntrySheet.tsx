@@ -1,6 +1,7 @@
 import { useState } from 'preact/hooks';
 import type { ErrorCodeId, RecordKind, RecordMode } from '../../plan';
 import type { BlockResult } from '../../db/types';
+import { t } from '../../i18n';
 import { validateEntry, type EntryInput } from '../../runner/session';
 import { BigButton } from './BigButton';
 import { Sheet } from './Sheet';
@@ -24,13 +25,13 @@ function Stepper({ label, value, onChange }: { label: string; value: string; onC
   return (
     <div class="stepper">
       <span class="stepper__label">{label}</span>
-      <button type="button" aria-label={`Decrease ${label}`} onClick={() => onChange(String(Math.max(0, n - 1)))}>−</button>
+      <button type="button" aria-label={t('entry.decrease', { label })} onClick={() => onChange(String(Math.max(0, n - 1)))}>−</button>
       <input
         class="stepper__value" type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" aria-label={label} value={value}
         onFocus={(e) => e.currentTarget.select()}
         onInput={(e) => onChange(e.currentTarget.value.replace(/\D/g, ''))}
       />
-      <button type="button" aria-label={`Increase ${label}`} onClick={() => onChange(String(n + 1))}>+</button>
+      <button type="button" aria-label={t('entry.increase', { label })} onClick={() => onChange(String(n + 1))}>+</button>
     </div>
   );
 }
@@ -60,32 +61,32 @@ export function EntrySheet({ kind, record, title, initial, onSubmit, onSkip, onC
   };
 
   return (
-    <Sheet title={title ?? 'Record'} onClose={onClose}>
+    <Sheet title={title ?? t('entry.record')} onClose={onClose}>
       {title && <h3 class="entry__title">{title}</h3>}
       <div class="entry">
         {kind === 'draw' && (
           <>
             <label class="field">
-              <span>Best draw (in)</span>
+              <span>{t('entry.bestDraw')}</span>
               <input inputMode="decimal" value={raw.bestIn} onInput={(e) => set('bestIn', e.currentTarget.value)} />
             </label>
             <label class="field">
-              <span>Typical draw (in)</span>
+              <span>{t('entry.typicalDraw')}</span>
               <input inputMode="decimal" value={raw.typicalIn} onInput={(e) => set('typicalIn', e.currentTarget.value)} />
             </label>
           </>
         )}
         {kind === 'runs' && (
           <>
-            <Stepper label="Successful runs" value={raw.success} onChange={(v) => set('success', v)} />
-            <Stepper label="Layouts attempted" value={raw.attempts} onChange={(v) => set('attempts', v)} />
-            <p class="entry__hint">Failed runs — tap a tag for each (optional)</p>
-            <TagPicker noTag={false} disabled={tagsFull} onPick={(t) => t && !tagsFull && setTags((ts) => [...ts, t])} />
+            <Stepper label={t('entry.successfulRuns')} value={raw.success} onChange={(v) => set('success', v)} />
+            <Stepper label={t('entry.layouts')} value={raw.attempts} onChange={(v) => set('attempts', v)} />
+            <p class="entry__hint">{t('entry.failedHint')}</p>
+            <TagPicker noTag={false} disabled={tagsFull} onPick={(tag) => tag && !tagsFull && setTags((ts) => [...ts, tag])} />
             {tags.length > 0 && (
               <div class="chips">
-                {tags.map((t, i) => (
-                  <button type="button" key={i} class="chip" aria-label={`Remove ${t}`} onClick={() => setTags((ts) => ts.filter((_, j) => j !== i))}>
-                    {t} ×
+                {tags.map((tag, i) => (
+                  <button type="button" key={i} class="chip" aria-label={t('entry.remove', { tag })} onClick={() => setTags((ts) => ts.filter((_, j) => j !== i))}>
+                    {tag} ×
                   </button>
                 ))}
               </div>
@@ -94,21 +95,21 @@ export function EntrySheet({ kind, record, title, initial, onSubmit, onSkip, onC
         )}
         {kind === 'generic' && (
           <>
-            <Stepper label="Made" value={raw.made} onChange={(v) => set('made', v)} />
-            <Stepper label="Attempts" value={raw.attempts} onChange={(v) => set('attempts', v)} />
+            <Stepper label={t('entry.made')} value={raw.made} onChange={(v) => set('made', v)} />
+            <Stepper label={t('entry.attempts')} value={raw.attempts} onChange={(v) => set('attempts', v)} />
           </>
         )}
         {kind === 'notes' && (
           <label class="field">
-            <span>Notes</span>
+            <span>{t('entry.notes')}</span>
             <textarea rows={4} value={raw.notes} onInput={(e) => set('notes', e.currentTarget.value)} />
           </label>
         )}
         {error && <p class="notice notice--error" role="alert">{error}</p>}
       </div>
       <div class="sheet__actions sheet__actions--row">
-        {(record === 'optional' || record === 'yes') && <BigButton onClick={onSkip}>Skip</BigButton>}
-        <BigButton variant="good" onClick={save}>Save</BigButton>
+        {(record === 'optional' || record === 'yes') && <BigButton onClick={onSkip}>{t('common.skip')}</BigButton>}
+        <BigButton variant="good" onClick={save}>{t('common.save')}</BigButton>
       </div>
     </Sheet>
   );

@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { plan, getBlock, BLOCK_IDS, type ErrorCodeId } from '../plan';
 import type { SessionRecord, Settings, Shot, TestRecord } from '../db/types';
 import { addDays, daysBetween } from './dates';
@@ -99,7 +100,9 @@ export function dailySummaryLine(date: string, sessions: SessionRecord[], tests:
   const s = latest ? testScores(latest) : {};
   const f = (v: number | undefined, suffix: string) => (v === undefined ? '–' : `${v}${suffix}`);
   const e = errorTotals(sessions, tests, date, date);
-  return `Straight ${f(s.straight, '/10')} | Cut ${f(s.cut, '/20')} | Stop ${f(s.stop, '/10')} | Draw ${f(s.drawAvg, '"')} | 5-ball ${f(s.fiveBall, '/5')} | P${e.P} C${e.C} S${e.S} D${e.D}`;
+  return t('summary.line', {
+    straight: f(s.straight, '/10'), cut: f(s.cut, '/20'), stop: f(s.stop, '/10'), draw: f(s.drawAvg, '"'), fiveBall: f(s.fiveBall, '/5'), ...e,
+  });
 }
 
 export interface TrainingDay { date: string; drawBest?: number; drawTypical?: number; threeBallRate?: number; fiveBallRate?: number }

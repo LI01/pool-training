@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { DiagramCard } from '../../diagram/TableDiagram';
 import { getDrillRef, getSession, plan, type Block, type SessionId } from '../../plan';
 import type { BlockResult } from '../../db/types';
+import { t, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { playChime, unlockAudio } from '../../platform/chime';
 import {
@@ -35,16 +36,16 @@ function restore(payload: unknown, sessionId: SessionId, blocks: Block[]): RunSt
 
 function resultText(r: BlockResult | undefined): string {
   if (!r) return '—';
-  if (r.skipped) return 'Skipped';
-  if (r.draw) return `Best ${r.draw.bestIn} in · Typical ${r.draw.typicalIn} in`;
-  if (r.runs) return `${r.runs.success}/${r.runs.attempts} runs${r.runs.failTags.length ? ` · ${r.runs.failTags.join(' ')}` : ''}`;
-  if (r.generic) return `${r.generic.made}/${r.generic.attempts} made`;
+  if (r.skipped) return t('common.skipped');
+  if (r.draw) return t('result.draw', { best: r.draw.bestIn, typical: r.draw.typicalIn });
+  if (r.runs) return `${t('result.runs', { success: r.runs.success, attempts: r.runs.attempts })}${r.runs.failTags.length ? ` · ${r.runs.failTags.join(' ')}` : ''}`;
+  if (r.generic) return t('result.made', { made: r.generic.made, attempts: r.generic.attempts });
   if (r.notes !== undefined) return r.notes || '—';
   return '—';
 }
 
 function LeaveButton({ onLeave }: { onLeave: () => void }) {
-  return <button type="button" class="runner__leave" aria-label="Leave session" onClick={onLeave}>×</button>;
+  return <button type="button" class="runner__leave" aria-label={t('session.leave')} onClick={onLeave}>×</button>;
 }
 
 export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: NowFn }) {
@@ -70,7 +71,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
   useEffect(() => {
     if (state || active?.type !== 'session' || (active.payload as { sessionId?: unknown } | null)?.sessionId !== sessionId) return;
     void store.setActive(undefined).then(refresh);
-    setToast("Previous session couldn't be restored");
+    setToast(t('session.restoreFailed'));
   }, []);
 
   // Hold the wake lock while the runner is open with a session in progress.
@@ -106,7 +107,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     setState(s);
     store.setActive({ type: 'session', payload: s, updatedAt: now() }).then(
       () => setSaveError(null),
-      () => setSaveError("Couldn't save progress on this device. Keep going; it retries on your next tap."),
+      () => setSaveError(t('session.saveProgressError')),
     );
   };
 
@@ -116,25 +117,25 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     return (
       <main class="screen runner-pre">
         <header class="runner__top">
-          <span class="runner__meta">{sessionId === 'am' ? 'Morning Session' : 'Afternoon Session'}</span>
+          <span class="runner__meta">{t(sessionId === 'am' ? 'session.am' : 'session.pm')}</span>
           <LeaveButton onLeave={leave} />
         </header>
         {toast && <p class="notice notice--error" role="status">{toast}</p>}
         <h1 class="runner-pre__title">{session.title}</h1>
         <details class="intro">
-          <summary>Training vs testing</summary>
+          <summary>{t('session.intro')}</summary>
           {plan.intro.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}
         </details>
         <ol class="block-list">
           {blocks.map((b) => (
-            <li key={b.id}><span>{b.name}</span><span class="block-list__min">{b.minutes} min</span></li>
+            <li key={b.id}><span>{b.name}</span><span class="block-list__min">{t('session.minutes', { n: b.minutes })}</span></li>
           ))}
         </ol>
         <div class="runner-pre__start">
           <BigButton variant="good" onClick={() => {
             unlockAudio();
             update(startSession(sessionId, now()));
-          }}>Start</BigButton>
+          }}>{t('session.start')}</BigButton>
         </div>
       </main>
     );
@@ -159,7 +160,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
       } catch {
         finishingRef.current = false;
         setFinishing(false);
-        setSaveError("Couldn't save the session. Try Finish again.");
+        setSaveError(t('session.saveError'));
         return;
       }
       await store.setActive(undefined).catch(() => {});
@@ -170,20 +171,20 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     return (
       <main class="screen runner-summary">
         <header class="runner__top">
-          <span class="runner__meta">Session complete</span>
+          <span class="runner__meta">{t('session.complete')}</span>
           <LeaveButton onLeave={leave} />
         </header>
         <h1>{session.title}</h1>
         {saveError && <p class="notice notice--error" role="alert">{saveError}</p>}
-        <p class="runner-summary__minutes"><strong>{preview.activeMinutes}</strong> {preview.activeMinutes === 1 ? 'active minute' : 'active minutes'}</p>
+        <p class="runner-summary__minutes"><strong>{preview.activeMinutes}</strong> {t(preview.activeMinutes === 1 ? 'session.activeMinute' : 'session.activeMinutes')}</p>
         <dl class="summary-list">
           {blocks.filter((b) => b.record !== 'no').map((b) => (
             <div key={b.id}><dt>{b.name}</dt><dd>{resultText(state.results[b.id])}</dd></div>
           ))}
         </dl>
         <div class="controls">
-          <BigButton onClick={() => update(back(state, now()))}>Back</BigButton>
-          <BigButton variant="good" onClick={finish} disabled={finishing}>Finish</BigButton>
+          <BigButton onClick={() => update(back(state, now()))}>{t('common.back')}</BigButton>
+          <BigButton variant="good" onClick={finish} disabled={finishing}>{t('session.finish')}</BigButton>
         </div>
       </main>
     );
@@ -196,9 +197,9 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
   const advance = (entry?: EntryInput) => { setSheetOpen(false); update(next(state, blocks, now(), entry)); };
   const paused = state.pausedAt !== null;
 
-  const details: [string, string][] = [
-    ['Setup', block.setup], ['Training Volume', block.volume], ['How to Train', block.howToTrain],
-    ['Success Standard', block.successStandard], ['Purpose', block.purpose],
+  const details: [Key, string][] = [
+    ['session.setup', block.setup], ['session.volume', block.volume], ['session.howToTrain', block.howToTrain],
+    ['session.successStandard', block.successStandard], ['session.purpose', block.purpose],
   ];
 
   return (
@@ -207,9 +208,9 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
         <div class="runner__head">
           <DiagramCard key={block.diagramId} diagramId={block.diagramId} />
           <div class="runner__row">
-            <span class="runner__meta">{block.timeLabel} · Block {state.blockIndex + 1}/{blocks.length}</span>
+            <span class="runner__meta">{t('session.blockOf', { time: block.timeLabel, i: state.blockIndex + 1, n: blocks.length })}</span>
             <span class="runner__row">
-              <button type="button" class="link-button" onClick={() => setConfirmEnd(true)}>End session</button>
+              <button type="button" class="link-button" onClick={() => setConfirmEnd(true)}>{t('session.end')}</button>
               <LeaveButton onLeave={leave} />
             </span>
           </div>
@@ -219,25 +220,25 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
         <div class="runner__body" key={block.id}>
           {saveError && <p class="notice notice--error" role="status">{saveError}</p>}
           <dl class="block-info">
-            {details.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+            {details.map(([k, v]) => <div key={k}><dt>{t(k)}</dt><dd>{v}</dd></div>)}
           </dl>
           {ref && (
             <details class="drill-ref">
-              <summary>Drill reference</summary>
+              <summary>{t('session.drillRef')}</summary>
               <dl class="block-info">
                 {([
-                  ['Ball Placement', ref.ballPlacement], ['Execution Cue', ref.executionCue], ['Common Mistake', ref.commonMistake],
-                  ['Progression', ref.progression], ['When to Use Reducer', ref.whenToUseReducer],
-                ] as [string, string][]).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+                  ['session.ballPlacement', ref.ballPlacement], ['session.executionCue', ref.executionCue], ['session.commonMistake', ref.commonMistake],
+                  ['session.progression', ref.progression], ['session.whenToUseReducer', ref.whenToUseReducer],
+                ] as [Key, string][]).map(([k, v]) => <div key={k}><dt>{t(k)}</dt><dd>{v}</dd></div>)}
               </dl>
             </details>
           )}
         </div>
         <div class="controls">
-          <button type="button" class="control" disabled={state.blockIndex === 0} onClick={() => update(back(state, now()))}>Back</button>
-          <button type="button" class="control" onClick={() => update(paused ? resume(state, now()) : pause(state, now()))}>{paused ? 'Resume' : 'Pause'}</button>
-          <button type="button" class="control" onClick={() => update(addTime(state, 120000))}>+2 min</button>
-          <button type="button" class="control control--next" onClick={() => (block.record === 'no' || !block.recordKind ? advance() : setSheetOpen(true))}>Next</button>
+          <button type="button" class="control" disabled={state.blockIndex === 0} onClick={() => update(back(state, now()))}>{t('common.back')}</button>
+          <button type="button" class="control" onClick={() => update(paused ? resume(state, now()) : pause(state, now()))}>{paused ? t('session.resume') : t('session.pause')}</button>
+          <button type="button" class="control" onClick={() => update(addTime(state, 120000))}>{t('session.addTime')}</button>
+          <button type="button" class="control control--next" onClick={() => (block.record === 'no' || !block.recordKind ? advance() : setSheetOpen(true))}>{t('session.next')}</button>
         </div>
         {sheetOpen && block.recordKind && (
           <EntrySheet
@@ -253,11 +254,11 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
         )}
       </main>
       {confirmEnd && (
-        <Sheet title="End session" onClose={() => setConfirmEnd(false)}>
-          <p class="sheet__text">End the session now? This block is marked skipped unless already recorded; you can save on the summary.</p>
+        <Sheet title={t('session.end')} onClose={() => setConfirmEnd(false)}>
+          <p class="sheet__text">{t('session.endText')}</p>
           <div class="sheet__actions sheet__actions--row">
-            <BigButton onClick={() => setConfirmEnd(false)}>Keep going</BigButton>
-            <BigButton variant="bad" onClick={() => { setConfirmEnd(false); update(endSession(state, blocks, now())); }}>End session now</BigButton>
+            <BigButton onClick={() => setConfirmEnd(false)}>{t('common.keepGoing')}</BigButton>
+            <BigButton variant="bad" onClick={() => { setConfirmEnd(false); update(endSession(state, blocks, now())); }}>{t('session.endNow')}</BigButton>
           </div>
         </Sheet>
       )}

@@ -54,9 +54,9 @@ const toScreen = (ctx: Ctx, p: Pt): Pt => (ctx.rotate ? { x: H - p.y, y: p.x } :
 const overlap = (a: Box, b: Box) =>
   Math.max(0, Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0)) * Math.max(0, Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0));
 
-/** Approximate screen box of a text label (bold system font ≈ 0.6em per character). */
+/** Approximate screen box of a text label (bold system font ≈ 0.6em per character, 1em per CJK character). */
 function textBox(ctx: Ctx, at: Pt, dir: Pt | undefined, gap: number, size: number, text: string): Box {
-  const s = size * ctx.k, w = text.length * 0.6 * s;
+  const s = size * ctx.k, w = [...text].reduce((n, c) => n + (c >= '⺀' ? 1 : 0.6), 0) * s;
   const { dx, dy, anchor } = place(ctx, dir, gap, s);
   const a = toScreen(ctx, at), x = a.x + dx, y = a.y + dy;
   const x0 = anchor === 'start' ? x : anchor === 'end' ? x - w : x - w / 2;

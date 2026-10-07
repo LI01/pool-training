@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { railOffsets } from './measure';
+import { t, type Key } from '../i18n';
+import { fmtInches, nearestRails } from './measure';
 import { TableDiagram } from './TableSvg';
 import type { Diagram } from './types';
 import './diagram.css';
@@ -43,9 +44,9 @@ export function DiagramViewer({ diagram, onClose }: { diagram: Diagram; onClose:
     <div class="diagram-viewer" role="dialog" aria-modal="true" aria-labelledby={titleId}>
       <header class="diagram-viewer__header">
         <h2 id={titleId}>{diagram.title}</h2>
-        <button type="button" aria-label="Zoom out" disabled={zoom <= 1} onClick={() => setZoom((z) => Math.max(1, z - 0.5))}>−</button>
-        <button type="button" aria-label="Zoom in" disabled={zoom >= 3} onClick={() => setZoom((z) => Math.min(3, z + 0.5))}>+</button>
-        <button type="button" class="diagram-viewer__close" ref={closeRef} onClick={onClose}>Close</button>
+        <button type="button" aria-label={t('diagram.zoomOut')} disabled={zoom <= 1} onClick={() => setZoom((z) => Math.max(1, z - 0.5))}>−</button>
+        <button type="button" aria-label={t('diagram.zoomIn')} disabled={zoom >= 3} onClick={() => setZoom((z) => Math.min(3, z + 0.5))}>+</button>
+        <button type="button" class="diagram-viewer__close" ref={closeRef} onClick={onClose}>{t('diagram.close')}</button>
       </header>
       <div class="diagram-viewer__body">
         <div class="diagram-viewer__stage" style={{ width: `${zoom * 100}%` }}>
@@ -56,9 +57,10 @@ export function DiagramViewer({ diagram, onClose }: { diagram: Diagram; onClose:
           {balls.length > 0 && (
             <ul class="diagram-viewer__measure">
               {balls.map((b, i) => {
-                const o = railOffsets(b.at);
-                const side = (t: string) => (portrait ? t.replace(/left|top|right|bottom/, (m) => PORTRAIT_SIDE[m]) : t);
-                return <li key={i}>Ball {b.num ?? i + 1}: {side(o.x)}, {side(o.y)}</li>;
+                const r = nearestRails(b.at);
+                const off = (o: { side: string; d: number }) =>
+                  t('diagram.fromRail', { d: fmtInches(o.d), side: t(`side.${portrait ? PORTRAIT_SIDE[o.side] : o.side}` as Key) });
+                return <li key={i}>{t('diagram.ball', { n: b.num ?? i + 1, x: off(r.x), y: off(r.y) })}</li>;
               })}
             </ul>
           )}

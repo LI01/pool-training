@@ -18,6 +18,6 @@ export interface TestRecord {
   id: string; date: string; planVersion: number; startedAt: number; endedAt: number;
   straight?: Shot[]; cut?: Shot[]; stop?: Shot[]; draw?: number[]; fiveBall?: Shot[];
 }
-export interface Settings { startDate?: string; soundOn: boolean; lastExportAt?: number }
+export interface Settings { startDate?: string; soundOn: boolean; lastExportAt?: number; lang?: 'en' | 'zh' }
 export interface ActiveState { type: 'session' | 'test'; payload: unknown; updatedAt: number }
 export interface Backup { app: 'pool-training'; schema: 1; exportedAt: number; sessions: SessionRecord[]; tests: TestRecord[]; settings: Settings }

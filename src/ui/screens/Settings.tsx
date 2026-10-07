@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { BackupError, buildBackup, validateBackup } from '../../db/store';
 import type { Backup } from '../../db/types';
+import { getLang, t, type Lang } from '../../i18n';
 import { setChimeEnabled } from '../../platform/chime';
 import { resolveStartDate } from '../../stats';
 import { localDate } from '../../stats/dates';
@@ -30,22 +31,29 @@ export function Settings({ now }: { now: NowFn }) {
       setMessage(ok);
     } catch (err) {
       setMessage(null);
-      setError(`${label} failed: ${err instanceof Error ? err.message : String(err)}`);
+      setError(t('settings.failed', { label, error: err instanceof Error ? err.message : String(err) }));
     }
   };
 
-  const saveStart = () => run('Save', async () => {
+  const saveStart = () => run(t('common.save'), async () => {
     await store.saveSettings({ ...settings, startDate: startDate || undefined });
     await refresh();
-    return 'Start date saved.';
+    return t('settings.startSaved');
   });
 
-  const toggleSound = () => run('Save', async () => {
+  const toggleSound = () => run(t('common.save'), async () => {
     const soundOn = !settings.soundOn;
     setChimeEnabled(soundOn);
     await store.saveSettings({ ...settings, soundOn });
     await refresh();
-    return soundOn ? 'Sound on.' : 'Sound off.';
+    return soundOn ? t('settings.soundOn') : t('settings.soundOff');
+  });
+
+  // The app re-renders in the new language once the saved settings are reloaded.
+  const saveLang = (lang: Lang) => run(t('common.save'), async () => {
+    await store.saveSettings({ ...settings, lang });
+    await refresh();
+    return null;
   });
 
   const download = (json: string, name: string) => {
@@ -61,16 +69,16 @@ export function Settings({ now }: { now: NowFn }) {
 
   // Built synchronously from the loaded data so navigator.share runs inside the tap (iOS needs the user gesture).
   // lastExportAt is stamped only once the file was handed over.
-  const exportBackup = () => run('Export', async () => {
-    const t = now();
-    const json = JSON.stringify(buildBackup({ sessions, tests, settings }, t), null, 2);
-    const name = `pool-training-backup-${localDate(t)}.json`;
+  const exportBackup = () => run(t('settings.export'), async () => {
+    const at = now();
+    const json = JSON.stringify(buildBackup({ sessions, tests, settings }, at), null, 2);
+    const name = `pool-training-backup-${localDate(at)}.json`;
     const file = new File([json], name, { type: 'application/json' });
-    let how = 'downloaded';
+    let shared = false;
     if (navigator.canShare?.({ files: [file] })) {
       try {
         await navigator.share({ files: [file] }); // iOS share sheet → Save to Files
-        how = 'shared';
+        shared = true;
       } catch (err) {
         const errName = (err as { name?: string } | null)?.name;
         if (errName === 'AbortError') return null; // user cancelled: nothing was saved
@@ -80,9 +88,9 @@ export function Settings({ now }: { now: NowFn }) {
     } else {
       download(json, name);
     }
-    await store.markExported(t);
+    await store.markExported(at);
     await refresh();
-    return `Backup ${how}.`;
+    return shared ? t('settings.shared') : t('settings.downloaded');
   });
 
   const onImportFile = async (e: Event) => {
@@ -95,7 +103,7 @@ export function Settings({ now }: { now: NowFn }) {
       try {
         data = JSON.parse(await file.text());
       } catch {
-        setError('Invalid file: not JSON');
+        setError(t('settings.notJson'));
         return;
       }
       try {
@@ -103,8 +111,8 @@ export function Settings({ now }: { now: NowFn }) {
         setError(null);
       } catch (err) {
         setError(err instanceof BackupError
-          ? `Invalid file: not a pool-training backup (${err.message})`
-          : 'Invalid file');
+          ? t('settings.notBackup', { error: err.message })
+          : t('settings.invalidFile'));
       }
     } finally {
       input.value = '';
@@ -114,10 +122,10 @@ export function Settings({ now }: { now: NowFn }) {
   const confirmImport = () => {
     const b = pendingImport!;
     setPendingImport(null);
-    return run('Import', async () => {
+    return run(t('settings.import'), async () => {
       await store.importBackup(b);
       await refresh();
-      return 'Backup imported.';
+      return t('settings.imported');
     });
   };
 
@@ -129,63 +137,74 @@ export function Settings({ now }: { now: NowFn }) {
     }
     clearTimeout(resetTimer.current);
     setResetArmed(false);
-    await run('Reset', async () => {
+    await run(t('settings.reset'), async () => {
       await store.resetAll();
       await refresh();
-      return 'All data erased.';
+      return t('settings.erased');
     });
   };
 
   return (
     <main class="screen">
-      <h1>Settings</h1>
+      <h1>{t('settings.title')}</h1>
 
       {error && <p class="notice notice--error" role="alert">{error}</p>}
       {message && <p class="notice notice--ok" role="status">{message}</p>}
 
       <section class="panel">
-        <h2>Start date (Day 1)</h2>
+        <h2>{t('settings.startDate')}</h2>
         <div class="row">
-          <input type="date" aria-label="Start date" value={startDate} onInput={(e) => setStartDate((e.currentTarget as HTMLInputElement).value)} />
-          <BigButton onClick={saveStart}>Save</BigButton>
+          <input type="date" aria-label={t('settings.startDateLabel')} value={startDate} onInput={(e) => setStartDate((e.currentTarget as HTMLInputElement).value)} />
+          <BigButton onClick={saveStart}>{t('common.save')}</BigButton>
         </div>
-        {!settings.startDate && <p class="muted">Day 1 is currently {resolved}.</p>}
+        {!settings.startDate && <p class="muted">{t('settings.dayOneIs', { date: resolved })}</p>}
       </section>
 
       <section class="panel">
         <label class="row row--between toggle">
-          <span>Sound</span>
+          <span>{t('settings.sound')}</span>
           <input type="checkbox" role="switch" checked={settings.soundOn} onChange={toggleSound} />
         </label>
       </section>
 
       <section class="panel">
-        <h2>Backup</h2>
-        <BigButton onClick={exportBackup}>Export backup</BigButton>
-        <p class="muted">Last backup: {settings.lastExportAt ? localDate(settings.lastExportAt) : 'Never'}</p>
+        <h2>{t('settings.language')}</h2>
+        {/* Each language is named in itself, so the buttons are not translated. */}
+        <div class="seg" role="group" aria-label={t('settings.language')}>
+          {([['en', 'English'], ['zh', '中文']] as [Lang, string][]).map(([l, name]) => {
+            const on = getLang() === l;
+            return <button type="button" key={l} class={on ? 'seg__on' : ''} aria-pressed={on} onClick={() => saveLang(l)}>{name}</button>;
+          })}
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2>{t('settings.backup')}</h2>
+        <BigButton onClick={exportBackup}>{t('settings.exportBackup')}</BigButton>
+        <p class="muted">{t('settings.lastBackup', { date: settings.lastExportAt ? localDate(settings.lastExportAt) : t('settings.never') })}</p>
         <label class="file-button">
-          Import backup
+          {t('settings.importBackup')}
           <input type="file" accept="application/json,.json" onChange={onImportFile} />
         </label>
       </section>
 
       <section class="panel">
-        <a class="link-row" href="#/diagrams">Review all diagrams</a>
+        <a class="link-row" href="#/diagrams">{t('settings.reviewDiagrams')}</a>
       </section>
 
       <section class="panel">
-        <h2>Danger zone</h2>
-        <BigButton variant="bad" onClick={onReset}>{resetArmed ? 'Tap again to confirm' : 'Reset all data'}</BigButton>
+        <h2>{t('settings.danger')}</h2>
+        <BigButton variant="bad" onClick={onReset}>{resetArmed ? t('settings.confirmReset') : t('settings.resetAll')}</BigButton>
       </section>
 
       {pendingImport && (
-        <Sheet title="Import backup" onClose={() => setPendingImport(null)}>
+        <Sheet title={t('settings.importBackup')} onClose={() => setPendingImport(null)}>
           <p class="sheet__text">
-            Replace all current data with this backup ({pendingImport.sessions.length} sessions, {pendingImport.tests.length} tests)?
+            {t('settings.replaceText', { sessions: pendingImport.sessions.length, tests: pendingImport.tests.length })}
           </p>
           <div class="sheet__actions">
-            <BigButton onClick={() => setPendingImport(null)}>Cancel</BigButton>
-            <BigButton variant="bad" onClick={confirmImport}>Replace</BigButton>
+            <BigButton onClick={() => setPendingImport(null)}>{t('common.cancel')}</BigButton>
+            <BigButton variant="bad" onClick={confirmImport}>{t('settings.replace')}</BigButton>
           </div>
         </Sheet>
       )}

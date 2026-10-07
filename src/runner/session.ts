@@ -1,5 +1,6 @@
 import type { Block, ErrorCodeId, RecordKind, SessionId } from '../plan';
 import type { BlockResult, SessionRecord } from '../db/types';
+import { t } from '../i18n';
 import { localDate } from '../stats/dates';
 
 export interface SessionRunState {
@@ -88,23 +89,23 @@ const num = (v: string | undefined, max: number, integer: boolean): number | nul
 export function validateEntry(kind: RecordKind, raw: Record<string, string>): V {
   switch (kind) {
     case 'draw': {
-      const b = num(raw.bestIn, 120, false), t = num(raw.typicalIn, 120, false);
-      if (b === null || t === null) return { ok: false, error: 'Enter inches between 0 and 120.' };
-      if (t > b) return { ok: false, error: 'Typical cannot be more than best.' };
-      return { ok: true, entry: { draw: { bestIn: b, typicalIn: t } } };
+      const b = num(raw.bestIn, 120, false), ty = num(raw.typicalIn, 120, false);
+      if (b === null || ty === null) return { ok: false, error: t('entry.err.inches') };
+      if (ty > b) return { ok: false, error: t('entry.err.typical') };
+      return { ok: true, entry: { draw: { bestIn: b, typicalIn: ty } } };
     }
     case 'runs': {
       const sc = num(raw.success, 100, true), at = num(raw.attempts, 100, true);
-      if (sc === null || at === null || at === 0) return { ok: false, error: 'Enter whole numbers; attempts at least 1.' };
-      if (sc > at) return { ok: false, error: 'Successes cannot exceed attempts.' };
+      if (sc === null || at === null || at === 0) return { ok: false, error: t('entry.err.whole') };
+      if (sc > at) return { ok: false, error: t('entry.err.successes') };
       const failTags = (raw.failTags ?? '').split(',').map((x) => x.trim()).filter((x): x is ErrorCodeId => ['P', 'C', 'S', 'D'].includes(x));
-      if (failTags.length > at - sc) return { ok: false, error: 'More tags than failed runs; remove a tag.' };
+      if (failTags.length > at - sc) return { ok: false, error: t('entry.err.tags') };
       return { ok: true, entry: { runs: { success: sc, attempts: at, failTags } } };
     }
     case 'generic': {
       const m = num(raw.made, 200, true), at = num(raw.attempts, 200, true);
-      if (m === null || at === null || at === 0) return { ok: false, error: 'Enter whole numbers; attempts at least 1.' };
-      if (m > at) return { ok: false, error: 'Makes cannot exceed attempts.' };
+      if (m === null || at === null || at === 0) return { ok: false, error: t('entry.err.whole') };
+      if (m > at) return { ok: false, error: t('entry.err.makes') };
       return { ok: true, entry: { generic: { made: m, attempts: at } } };
     }
     case 'notes':

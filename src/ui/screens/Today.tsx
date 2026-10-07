@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks';
+import { t, type Key } from '../../i18n';
 import { getSession, TEST_ORDER, type SessionId } from '../../plan';
 import { dailySummaryLine, dayNumber, resolveStartDate, testDue } from '../../stats';
 import { wakeLockSupported } from '../../platform/wakeLock';
@@ -8,6 +9,7 @@ import { Sheet } from '../components/Sheet';
 import { useAppData } from '../useAppData';
 
 type Status = 'Not started' | 'In progress' | 'Done';
+const STATUS_KEY: Record<Status, Key> = { 'Not started': 'today.status.notStarted', 'In progress': 'today.status.inProgress', Done: 'today.status.done' };
 const WEEK_MS = 7 * 24 * 3600 * 1000;
 
 function tipShown(): boolean {
@@ -16,7 +18,7 @@ function tipShown(): boolean {
 
 function StatusPill({ status }: { status: Status }) {
   const cls = status === 'Done' ? 'done' : status === 'In progress' ? 'progress' : 'idle';
-  return <span class={`pill pill--${cls}`}>{status}</span>;
+  return <span class={`pill pill--${cls}`}>{t(STATUS_KEY[status])}</span>;
 }
 
 export function Today({ now }: { now: NowFn }) {
@@ -36,10 +38,10 @@ export function Today({ now }: { now: NowFn }) {
     active?.type === 'test' ? 'In progress' : tests.some((t) => t.date === today) ? 'Done' : 'Not started';
 
   const testSubtitle =
-    due.daysSinceLast === null ? 'No tests yet — due'
-      : (due.daysSinceLast === 0 ? 'Last test: today'
-        : due.daysSinceLast === 1 ? 'Last test: 1 day ago'
-          : `Last test: ${due.daysSinceLast} days ago`) + (due.due ? ' — due' : '');
+    due.daysSinceLast === null ? t('today.test.none')
+      : (due.daysSinceLast === 0 ? t('today.test.today')
+        : due.daysSinceLast === 1 ? t('today.test.oneDay')
+          : t('today.test.days', { n: due.daysSinceLast })) + (due.due ? t('today.test.due') : '');
 
   const activeHash = active ? (active.type === 'test' ? '#/test' : `#/session/${activeSession ?? 'am'}`) : undefined;
   // Completed on the runner's summary but not yet saved: discarding loses a whole session/test.
@@ -52,7 +54,7 @@ export function Today({ now }: { now: NowFn }) {
     try {
       await store.setActive(undefined);
     } catch {
-      setDiscardError("Couldn't discard it. Try again.");
+      setDiscardError(t('today.discardError'));
       return;
     }
     await refresh();
@@ -74,27 +76,27 @@ export function Today({ now }: { now: NowFn }) {
   };
 
   const cards: { hash: string; title: string; subtitle: string; status: Status }[] = [
-    { hash: '#/session/am', title: 'Morning Session', subtitle: getSession('am').title, status: sessionStatus('am') },
-    { hash: '#/session/pm', title: 'Afternoon Session', subtitle: getSession('pm').title, status: sessionStatus('pm') },
-    { hash: '#/test', title: 'Standard Test', subtitle: testSubtitle, status: testStatus },
+    { hash: '#/session/am', title: t('session.am'), subtitle: getSession('am').title, status: sessionStatus('am') },
+    { hash: '#/session/pm', title: t('session.pm'), subtitle: getSession('pm').title, status: sessionStatus('pm') },
+    { hash: '#/test', title: t('test.standard'), subtitle: testSubtitle, status: testStatus },
   ];
 
   return (
     <main class="screen">
       <header class="page-header">
-        <h1 class="day-title">{day > 30 ? `Day ${day}` : `Day ${day} of 30`}</h1>
+        <h1 class="day-title">{day > 30 ? t('today.day', { day }) : t('today.dayOf30', { day })}</h1>
       </header>
 
       {showBackup && (
         <div class="banner">
-          <span>Time to back up your training data.</span>
-          <a href="#/settings">Open Settings</a>
+          <span>{t('today.backup')}</span>
+          <a href="#/settings">{t('today.openSettings')}</a>
         </div>
       )}
       {showTip && (
         <div class="banner banner--tip">
-          <span>Tip: set Auto-Lock to 'Never' in iOS Settings → Display while training.</span>
-          <button type="button" class="link-button" onClick={dismissTip}>Dismiss</button>
+          <span>{t('today.tip')}</span>
+          <button type="button" class="link-button" onClick={dismissTip}>{t('today.dismiss')}</button>
         </div>
       )}
 
@@ -113,16 +115,16 @@ export function Today({ now }: { now: NowFn }) {
       <code class="summary-line">{dailySummaryLine(today, sessions, tests)}</code>
 
       {pending && (
-        <Sheet title={activeFinished ? 'Not saved yet' : 'Another session is in progress'} onClose={closePending}>
+        <Sheet title={activeFinished ? t('today.notSaved') : t('today.anotherInProgress')} onClose={closePending}>
           <p class="sheet__text">
             {activeFinished
-              ? `Your ${active?.type === 'test' ? 'test' : 'session'} is complete but not saved. Save it first?`
-              : 'Another session is in progress. Discard it?'}
+              ? t(active?.type === 'test' ? 'today.testNotSaved' : 'today.sessionNotSaved')
+              : t('today.discardIt')}
           </p>
           {discardError && <p class="notice notice--error" role="alert">{discardError}</p>}
           <div class="sheet__actions">
-            <BigButton onClick={() => { const h = activeHash!; closePending(); navigate(h); }}>{activeFinished ? 'Save it' : 'Resume it'}</BigButton>
-            <BigButton variant="bad" onClick={discardAndStart}>{activeFinished ? 'Discard' : 'Discard & start'}</BigButton>
+            <BigButton onClick={() => { const h = activeHash!; closePending(); navigate(h); }}>{activeFinished ? t('today.saveIt') : t('today.resumeIt')}</BigButton>
+            <BigButton variant="bad" onClick={discardAndStart}>{activeFinished ? t('common.discard') : t('today.discardStart')}</BigButton>
           </div>
         </Sheet>
       )}

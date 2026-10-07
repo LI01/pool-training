@@ -74,6 +74,8 @@ export function validateBackup(data: unknown): Backup {
     }
   });
   if (!isObj(data.settings) || typeof data.settings.soundOn !== 'boolean') fail('invalid settings');
+  const lang = (data.settings as Record<string, unknown>).lang;
+  if (lang !== undefined && lang !== 'en' && lang !== 'zh') fail('invalid settings.lang');
   return data as unknown as Backup;
 }
 

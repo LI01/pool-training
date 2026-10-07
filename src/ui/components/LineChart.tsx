@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'preact/hooks';
+import { t } from '../../i18n';
 import { mountChart } from './chartSetup';
 
 export interface LineSeries { label: string; data: (number | null)[]; color: string }
@@ -24,7 +25,7 @@ export function LineChart({ labels, series, yMax, stepSize, title }: { labels: s
   return (
     <figure class="chart">
       {title && <h3>{title}</h3>}
-      <canvas ref={ref} role="img" aria-label={title ?? 'Line chart'} />
+      <canvas ref={ref} role="img" aria-label={title ?? t('chart.line')} />
     </figure>
   );
 }
