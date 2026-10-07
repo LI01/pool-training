@@ -1,0 +1,344 @@
+{
+  "version": 1,
+  "title": "Daily 2-Hour Pool Training Plan",
+  "intro": "Training volume is intentionally much larger than the daily test. The test is only a short benchmark; most of the 2 hours should be repetition, correction, and pattern play.\n\nTRAINING = high volume and feedback. You may hit 150–200+ shots across the two daily sessions, repeat misses, adjust technique, and practice patterns.\n\nTESTING = short, standardized, no coaching during the set. The 10-shot / 20-shot numbers are benchmarks, not your total training volume. Run the full test 2–3 times per week (or once weekly if you prefer), under the same setup.\n\nFor your GoSports table: use the normal ~4.8\" pocket for APA-oriented testing. Use the reducer only as a separate precision drill; do not mix reducer scores with normal-pocket scores.",
+  "sessions": [
+    {
+      "id": "am",
+      "title": "Morning — 60 min: Fundamentals, Accuracy & Cue-Ball Technique",
+      "blocks": [
+        {
+          "id": "am-straight-warmup",
+          "timeLabel": "0–10 min",
+          "minutes": 10,
+          "name": "Straight-ball warm-up",
+          "setup": "Object ball straight to corner. Start CB 1 ft away; gradually move to 2, 3, then 4 ft.",
+          "volume": "30–40 shots",
+          "howToTrain": "Do sets of 5. After every miss, identify: aim, stroke, or contact point. Do not rush to the next ball.",
+          "successStandard": "Clean center-pocket hit; CB stays close to the original line.",
+          "purpose": "Stroke alignment and delivery",
+          "record": "no",
+          "recordKind": null,
+          "drillRefId": "straight-ball",
+          "diagramId": "am-straight-warmup"
+        },
+        {
+          "id": "am-stop-ladder",
+          "timeLabel": "10–22 min",
+          "minutes": 12,
+          "name": "Stop shot ladder",
+          "setup": "Straight shot. CB-to-OB distances: 12\", 24\", 36\".",
+          "volume": "30 shots total (10 at each distance)",
+          "howToTrain": "Use center-ball contact first. Adjust speed, not just tip position. Hold finish and watch CB.",
+          "successStandard": "CB stops within about 3\" of contact point.",
+          "purpose": "Center-ball control and speed",
+          "record": "optional",
+          "recordKind": "generic",
+          "drillRefId": "stop-shot",
+          "diagramId": "am-stop-ladder"
+        },
+        {
+          "id": "am-draw-ladder",
+          "timeLabel": "22–38 min",
+          "minutes": 16,
+          "name": "Draw ladder",
+          "setup": "Straight shot. CB-to-OB: 8\", 16\", 24\". Use the 6-dot cue ball when possible.",
+          "volume": "36–45 shots",
+          "howToTrain": "At each distance, first draw back 6\", then 12\", then farther. Favor a level cue and smooth acceleration over extra force.",
+          "successStandard": "Pocket OB and pull CB back along the shot line with controlled distance.",
+          "purpose": "Backspin production and retention",
+          "record": "yes",
+          "recordKind": "draw",
+          "drillRefId": "draw",
+          "diagramId": "am-draw-ladder"
+        },
+        {
+          "id": "am-follow-ladder",
+          "timeLabel": "38–50 min",
+          "minutes": 12,
+          "name": "Follow ladder",
+          "setup": "Same straight setup. CB-to-OB: 12\", 24\", 36\".",
+          "volume": "30 shots total",
+          "howToTrain": "Choose a target follow distance before each shot (6\", 12\", 24\"). Avoid simply rolling the ball harder.",
+          "successStandard": "CB follows on the intended line and finishes near the chosen distance.",
+          "purpose": "Topspin and speed control",
+          "record": "optional",
+          "recordKind": "generic",
+          "drillRefId": "follow",
+          "diagramId": "am-follow-ladder"
+        },
+        {
+          "id": "am-precision-pocket",
+          "timeLabel": "50–60 min",
+          "minutes": 10,
+          "name": "Precision pocket drill",
+          "setup": "Long straight and slight-cut shots. Use pocket reducer for this block only if desired.",
+          "volume": "20–30 shots",
+          "howToTrain": "Alternate left/right corner pockets. Count a rattled or jawed ball as a miss even if it falls on the normal pocket.",
+          "successStandard": "Center-pocket contact and stable mechanics.",
+          "purpose": "Accuracy; keeps some Chinese-8-ball style discipline",
+          "record": "no",
+          "recordKind": null,
+          "drillRefId": "straight-ball",
+          "diagramId": "am-precision-pocket"
+        }
+      ]
+    },
+    {
+      "id": "pm",
+      "title": "Afternoon — 60 min: Cut Shots, Position, Patterns & APA Play",
+      "blocks": [
+        {
+          "id": "pm-cut-blocks",
+          "timeLabel": "0–12 min",
+          "minutes": 12,
+          "name": "Cut-shot blocks",
+          "setup": "Choose 3 repeatable cut angles (roughly 30°, 45°, 60°), both directions.",
+          "volume": "36 shots total (6 per angle/direction)",
+          "howToTrain": "Keep OB and pocket fixed for each mini-set. First establish pocketing line, then add CB finish awareness.",
+          "successStandard": "Consistent pocketing on both left and right cuts.",
+          "purpose": "Build visual library for common cuts",
+          "record": "no",
+          "recordKind": null,
+          "drillRefId": "cut-block",
+          "diagramId": "pm-cut-blocks"
+        },
+        {
+          "id": "pm-one-rail",
+          "timeLabel": "12–27 min",
+          "minutes": 15,
+          "name": "One-rail position zones",
+          "setup": "Pocket one object ball and send CB to a marked 12–18\" target zone for the next shot.",
+          "volume": "25–30 shots",
+          "howToTrain": "Change only one variable at a time: speed, follow/draw, or a touch of side. Predict the route before shooting.",
+          "successStandard": "CB enters the target zone, not merely 'somewhere usable'.",
+          "purpose": "APA cue-ball control",
+          "record": "optional",
+          "recordKind": "generic",
+          "diagramId": "pm-one-rail"
+        },
+        {
+          "id": "pm-3ball",
+          "timeLabel": "27–42 min",
+          "minutes": 15,
+          "name": "3-ball pattern drill",
+          "setup": "Random but makeable 3-ball layouts; ball-in-hand on the first shot.",
+          "volume": "8–10 complete layouts",
+          "howToTrain": "Before shooting, name all 3 shots and the intended CB zones. Restart a layout after a major positional error.",
+          "successStandard": "Run all 3 without a positional rescue shot.",
+          "purpose": "Pattern recognition and planning",
+          "record": "yes",
+          "recordKind": "runs",
+          "drillRefId": "three-ball",
+          "diagramId": "pm-3ball"
+        },
+        {
+          "id": "pm-5ball",
+          "timeLabel": "42–55 min",
+          "minutes": 13,
+          "name": "5-ball clearance",
+          "setup": "Scatter 5 open balls; ball-in-hand to begin.",
+          "volume": "4–6 complete attempts",
+          "howToTrain": "Pick the easiest route, minimize CB travel, and avoid unnecessary side spin. Log why a failed run ended.",
+          "successStandard": "Clear all 5 without a miss or positional breakdown.",
+          "purpose": "Bridges drills to real APA run-outs",
+          "record": "yes",
+          "recordKind": "runs",
+          "drillRefId": "five-ball",
+          "diagramId": "pm-5ball"
+        },
+        {
+          "id": "pm-review",
+          "timeLabel": "55–60 min",
+          "minutes": 5,
+          "name": "Short review / replay",
+          "setup": "Recreate the 2–3 worst shots or decisions from the session.",
+          "volume": "5–10 focused shots",
+          "howToTrain": "Do not finish on random free play. Re-shoot the exact problem until you understand the correction.",
+          "successStandard": "Know what caused the miss and what changes fix it.",
+          "purpose": "Turns mistakes into learning",
+          "record": "notes",
+          "recordKind": "notes",
+          "diagramId": "pm-review"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "straight",
+      "name": "Long straight pot",
+      "setup": "OB about 12–18\" from corner pocket; CB 4 ft from OB, perfectly straight.",
+      "attempts": 10,
+      "scoring": "1 point per made ball. Record X/10.",
+      "measures": "Aim + stroke alignment",
+      "frequency": "2–3×/week",
+      "notes": "Keep the same pocket and distances.",
+      "kind": "makeMiss",
+      "diagramId": "test-straight"
+    },
+    {
+      "id": "cut",
+      "name": "Cut shots",
+      "setup": "Use one fixed medium cut angle. 10 shots cutting left, 10 cutting right.",
+      "attempts": 20,
+      "scoring": "1 point per made ball. Record X/20.",
+      "measures": "Cut-angle recognition and symmetry",
+      "frequency": "2×/week",
+      "notes": "Do not change angle after misses.",
+      "kind": "makeMissLR",
+      "diagramId": "test-cut"
+    },
+    {
+      "id": "stop",
+      "name": "Stop shot",
+      "setup": "Straight shot, CB 24\" from OB.",
+      "attempts": 10,
+      "scoring": "Success if OB is made and CB stops within ~3\" of contact point. X/10.",
+      "measures": "Center-ball control",
+      "frequency": "2×/week",
+      "notes": "Use same speed target each test.",
+      "kind": "makeMiss",
+      "diagramId": "test-stop"
+    },
+    {
+      "id": "draw",
+      "name": "Draw test",
+      "setup": "Straight shot, CB 24\" from OB; OB near enough to pocket reliably.",
+      "attempts": 5,
+      "scoring": "Record each draw-back distance; enter the average in inches.",
+      "measures": "Backspin + cloth-adjusted technique",
+      "frequency": "2×/week",
+      "notes": "Use the same cue ball every test.",
+      "kind": "distances",
+      "diagramId": "test-draw"
+    },
+    {
+      "id": "fiveBall",
+      "name": "5-ball clearance",
+      "setup": "Use the same 5-ball template/layout if possible; ball-in-hand to start.",
+      "attempts": 5,
+      "scoring": "Record successful clears /5 and main cause of each failed run.",
+      "measures": "Potting + position + decisions",
+      "frequency": "2×/week",
+      "notes": "A fixed layout improves comparability.",
+      "kind": "runs",
+      "diagramId": "test-5ball"
+    }
+  ],
+  "errorCodes": [
+    {
+      "code": "P",
+      "meaning": "Potting / aiming error"
+    },
+    {
+      "code": "C",
+      "meaning": "Cue-ball position / route error"
+    },
+    {
+      "code": "S",
+      "meaning": "Spin or speed execution error"
+    },
+    {
+      "code": "D",
+      "meaning": "Decision / pattern-selection error"
+    }
+  ],
+  "drillRefs": [
+    {
+      "id": "straight-ball",
+      "name": "Straight ball",
+      "ballPlacement": "OB straight to corner; vary CB distance from 1–4 ft.",
+      "executionCue": "Freeze head; smooth final stroke; finish through CB.",
+      "commonMistake": "Steering at the last moment.",
+      "progression": "Increase distance only after 8/10+ quality hits.",
+      "whenToUseReducer": "Last 10 min only, for precision."
+    },
+    {
+      "id": "stop-shot",
+      "name": "Stop shot",
+      "ballPlacement": "Straight shot; fixed CB–OB distances.",
+      "executionCue": "Center hit with controlled speed; hold finish.",
+      "commonMistake": "Using draw instead of true stun/stop.",
+      "progression": "12\" → 24\" → 36\".",
+      "whenToUseReducer": "Usually no."
+    },
+    {
+      "id": "draw",
+      "name": "Draw",
+      "ballPlacement": "Straight shot; start close, then increase separation.",
+      "executionCue": "Level cue, low contact, accelerate smoothly.",
+      "commonMistake": "Hitting harder instead of lower/cleaner.",
+      "progression": "8\" → 16\" → 24\"; then target draw distances.",
+      "whenToUseReducer": "No — isolate spin first."
+    },
+    {
+      "id": "follow",
+      "name": "Follow",
+      "ballPlacement": "Straight shot with planned CB finish distance.",
+      "executionCue": "High-center contact; control speed.",
+      "commonMistake": "Rolling too hard and losing distance control.",
+      "progression": "6\" → 12\" → 24\" follow targets.",
+      "whenToUseReducer": "No."
+    },
+    {
+      "id": "cut-block",
+      "name": "Cut-shot block",
+      "ballPlacement": "Fixed OB and pocket; create repeatable 30°/45°/60° cuts.",
+      "executionCue": "See contact line first; then deliver straight.",
+      "commonMistake": "Changing both angle and speed every attempt.",
+      "progression": "Master both directions.",
+      "whenToUseReducer": "Occasionally, after normal-pocket sets."
+    },
+    {
+      "id": "three-ball",
+      "name": "3-ball pattern",
+      "ballPlacement": "Three makeable balls with space between them.",
+      "executionCue": "Plan all three CB zones before first shot.",
+      "commonMistake": "Playing only one shot ahead.",
+      "progression": "Start easy; gradually create more traffic.",
+      "whenToUseReducer": "No."
+    },
+    {
+      "id": "five-ball",
+      "name": "5-ball clearance",
+      "ballPlacement": "Five open balls; ball-in-hand to begin.",
+      "executionCue": "Choose easiest route and minimize CB travel.",
+      "commonMistake": "Overusing side spin or forcing difficult shape.",
+      "progression": "Track success/5 using repeatable layouts.",
+      "whenToUseReducer": "No — this is APA-style."
+    }
+  ],
+  "focusMap": {
+    "P": {
+      "blockIds": [
+        "am-straight-warmup",
+        "am-precision-pocket",
+        "pm-cut-blocks"
+      ],
+      "advice": "Potting errors lead. Slow down the aiming routine: straight-ball warm-up, precision pocket drill, cut-shot blocks."
+    },
+    "C": {
+      "blockIds": [
+        "pm-one-rail",
+        "pm-3ball"
+      ],
+      "advice": "Cue-ball position errors lead. Spend extra time on one-rail position zones and the 3-ball pattern drill."
+    },
+    "S": {
+      "blockIds": [
+        "am-stop-ladder",
+        "am-draw-ladder",
+        "am-follow-ladder"
+      ],
+      "advice": "Spin/speed errors lead. Prioritise the stop, draw and follow ladders — smooth delivery over force."
+    },
+    "D": {
+      "blockIds": [
+        "pm-3ball",
+        "pm-5ball"
+      ],
+      "advice": "Decision errors lead. In 3-ball and 5-ball drills, name all shots and cue-ball zones before shooting."
+    }
+  }
+}
