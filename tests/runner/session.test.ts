@@ -41,7 +41,8 @@ test('next while paused records the block and does not count paused time as acti
   for (let i = 1; i < blocks.length; i++) s = next(s, blocks, T0 + (20 + i) * MIN);
   expect(s.finished).toBe(true);
   const rec = toRecord(s, blocks, 1, T0 + 60 * MIN);
-  expect(rec.activeMinutes).toBe(45);
+  expect(rec.endedAt).toBe(T0 + 24 * MIN); // last block recorded at 24 min, not the Finish tap at 60
+  expect(rec.activeMinutes).toBe(9);
   expect(rec.date).toBe('2026-10-07');
   expect(rec.blocks.map((b) => b.blockId)).toEqual(blocks.map((b) => b.id));
 });
@@ -100,7 +101,19 @@ test('back while paused does not count paused time as active', () => {
   expect(s.pausedAt).toBeNull();
   expect(s.sessionPausedMs).toBe(10 * MIN);
   for (let i = 0; i < blocks.length; i++) s = next(s, blocks, T0 + (12 + i) * MIN);
-  expect(toRecord(s, blocks, 1, T0 + 20 * MIN).activeMinutes).toBe(10);
+  expect(toRecord(s, blocks, 1, T0 + 20 * MIN).activeMinutes).toBe(6); // ends at 16 min, 10 paused
+});
+
+test('finished session ends at the last block, even when Finish is tapped the next day', () => {
+  const s = finishedState(); // last block recorded at T0 + 5 min
+  const rec = toRecord(s, blocks, 1, T0 + 24 * 60 * MIN);
+  expect(rec.endedAt).toBe(T0 + 5 * MIN);
+  expect(rec.activeMinutes).toBe(5);
+});
+
+test('unfinished session still ends at now', () => {
+  const s = next(startSession('am', T0), blocks, T0 + MIN);
+  expect(toRecord(s, blocks, 1, T0 + 3 * MIN)).toMatchObject({ endedAt: T0 + 3 * MIN, activeMinutes: 3 });
 });
 
 describe('validateEntry', () => {

@@ -54,11 +54,13 @@ export function back(s0: SessionRunState, now: number): SessionRunState {
 }
 
 export function toRecord(s0: SessionRunState, blocks: Block[], planVersion: number, now: number): SessionRecord {
-  const s = resume(s0, now);
+  // A finished session ends when its last block was recorded, not when Finish is tapped.
+  const end = (s0.finished ? s0.results[blocks[s0.blockIndex]?.id]?.endedAt : undefined) ?? now;
+  const s = resume(s0, end);
   return {
     id: crypto.randomUUID(), date: localDate(s.startedAt), sessionId: s.sessionId, planVersion,
-    startedAt: s.startedAt, endedAt: now,
-    activeMinutes: Math.round((now - s.startedAt - s.sessionPausedMs) / 60000),
+    startedAt: s.startedAt, endedAt: end,
+    activeMinutes: Math.round((end - s.startedAt - s.sessionPausedMs) / 60000),
     blocks: blocks.filter((b) => s.results[b.id]).map((b) => s.results[b.id]),
   };
 }
