@@ -16,14 +16,18 @@ import { useAppData } from '../useAppData';
 
 const isNum = (v: unknown) => typeof v === 'number' && Number.isFinite(v);
 
+/** Run state plus the id of the SessionRecord once Finish has started, so a retried Finish overwrites instead of duplicating. */
+type RunState = SessionRunState & { recordId?: string };
+
 /** Validates a persisted payload; throws if it cannot be resumed. */
-function restore(payload: unknown, sessionId: SessionId, blocks: Block[]): SessionRunState {
-  const p = payload as SessionRunState;
+function restore(payload: unknown, sessionId: SessionId, blocks: Block[]): RunState {
+  const p = payload as RunState;
   const ok = p && p.kind === 'session' && p.sessionId === sessionId
     && Number.isInteger(p.blockIndex) && p.blockIndex >= 0 && p.blockIndex < blocks.length
     && isNum(p.startedAt) && isNum(p.blockStartedAt) && isNum(p.pausedTotalMs) && isNum(p.sessionPausedMs)
     && isNum(p.extraMs) && (p.pausedAt === null || isNum(p.pausedAt))
-    && typeof p.results === 'object' && p.results !== null && typeof p.finished === 'boolean';
+    && typeof p.results === 'object' && p.results !== null && typeof p.finished === 'boolean'
+    && (p.recordId === undefined || typeof p.recordId === 'string');
   if (!ok) throw new Error('corrupt session state');
   return p;
 }
@@ -48,7 +52,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
   const blocks = session.blocks;
 
   const [toast, setToast] = useState<string | null>(null);
-  const [state, setState] = useState<SessionRunState | null>(() => {
+  const [state, setState] = useState<RunState | null>(() => {
     if (active?.type !== 'session' || (active.payload as { sessionId?: unknown } | null)?.sessionId !== sessionId) return null;
     try { return restore(active.payload, sessionId, blocks); } catch { return null; }
   });
@@ -96,7 +100,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     prevRemaining.current = rem;
   });
 
-  const update = (s: SessionRunState) => {
+  const update = (s: RunState) => {
     setState(s);
     store.setActive({ type: 'session', payload: s, updatedAt: now() }).then(
       () => setSaveError(null),
@@ -142,7 +146,14 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
       setFinishing(true);
       setSaveError(null);
       try {
-        await store.putSession(toRecord(state, blocks, plan.version, now()));
+        // Persist the record id before the put, so a Finish after a failed clear (or a reload) reuses it.
+        const recordId = state.recordId ?? crypto.randomUUID();
+        if (!state.recordId) {
+          const withId = { ...state, recordId };
+          await store.setActive({ type: 'session', payload: withId, updatedAt: now() });
+          setState(withId);
+        }
+        await store.putSession({ ...toRecord(state, blocks, plan.version, now()), id: recordId });
       } catch {
         finishingRef.current = false;
         setFinishing(false);

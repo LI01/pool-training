@@ -149,6 +149,29 @@ test('putSession failure shows an alert, keeps the active session and re-enables
   expect(await base.listSessions()).toHaveLength(0);
 });
 
+test('Finish after a failed active-clear reuses the record id: exactly one session', async () => {
+  const base = createStore(`sr-${++n}`);
+  let failClear = true;
+  const store = {
+    ...base,
+    setActive: vi.fn((a: Parameters<typeof base.setActive>[0]) => {
+      if (a === undefined && failClear) { failClear = false; return Promise.reject(new Error('locked')); }
+      return base.setActive(a);
+    }),
+  };
+  await base.setActive({ type: 'session', updatedAt: t, payload: runState() });
+  location.hash = '#/session/pm';
+  render(<App store={store} now={now} />);
+  fireEvent.click(await screen.findByRole('button', { name: /finish/i }));
+  expect(await screen.findByText('Afternoon Session')).toBeInTheDocument(); // back on Today
+  expect(await base.listSessions()).toHaveLength(1);
+  expect((await base.getActive())?.type).toBe('session'); // clear failed
+  location.hash = '#/session/pm';
+  fireEvent.click(await screen.findByRole('button', { name: /finish/i }));
+  await waitFor(async () => expect(await base.getActive()).toBeUndefined());
+  expect(await base.listSessions()).toHaveLength(1);
+});
+
 test('summary Back returns to the last block', async () => {
   await openWith(runState());
   fireEvent.click(await screen.findByRole('button', { name: /^back$/i }));
