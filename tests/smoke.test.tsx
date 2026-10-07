@@ -1,7 +1,9 @@
-import { render, screen } from '@testing-library/preact';
+import { render, screen, waitFor } from '@testing-library/preact';
 import { App } from '../src/ui/App';
+import { createStore } from '../src/db/store';
 
-test('app renders title', () => {
-  render(<App />);
-  expect(screen.getByText('Pool Training')).toBeInTheDocument();
+test('app renders Today', async () => {
+  location.hash = '#/';
+  render(<App store={createStore('smoke')} />);
+  await waitFor(() => expect(screen.getByText('Day 1 of 30')).toBeInTheDocument());
 });
