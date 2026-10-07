@@ -1,5 +1,5 @@
 import { useState } from 'preact/hooks';
-import { getSession, type SessionId } from '../../plan';
+import { getSession, TEST_ORDER, type SessionId } from '../../plan';
 import { dailySummaryLine, dayNumber, resolveStartDate, testDue } from '../../stats';
 import { wakeLockSupported } from '../../platform/wakeLock';
 import { navigate, type NowFn } from '../nav';
@@ -22,6 +22,7 @@ function StatusPill({ status }: { status: Status }) {
 export function Today({ now }: { now: NowFn }) {
   const { store, sessions, tests, settings, active, today, refresh } = useAppData();
   const [pending, setPending] = useState<string | null>(null);
+  const [discardError, setDiscardError] = useState<string | null>(null);
   const [tipHidden, setTipHidden] = useState(tipShown());
 
   const start = resolveStartDate(settings, sessions, tests) ?? today;
@@ -41,6 +42,23 @@ export function Today({ now }: { now: NowFn }) {
           : `Last test: ${due.daysSinceLast} days ago`) + (due.due ? ' — due' : '');
 
   const activeHash = active ? (active.type === 'test' ? '#/test' : `#/session/${activeSession ?? 'am'}`) : undefined;
+  // Completed on the runner's summary but not yet saved: discarding loses a whole session/test.
+  const activeFinished = active?.type === 'session'
+    ? (active.payload as { finished?: unknown } | null)?.finished === true
+    : active?.type === 'test' && ((active.payload as { index?: number } | null)?.index ?? 0) >= TEST_ORDER.length;
+  const closePending = () => { setPending(null); setDiscardError(null); };
+  const discardAndStart = async () => {
+    const h = pending!;
+    try {
+      await store.setActive(undefined);
+    } catch {
+      setDiscardError("Couldn't discard it. Try again.");
+      return;
+    }
+    await refresh();
+    closePending();
+    navigate(h);
+  };
   const open = (hash: string) => {
     if (active && activeHash !== hash) setPending(hash);
     else navigate(hash);
@@ -95,17 +113,16 @@ export function Today({ now }: { now: NowFn }) {
       <code class="summary-line">{dailySummaryLine(today, sessions, tests)}</code>
 
       {pending && (
-        <Sheet title="Another session is in progress" onClose={() => setPending(null)}>
-          <p class="sheet__text">Another session is in progress. Discard it?</p>
+        <Sheet title={activeFinished ? 'Not saved yet' : 'Another session is in progress'} onClose={closePending}>
+          <p class="sheet__text">
+            {activeFinished
+              ? `Your ${active?.type === 'test' ? 'test' : 'session'} is complete but not saved. Save it first?`
+              : 'Another session is in progress. Discard it?'}
+          </p>
+          {discardError && <p class="notice notice--error" role="alert">{discardError}</p>}
           <div class="sheet__actions">
-            <BigButton onClick={() => { const h = activeHash!; setPending(null); navigate(h); }}>Resume it</BigButton>
-            <BigButton variant="bad" onClick={async () => {
-              const h = pending;
-              await store.setActive(undefined);
-              await refresh();
-              setPending(null);
-              navigate(h);
-            }}>Discard & start</BigButton>
+            <BigButton onClick={() => { const h = activeHash!; closePending(); navigate(h); }}>{activeFinished ? 'Save it' : 'Resume it'}</BigButton>
+            <BigButton variant="bad" onClick={discardAndStart}>{activeFinished ? 'Discard' : 'Discard & start'}</BigButton>
           </div>
         </Sheet>
       )}

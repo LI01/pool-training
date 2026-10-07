@@ -5,11 +5,12 @@ import type { BlockResult } from '../../db/types';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { playChime, unlockAudio } from '../../platform/chime';
 import {
-  addTime, back, next, pause, remainingMs, resume, startSession, toRecord,
+  addTime, back, endSession, next, pause, remainingMs, resume, startSession, toRecord,
   type EntryInput, type SessionRunState,
 } from '../../runner/session';
 import { BigButton } from '../components/BigButton';
 import { EntrySheet } from '../components/EntrySheet';
+import { Sheet } from '../components/Sheet';
 import { Timer } from '../components/Timer';
 import { navigate, type NowFn } from '../nav';
 import { useAppData } from '../useAppData';
@@ -57,6 +58,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     try { return restore(active.payload, sessionId, blocks); } catch { return null; }
   });
   const [sheetOpen, setSheetOpen] = useState(false);
+  const [confirmEnd, setConfirmEnd] = useState(false);
   const [, setTick] = useState(0);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [finishing, setFinishing] = useState(false);
@@ -200,51 +202,65 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
   ];
 
   return (
-    <main class="runner" onClickCapture={unlockAudio}>
-      <div class="runner__head">
-        <DiagramCard key={block.diagramId} diagramId={block.diagramId} />
-        <div class="runner__row">
-          <span class="runner__meta">{block.timeLabel} · Block {state.blockIndex + 1}/{blocks.length}</span>
-          <LeaveButton onLeave={leave} />
+    <>
+      <main class="runner" onClickCapture={unlockAudio} aria-hidden={confirmEnd ? 'true' : undefined}>
+        <div class="runner__head">
+          <DiagramCard key={block.diagramId} diagramId={block.diagramId} />
+          <div class="runner__row">
+            <span class="runner__meta">{block.timeLabel} · Block {state.blockIndex + 1}/{blocks.length}</span>
+            <span class="runner__row">
+              <button type="button" class="link-button" onClick={() => setConfirmEnd(true)}>End session</button>
+              <LeaveButton onLeave={leave} />
+            </span>
+          </div>
+          <h2 class="runner__name">{block.name}</h2>
+          <Timer ms={rem} paused={paused} />
         </div>
-        <h2 class="runner__name">{block.name}</h2>
-        <Timer ms={rem} paused={paused} />
-      </div>
-      <div class="runner__body" key={block.id}>
-        {saveError && <p class="notice notice--error" role="status">{saveError}</p>}
-        <dl class="block-info">
-          {details.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
-        </dl>
-        {ref && (
-          <details class="drill-ref">
-            <summary>Drill reference</summary>
-            <dl class="block-info">
-              {([
-                ['Ball Placement', ref.ballPlacement], ['Execution Cue', ref.executionCue], ['Common Mistake', ref.commonMistake],
-                ['Progression', ref.progression], ['When to Use Reducer', ref.whenToUseReducer],
-              ] as [string, string][]).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
-            </dl>
-          </details>
+        <div class="runner__body" key={block.id}>
+          {saveError && <p class="notice notice--error" role="status">{saveError}</p>}
+          <dl class="block-info">
+            {details.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+          </dl>
+          {ref && (
+            <details class="drill-ref">
+              <summary>Drill reference</summary>
+              <dl class="block-info">
+                {([
+                  ['Ball Placement', ref.ballPlacement], ['Execution Cue', ref.executionCue], ['Common Mistake', ref.commonMistake],
+                  ['Progression', ref.progression], ['When to Use Reducer', ref.whenToUseReducer],
+                ] as [string, string][]).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+              </dl>
+            </details>
+          )}
+        </div>
+        <div class="controls">
+          <button type="button" class="control" disabled={state.blockIndex === 0} onClick={() => update(back(state, now()))}>Back</button>
+          <button type="button" class="control" onClick={() => update(paused ? resume(state, now()) : pause(state, now()))}>{paused ? 'Resume' : 'Pause'}</button>
+          <button type="button" class="control" onClick={() => update(addTime(state, 120000))}>+2 min</button>
+          <button type="button" class="control control--next" onClick={() => (block.record === 'no' || !block.recordKind ? advance() : setSheetOpen(true))}>Next</button>
+        </div>
+        {sheetOpen && block.recordKind && (
+          <EntrySheet
+            key={block.id}
+            kind={block.recordKind}
+            record={block.record}
+            title={block.name}
+            initial={state.results[block.id]}
+            onSubmit={(e) => advance(e)}
+            onSkip={() => advance({ skipped: true })}
+            onClose={() => setSheetOpen(false)}
+          />
         )}
-      </div>
-      <div class="controls">
-        <button type="button" class="control" disabled={state.blockIndex === 0} onClick={() => update(back(state, now()))}>Back</button>
-        <button type="button" class="control" onClick={() => update(paused ? resume(state, now()) : pause(state, now()))}>{paused ? 'Resume' : 'Pause'}</button>
-        <button type="button" class="control" onClick={() => update(addTime(state, 120000))}>+2 min</button>
-        <button type="button" class="control control--next" onClick={() => (block.record === 'no' || !block.recordKind ? advance() : setSheetOpen(true))}>Next</button>
-      </div>
-      {sheetOpen && block.recordKind && (
-        <EntrySheet
-          key={block.id}
-          kind={block.recordKind}
-          record={block.record}
-          title={block.name}
-          initial={state.results[block.id]}
-          onSubmit={(e) => advance(e)}
-          onSkip={() => advance({ skipped: true })}
-          onClose={() => setSheetOpen(false)}
-        />
+      </main>
+      {confirmEnd && (
+        <Sheet title="End session" onClose={() => setConfirmEnd(false)}>
+          <p class="sheet__text">End the session now? This block is marked skipped unless already recorded; you can save on the summary.</p>
+          <div class="sheet__actions sheet__actions--row">
+            <BigButton onClick={() => setConfirmEnd(false)}>Keep going</BigButton>
+            <BigButton variant="bad" onClick={() => { setConfirmEnd(false); update(endSession(state, blocks, now())); }}>End session now</BigButton>
+          </div>
+        </Sheet>
       )}
-    </main>
+    </>
   );
 }

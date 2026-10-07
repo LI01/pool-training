@@ -53,6 +53,18 @@ export function back(s0: SessionRunState, now: number): SessionRunState {
   return { ...resetBlock(s, now, s.finished ? s.blockIndex : Math.max(0, s.blockIndex - 1)), finished: false };
 }
 
+/** Ends the session early: records the current block (keeping an existing entry, else skipped) and finishes. */
+export function endSession(s0: SessionRunState, blocks: Block[], now: number): SessionRunState {
+  if (s0.finished) return s0;
+  const s = resume(s0, now);
+  const block = blocks[s.blockIndex];
+  const prev = s.results[block.id];
+  const result: BlockResult = prev && !prev.skipped
+    ? { ...prev, startedAt: s.blockStartedAt, endedAt: now }
+    : { blockId: block.id, startedAt: s.blockStartedAt, endedAt: now, skipped: true };
+  return { ...s, results: { ...s.results, [block.id]: result }, finished: true };
+}
+
 export function toRecord(s0: SessionRunState, blocks: Block[], planVersion: number, now: number): SessionRecord {
   // A finished session ends when its last block was recorded, not when Finish is tapped.
   const end = (s0.finished ? s0.results[blocks[s0.blockIndex]?.id]?.endedAt : undefined) ?? now;

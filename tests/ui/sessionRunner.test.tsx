@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor, act, cleanup } from '@testing-library/preact';
+import { render, screen, fireEvent, waitFor, act, cleanup, within } from '@testing-library/preact';
 import { App } from '../../src/ui/App';
 import { createStore } from '../../src/db/store';
 import { playChime } from '../../src/platform/chime';
@@ -239,4 +239,27 @@ test('pause is persisted and a restore shows the paused remaining time', async (
   render(<App store={store} now={now} />);
   expect(await screen.findByText('9:30')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Resume' })).toBeInTheDocument();
+});
+
+test('End session: confirm jumps to the summary, records the current block as skipped and ends at that moment', async () => {
+  const store = await open('#/session/am');
+  const t0 = t;
+  fireEvent.click(await screen.findByRole('button', { name: /start/i }));
+  t += 3 * 60000;
+  fireEvent.click(screen.getByRole('button', { name: /^next/i }));                 // warm-up done at 3 min
+  t += 2 * 60000;
+  fireEvent.click(screen.getByRole('button', { name: 'End session' }));
+  fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Keep going' }));
+  expect(screen.getByText('Stop shot ladder')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: 'End session' }));
+  fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'End session now' }));
+  expect(await screen.findByText('Session complete')).toBeInTheDocument();
+  expect(document.querySelector('.runner-summary__minutes')).toHaveTextContent('5 active minutes');
+  t += 60 * 60000;                                                                   // dawdle on the summary
+  fireEvent.click(screen.getByRole('button', { name: /finish/i }));
+  await waitFor(async () => expect(await store.listSessions()).toHaveLength(1));
+  const [rec] = await store.listSessions();
+  expect(rec.endedAt).toBe(t0 + 5 * 60000);
+  expect(rec.activeMinutes).toBe(5);
+  expect(rec.blocks.map((b) => [b.blockId, !!b.skipped])).toEqual([['am-straight-warmup', false], ['am-stop-ladder', true]]);
 });

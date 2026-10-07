@@ -65,3 +65,45 @@ test('different-runner confirm: Discard & start clears active and navigates', as
   await waitFor(() => expect(location.hash).toBe('#/session/am'));
   expect(await store.getActive()).toBeUndefined();
 });
+
+test('finished-but-unsaved session: sheet offers Save it (goes to its summary) instead of calling it in progress', async () => {
+  const store = createStore(`today-${++i}`);
+  await store.setActive({ type: 'session', payload: { sessionId: 'pm', finished: true }, updatedAt: 1 });
+  render(<App store={store} now={() => NOW} />);
+  fireEvent.click(await screen.findByText('Morning Session'));
+  const dlg = screen.getByRole('dialog');
+  expect(dlg).toHaveTextContent('Your session is complete but not saved.');
+  expect(dlg).not.toHaveTextContent(/in progress/i);
+  fireEvent.click(within(dlg).getByText('Save it'));
+  expect(location.hash).toBe('#/session/pm');
+});
+
+test('finished-but-unsaved session: Discard clears it and starts the chosen session', async () => {
+  const store = createStore(`today-${++i}`);
+  await store.setActive({ type: 'session', payload: { sessionId: 'pm', finished: true }, updatedAt: 1 });
+  render(<App store={store} now={() => NOW} />);
+  fireEvent.click(await screen.findByText('Morning Session'));
+  fireEvent.click(within(screen.getByRole('dialog')).getByText('Discard'));
+  await waitFor(() => expect(location.hash).toBe('#/session/am'));
+  expect(await store.getActive()).toBeUndefined();
+});
+
+test('finished-but-unsaved test: sheet says the test is not saved', async () => {
+  const store = createStore(`today-${++i}`);
+  await store.setActive({ type: 'test', payload: { kind: 'test', index: 5 }, updatedAt: 1 });
+  render(<App store={store} now={() => NOW} />);
+  fireEvent.click(await screen.findByText('Morning Session'));
+  expect(screen.getByRole('dialog')).toHaveTextContent('Your test is complete but not saved.');
+});
+
+test('discard failure shows an error and stays on Today', async () => {
+  const base = createStore(`today-${++i}`);
+  await base.setActive({ type: 'session', payload: { sessionId: 'pm' }, updatedAt: 1 });
+  const store = { ...base, setActive: vi.fn(() => Promise.reject(new Error('locked'))) };
+  render(<App store={store} now={() => NOW} />);
+  fireEvent.click(await screen.findByText('Morning Session'));
+  fireEvent.click(within(screen.getByRole('dialog')).getByText('Discard & start'));
+  expect(await screen.findByRole('alert')).toHaveTextContent("Couldn't discard it");
+  expect(location.hash).toBe('#/');
+  expect((await base.getActive())?.type).toBe('session');
+});

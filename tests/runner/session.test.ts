@@ -1,4 +1,4 @@
-import { startSession, pause, resume, addTime, remainingMs, formatClock, next, back, toRecord, validateEntry } from '../../src/runner/session';
+import { startSession, pause, resume, addTime, remainingMs, formatClock, next, back, toRecord, validateEntry, endSession } from '../../src/runner/session';
 import { getSession } from '../../src/plan';
 
 const blocks = getSession('am').blocks; // 10,12,16,12,10 minutes
@@ -114,6 +114,29 @@ test('finished session ends at the last block, even when Finish is tapped the ne
 test('unfinished session still ends at now', () => {
   const s = next(startSession('am', T0), blocks, T0 + MIN);
   expect(toRecord(s, blocks, 1, T0 + 3 * MIN)).toMatchObject({ endedAt: T0 + 3 * MIN, activeMinutes: 3 });
+});
+
+test('endSession records the current block as skipped and finishes at that moment', () => {
+  let s = next(startSession('am', T0), blocks, T0 + MIN);
+  s = pause(s, T0 + 2 * MIN);
+  s = endSession(s, blocks, T0 + 4 * MIN);
+  expect(s.finished).toBe(true);
+  expect(s.pausedAt).toBeNull();
+  expect(s.results['am-stop-ladder']).toEqual({ blockId: 'am-stop-ladder', startedAt: T0 + MIN, endedAt: T0 + 4 * MIN, skipped: true });
+  const rec = toRecord(s, blocks, 1, T0 + 90 * MIN);
+  expect(rec.endedAt).toBe(T0 + 4 * MIN);
+  expect(rec.activeMinutes).toBe(2);
+  expect(rec.blocks.map((b) => b.blockId)).toEqual([blocks[0].id, 'am-stop-ladder']);
+  expect(endSession(s, blocks, T0 + 99 * MIN)).toBe(s);
+});
+
+test('endSession keeps an entry already recorded for the current block', () => {
+  let s = next(startSession('am', T0), blocks, T0 + MIN);
+  s = next(s, blocks, T0 + 2 * MIN, { generic: { made: 7, attempts: 10 } });
+  s = back(s, T0 + 3 * MIN);
+  s = endSession(s, blocks, T0 + 4 * MIN);
+  expect(s.results['am-stop-ladder'].generic).toEqual({ made: 7, attempts: 10 });
+  expect(s.results['am-stop-ladder'].endedAt).toBe(T0 + 4 * MIN);
 });
 
 describe('validateEntry', () => {
