@@ -54,6 +54,9 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
   });
   const [sheetOpen, setSheetOpen] = useState(false);
   const [, setTick] = useState(0);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [finishing, setFinishing] = useState(false);
+  const finishingRef = useRef(false);
   const chimed = useRef<string | null>(null);
   const prevRemaining = useRef<number | null>(null);
 
@@ -80,9 +83,25 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     return () => clearInterval(id);
   }, [running, finished]);
 
+  // Chime once when the clock crosses zero. Keyed by block run and added time,
+  // so +2 min after zero re-arms one more chime; restoring a block already in overtime never chimes.
+  useEffect(() => {
+    if (!state || state.finished) { prevRemaining.current = null; return; }
+    const rem = remainingMs(state, blocks, now());
+    const key = `${state.blockIndex}:${state.blockStartedAt}:${state.extraMs}`;
+    if (prevRemaining.current !== null && prevRemaining.current > 0 && rem <= 0 && chimed.current !== key) {
+      chimed.current = key;
+      playChime();
+    }
+    prevRemaining.current = rem;
+  });
+
   const update = (s: SessionRunState) => {
     setState(s);
-    void store.setActive({ type: 'session', payload: s, updatedAt: now() });
+    store.setActive({ type: 'session', payload: s, updatedAt: now() }).then(
+      () => setSaveError(null),
+      () => setSaveError("Couldn't save progress on this device. Keep going; it retries on your next tap."),
+    );
   };
 
   const leave = () => { void refresh(); navigate('#/'); };
@@ -108,7 +127,6 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
         <div class="runner-pre__start">
           <BigButton variant="good" onClick={() => {
             unlockAudio();
-            void acquireWakeLock();
             update(startSession(sessionId, now()));
           }}>Start</BigButton>
         </div>
@@ -119,8 +137,19 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
   if (state.finished) {
     const preview = toRecord(state, blocks, plan.version, now());
     const finish = async () => {
-      await store.putSession(toRecord(state, blocks, plan.version, now()));
-      await store.setActive(undefined);
+      if (finishingRef.current) return;
+      finishingRef.current = true;
+      setFinishing(true);
+      setSaveError(null);
+      try {
+        await store.putSession(toRecord(state, blocks, plan.version, now()));
+      } catch {
+        finishingRef.current = false;
+        setFinishing(false);
+        setSaveError("Couldn't save the session. Try Finish again.");
+        return;
+      }
+      await store.setActive(undefined).catch(() => {});
       void releaseWakeLock();
       await refresh();
       navigate('#/');
@@ -132,6 +161,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
           <LeaveButton onLeave={leave} />
         </header>
         <h1>{session.title}</h1>
+        {saveError && <p class="notice notice--error" role="alert">{saveError}</p>}
         <p class="runner-summary__minutes"><strong>{preview.activeMinutes}</strong> {preview.activeMinutes === 1 ? 'active minute' : 'active minutes'}</p>
         <dl class="summary-list">
           {blocks.filter((b) => b.record !== 'no').map((b) => (
@@ -140,7 +170,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
         </dl>
         <div class="controls">
           <BigButton onClick={() => update(back(state, now()))}>Back</BigButton>
-          <BigButton variant="good" onClick={finish}>Finish</BigButton>
+          <BigButton variant="good" onClick={finish} disabled={finishing}>Finish</BigButton>
         </div>
       </main>
     );
@@ -148,12 +178,6 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
 
   const block = blocks[state.blockIndex];
   const rem = remainingMs(state, blocks, now());
-  const key = `${state.blockIndex}:${state.blockStartedAt}`;
-  if (prevRemaining.current !== null && prevRemaining.current > 0 && rem <= 0 && chimed.current !== key) {
-    chimed.current = key;
-    playChime();
-  }
-  prevRemaining.current = rem;
 
   const ref = block.drillRefId ? getDrillRef(block.drillRefId) : undefined;
   const advance = (entry?: EntryInput) => { setSheetOpen(false); update(next(state, blocks, now(), entry)); };
@@ -176,6 +200,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
         <Timer ms={rem} paused={paused} />
       </div>
       <div class="runner__body" key={block.id}>
+        {saveError && <p class="notice notice--error" role="status">{saveError}</p>}
         <dl class="block-info">
           {details.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
         </dl>

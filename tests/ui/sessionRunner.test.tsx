@@ -1,6 +1,14 @@
-import { render, screen, fireEvent, waitFor, act } from '@testing-library/preact';
+import { render, screen, fireEvent, waitFor, act, cleanup } from '@testing-library/preact';
 import { App } from '../../src/ui/App';
 import { createStore } from '../../src/db/store';
+import { playChime } from '../../src/platform/chime';
+import { acquireWakeLock, releaseWakeLock } from '../../src/platform/wakeLock';
+
+vi.mock('../../src/platform/chime', () => ({ setChimeEnabled: vi.fn(), unlockAudio: vi.fn(), playChime: vi.fn() }));
+vi.mock('../../src/platform/wakeLock', () => ({
+  wakeLockSupported: vi.fn(() => true), acquireWakeLock: vi.fn(async () => true), releaseWakeLock: vi.fn(async () => {}),
+}));
+beforeEach(() => { vi.clearAllMocks(); });
 
 let t = new Date(2026, 9, 7, 9, 0).getTime();
 const now = () => t;
@@ -104,4 +112,108 @@ test('runs sheet records fail tags; Back pre-fills; Leave keeps the active sessi
   fireEvent.click(screen.getByRole('button', { name: /leave session/i }));
   expect(await screen.findByText('Afternoon Session')).toBeInTheDocument();
   expect((await store.getActive())?.type).toBe('session');
+});
+
+const runState = (over: Record<string, unknown> = {}) => ({
+  kind: 'session', sessionId: 'pm', startedAt: t, blockIndex: 4, blockStartedAt: t, pausedAt: null,
+  pausedTotalMs: 0, sessionPausedMs: 0, extraMs: 0, results: {}, finished: true, ...over });
+
+async function openWith(payload: unknown, hash = '#/session/pm') {
+  const store = createStore(`sr-${++n}`);
+  await store.setActive({ type: 'session', updatedAt: t, payload });
+  location.hash = hash;
+  const r = render(<App store={store} now={now} />);
+  return { store, ...r };
+}
+
+test('double-tapping Finish stores exactly one session', async () => {
+  const { store } = await openWith(runState());
+  const finish = await screen.findByRole('button', { name: /finish/i });
+  fireEvent.click(finish);
+  fireEvent.click(finish);
+  await waitFor(async () => expect(await store.getActive()).toBeUndefined());
+  expect(await store.listSessions()).toHaveLength(1);
+  expect(releaseWakeLock).toHaveBeenCalled();
+});
+
+test('putSession failure shows an alert, keeps the active session and re-enables Finish', async () => {
+  const base = createStore(`sr-${++n}`);
+  const store = { ...base, putSession: vi.fn(() => Promise.reject(new Error('disk full'))) };
+  await store.setActive({ type: 'session', updatedAt: t, payload: runState() });
+  location.hash = '#/session/pm';
+  render(<App store={store} now={now} />);
+  fireEvent.click(await screen.findByRole('button', { name: /finish/i }));
+  expect(await screen.findByRole('alert')).toHaveTextContent(/couldn't save the session/i);
+  expect(screen.getByRole('button', { name: /finish/i })).not.toBeDisabled();
+  expect((await store.getActive())?.type).toBe('session');
+  expect(await base.listSessions()).toHaveLength(0);
+});
+
+test('summary Back returns to the last block', async () => {
+  await openWith(runState());
+  fireEvent.click(await screen.findByRole('button', { name: /^back$/i }));
+  expect(await screen.findByText('Short review / replay')).toBeInTheDocument();
+  expect(screen.getByText('Block 5/5', { exact: false })).toBeInTheDocument();
+});
+
+test('chime: once when crossing zero, re-armed by +2 min, never when restoring in overtime', async () => {
+  vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
+  try {
+    await open('#/session/am');
+    fireEvent.click(await screen.findByRole('button', { name: /start/i }));
+    t += 10 * 60000 - 1500;
+    await act(async () => { vi.advanceTimersByTime(1000); });
+    expect(playChime).not.toHaveBeenCalled();
+    t += 2000;
+    await act(async () => { vi.advanceTimersByTime(1000); });
+    expect(playChime).toHaveBeenCalledTimes(1);
+    t += 5000;
+    await act(async () => { vi.advanceTimersByTime(2000); });
+    expect(playChime).toHaveBeenCalledTimes(1);
+    fireEvent.click(screen.getByRole('button', { name: '+2 min' }));
+    t += 2 * 60000;
+    await act(async () => { vi.advanceTimersByTime(1000); });
+    expect(playChime).toHaveBeenCalledTimes(2);
+    cleanup();
+
+    vi.mocked(playChime).mockClear();
+    await openWith(runState({ sessionId: 'am', blockIndex: 0, blockStartedAt: t - 11 * 60000, finished: false }), '#/session/am');
+    expect(await screen.findByText(/^\+1:0\d$/)).toBeInTheDocument();
+    t += 3000;
+    await act(async () => { vi.advanceTimersByTime(3000); });
+    expect(playChime).not.toHaveBeenCalled();
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+test('wake lock: acquired on Start; unmount clears the tick interval and releases the lock', async () => {
+  const clearSpy = vi.spyOn(window, 'clearInterval');
+  const store = createStore(`sr-${++n}`);
+  location.hash = '#/session/am';
+  const { unmount } = render(<App store={store} now={now} />);
+  fireEvent.click(await screen.findByRole('button', { name: /start/i }));
+  expect(acquireWakeLock).toHaveBeenCalledTimes(1);
+  expect(releaseWakeLock).not.toHaveBeenCalled();
+  clearSpy.mockClear();
+  act(() => { unmount(); }); // Preact 11 runs effect cleanups after paint; act flushes them.
+  expect(clearSpy).toHaveBeenCalled();
+  expect(releaseWakeLock).toHaveBeenCalled();
+  clearSpy.mockRestore();
+});
+
+test('pause is persisted and a restore shows the paused remaining time', async () => {
+  const store = createStore(`sr-${++n}`);
+  location.hash = '#/session/am';
+  const { unmount } = render(<App store={store} now={now} />);
+  fireEvent.click(await screen.findByRole('button', { name: /start/i }));
+  t += 30000;
+  fireEvent.click(screen.getByRole('button', { name: 'Pause' }));
+  const pausedAt = t;
+  await waitFor(async () => expect(((await store.getActive())?.payload as any).pausedAt).toBe(pausedAt));
+  act(() => { unmount(); });
+  t += 5 * 60000;
+  render(<App store={store} now={now} />);
+  expect(await screen.findByText('9:30')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Resume' })).toBeInTheDocument();
 });
