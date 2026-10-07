@@ -4,6 +4,7 @@ import type { SessionId } from '../plan';
 import { setChimeEnabled } from '../platform/chime';
 import { DiagramsReview } from './screens/DiagramsReview';
 import { SessionRunner } from './screens/SessionRunner';
+import { Progress } from './screens/Progress';
 import { Settings } from './screens/Settings';
 import { TestRunner } from './screens/TestRunner';
 import { Today } from './screens/Today';
@@ -36,7 +37,8 @@ export function App({ store, now = Date.now }: { store?: Store; now?: NowFn }) {
   if (data.loading) screen = <main class="screen" />;
   else if (hash === '#/session/am' || hash === '#/session/pm') screen = <SessionRunner key={hash} sessionId={hash.slice(10) as SessionId} now={now} />;
   else if (hash === '#/test') screen = <TestRunner now={now} />;
-  else if (isRunner || hash === '#/progress') screen = <ComingSoon />;
+  else if (isRunner) screen = <ComingSoon />;
+  else if (hash === '#/progress') screen = <Progress />;
   else if (hash === '#/settings') screen = <Settings now={now} />;
   else if (hash === '#/diagrams') screen = <DiagramsReview />;
   else screen = <Today now={now} />;

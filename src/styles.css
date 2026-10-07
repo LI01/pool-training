@@ -252,3 +252,28 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
 .summary-note { margin-left: 10px; font-size: 14px; color: var(--muted); }
 .summary-errors { display: flex; gap: 18px; font-size: 18px; margin: 16px 0 0; }
 .summary-errors b { color: var(--accent); }
+
+/* ---- Progress ---- */
+.progress section { margin: 0 0 28px; }
+.seg { display: flex; gap: 8px; margin: 0 0 20px; }
+.seg button { flex: 1; background: var(--surface); color: var(--muted); border: 1px solid rgba(255,255,255,0.08); }
+.seg button.seg__on { background: var(--felt); color: var(--text); border-color: var(--felt); }
+.chart { margin: 0 0 18px; }
+.chart h3, .focus-card h3 { font-size: 16px; margin: 0 0 6px; }
+.chart canvas { width: 100%; display: block; }
+.table-wrap { overflow-x: auto; margin: 8px 0; }
+.summary { border-collapse: collapse; font-size: 14px; width: 100%; min-width: 440px; }
+.summary th, .summary td { padding: 8px 6px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
+.summary th:first-child { text-align: left; position: sticky; left: 0; background: var(--bg); }
+.summary thead th { color: var(--muted); font-weight: 600; }
+.err-list { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
+.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+.focus-card { background: var(--surface); border-left: 4px solid var(--accent); border-radius: 12px; padding: 14px 16px; margin-top: 8px; }
+.focus-card p { margin: 0 0 6px; }
+.streak { font-size: 20px; font-weight: 650; margin: 0 0 12px; }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 0 0 18px; }
+.cal__cell { background: var(--surface); border-radius: 8px; padding: 4px 2px; text-align: center; }
+.cal__day { display: block; font-size: 13px; color: var(--muted); }
+.cal__marks { display: flex; justify-content: center; gap: 2px; margin-top: 2px; }
+.cal__marks i { font-style: normal; font-size: 9px; width: 11px; height: 11px; line-height: 11px; border-radius: 3px; color: #5d7268; border: 1px solid #2c4339; }
+.cal__marks i.on { background: var(--good); border-color: var(--good); color: #06130d; font-weight: 700; }
