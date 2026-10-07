@@ -1,4 +1,6 @@
 import { along, cutCueBall, ghostBall, lineFromPocket, tangentDir, toRail, unit } from './geometry';
+import { getLang } from '../i18n';
+import { DIAGRAMS_ZH, LABELS_ZH } from './diagrams.zh';
 import { POCKETS, TABLE } from './table';
 import type { Diagram, DiagramEl, Pt } from './types';
 
@@ -171,4 +173,26 @@ const list: Diagram[] = [
 ];
 
 export const DIAGRAMS: Record<string, Diagram> = Object.fromEntries(list.map((d) => [d.id, d]));
-export const getDiagram = (id: string): Diagram => DIAGRAMS[id];
+
+/** The diagram with its title, caption and on-table text in Chinese (English fallback per string). */
+function toZh(d: Diagram): Diagram {
+  const zh = DIAGRAMS_ZH[d.id];
+  const tr = (s: string) => LABELS_ZH[s] ?? s;
+  return {
+    ...d,
+    title: zh?.title ?? d.title,
+    caption: zh?.caption ?? d.caption,
+    panels: d.panels.map((p) => p.map((el): DiagramEl => {
+      if (el.t === 'marker' || el.t === 'label') return { ...el, text: tr(el.text) };
+      return el.label === undefined ? el : { ...el, label: tr(el.label) };
+    })),
+  };
+}
+const ZH_CACHE = new Map<string, Diagram>();
+
+export const getDiagram = (id: string): Diagram => {
+  const d = DIAGRAMS[id];
+  if (getLang() !== 'zh' || !d) return d;
+  if (!ZH_CACHE.has(id)) ZH_CACHE.set(id, toZh(d));
+  return ZH_CACHE.get(id)!;
+};

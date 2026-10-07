@@ -1,0 +1,344 @@
+{
+  "version": 1,
+  "title": "每日 2 小时台球训练计划",
+  "intro": "训练量有意设计得远大于每日测试量。测试只是一个简短的基准，2 小时里的大部分时间应该用来反复练习、纠正动作和练习线路。\n\n训练 = 大量练习 + 及时反馈。上下午两次训练加起来可能要打 150–200 杆以上：失误的球要重复打，随时调整技术，并练习线路。\n\n测试 = 简短、标准化，一组之内不做任何指导或调整。10 杆 / 20 杆的数字只是基准，不是你的总训练量。每周做 2–3 次完整测试（也可以每周 1 次），每次摆法保持一致。\n\n你的 GoSports 球台：面向 APA 的测试使用正常的约 4.8 英寸袋口。缩袋器只作为单独的精度练习使用；缩袋器成绩不要和正常袋口成绩混在一起。",
+  "sessions": [
+    {
+      "id": "am",
+      "title": "上午训练 — 60 分钟：基本功、准度与主球技术",
+      "blocks": [
+        {
+          "id": "am-straight-warmup",
+          "timeLabel": "0–10 分钟",
+          "minutes": 10,
+          "name": "直线球热身",
+          "setup": "目标球与底袋成直线。主球先放在距目标球 1 英尺处，再逐步拉到 2、3、4 英尺。",
+          "volume": "30–40 杆",
+          "howToTrain": "每 5 杆一组。每次失误后找出原因：瞄准、出杆还是击球点。不要急着打下一颗。",
+          "successStandard": "球从袋口正中进袋；主球基本停留在原来的线路上。",
+          "purpose": "出杆直线度与送杆",
+          "record": "no",
+          "recordKind": null,
+          "drillRefId": "straight-ball",
+          "diagramId": "am-straight-warmup"
+        },
+        {
+          "id": "am-stop-ladder",
+          "timeLabel": "10–22 分钟",
+          "minutes": 12,
+          "name": "定杆阶梯练习",
+          "setup": "直线球。主球到目标球距离：12、24、36 英寸。",
+          "volume": "共 30 杆（每个距离 10 杆）",
+          "howToTrain": "先用中杆击球。主要调整力度，而不只是改变杆头击球点。保持收杆姿势，看清主球的走向。",
+          "successStandard": "主球停在撞击点约 3 英寸以内。",
+          "purpose": "中杆控制与力度",
+          "record": "optional",
+          "recordKind": "generic",
+          "drillRefId": "stop-shot",
+          "diagramId": "am-stop-ladder"
+        },
+        {
+          "id": "am-draw-ladder",
+          "timeLabel": "22–38 分钟",
+          "minutes": 16,
+          "name": "低杆阶梯练习",
+          "setup": "直线球。主球到目标球距离：8、16、24 英寸。尽量使用六点训练主球。",
+          "volume": "36–45 杆",
+          "howToTrain": "每个距离先拉回 6 英寸，再拉回 12 英寸，然后更远。靠球杆放平和平顺加速，而不是多用力。",
+          "successStandard": "目标球进袋，主球沿击球线拉回，距离可控。",
+          "purpose": "打出并保持下旋",
+          "record": "yes",
+          "recordKind": "draw",
+          "drillRefId": "draw",
+          "diagramId": "am-draw-ladder"
+        },
+        {
+          "id": "am-follow-ladder",
+          "timeLabel": "38–50 分钟",
+          "minutes": 12,
+          "name": "高杆阶梯练习",
+          "setup": "同样的直线球摆法。主球到目标球距离：12、24、36 英寸。",
+          "volume": "共 30 杆",
+          "howToTrain": "每杆之前先定好跟进目标距离（6、12、24 英寸）。不要只是把球打得更重。",
+          "successStandard": "主球沿预定线路跟进，停在所选距离附近。",
+          "purpose": "上旋与力度控制",
+          "record": "optional",
+          "recordKind": "generic",
+          "drillRefId": "follow",
+          "diagramId": "am-follow-ladder"
+        },
+        {
+          "id": "am-precision-pocket",
+          "timeLabel": "50–60 分钟",
+          "minutes": 10,
+          "name": "精准进袋练习",
+          "setup": "长直线球和小角度切球。如有需要，仅在本环节使用缩袋器。",
+          "volume": "20–30 杆",
+          "howToTrain": "左右两个底袋交替打。在袋口晃动或磕袋角的球，即使在正常袋口最终落袋，也算失误。",
+          "successStandard": "球从袋口正中进袋，动作稳定。",
+          "purpose": "准度；保留一些中式八球式的严格要求",
+          "record": "no",
+          "recordKind": null,
+          "drillRefId": "straight-ball",
+          "diagramId": "am-precision-pocket"
+        }
+      ]
+    },
+    {
+      "id": "pm",
+      "title": "下午训练 — 60 分钟：切球、走位、线路与 APA 实战",
+      "blocks": [
+        {
+          "id": "pm-cut-blocks",
+          "timeLabel": "0–12 分钟",
+          "minutes": 12,
+          "name": "切球分组练习",
+          "setup": "选 3 个可重复的切球角度（约 30°、45°、60°），左右两个方向都练。",
+          "volume": "共 36 杆（每个角度/方向 6 杆）",
+          "howToTrain": "每个小组内目标球和袋口固定不变。先建立进球线路，再加入对主球停点的关注。",
+          "successStandard": "向左切和向右切都能稳定进球。",
+          "purpose": "建立常见切球角度的视觉记忆",
+          "record": "no",
+          "recordKind": null,
+          "drillRefId": "cut-block",
+          "diagramId": "pm-cut-blocks"
+        },
+        {
+          "id": "pm-one-rail",
+          "timeLabel": "12–27 分钟",
+          "minutes": 15,
+          "name": "一库走位目标区",
+          "setup": "打进一颗目标球，让主球走进为下一杆标出的 12–18 英寸目标区。",
+          "volume": "25–30 杆",
+          "howToTrain": "每次只改变一个变量：力度、高低杆，或一点点加塞。出杆前先预判主球路线。",
+          "successStandard": "主球进入目标区，而不只是停在“还能打的某个地方”。",
+          "purpose": "APA 主球控制",
+          "record": "optional",
+          "recordKind": "generic",
+          "diagramId": "pm-one-rail"
+        },
+        {
+          "id": "pm-3ball",
+          "timeLabel": "27–42 分钟",
+          "minutes": 15,
+          "name": "三球线路练习",
+          "setup": "随机但能进的 3 球球型；第一杆自由球。",
+          "volume": "8–10 个完整球型",
+          "howToTrain": "出杆前说出全部 3 杆的打法以及主球目标区。出现明显走位失误就重摆这个球型。",
+          "successStandard": "3 颗球全部打完，中途不需要补救走位。",
+          "purpose": "线路识别与规划",
+          "record": "yes",
+          "recordKind": "runs",
+          "drillRefId": "three-ball",
+          "diagramId": "pm-3ball"
+        },
+        {
+          "id": "pm-5ball",
+          "timeLabel": "42–55 分钟",
+          "minutes": 13,
+          "name": "五球清台",
+          "setup": "随意散开 5 颗无遮挡的球；开局自由球。",
+          "volume": "4–6 次完整尝试",
+          "howToTrain": "选最简单的线路，尽量减少主球移动，避免不必要的加塞。记录每次清台失败的原因。",
+          "successStandard": "5 颗球全部清完，没有失误或走位失控。",
+          "purpose": "把练习过渡到真正的 APA 清台",
+          "record": "yes",
+          "recordKind": "runs",
+          "drillRefId": "five-ball",
+          "diagramId": "pm-5ball"
+        },
+        {
+          "id": "pm-review",
+          "timeLabel": "55–60 分钟",
+          "minutes": 5,
+          "name": "简短复盘 / 重打",
+          "setup": "把本次训练中最差的 2–3 杆球或决策重新摆出来。",
+          "volume": "5–10 杆专项练习",
+          "howToTrain": "不要用随意自由打球来收尾。把出问题的那一杆原样重打，直到弄明白怎么纠正。",
+          "successStandard": "清楚失误的原因，以及改什么能解决。",
+          "purpose": "把失误变成收获",
+          "record": "notes",
+          "recordKind": "notes",
+          "diagramId": "pm-review"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "id": "straight",
+      "name": "长直线球",
+      "setup": "目标球距底袋约 12–18 英寸；主球距目标球 4 英尺，完全成直线。",
+      "attempts": 10,
+      "scoring": "每进 1 球得 1 分。记录 X/10。",
+      "measures": "瞄准 + 出杆直线度",
+      "frequency": "每周 2–3 次",
+      "notes": "保持同一个袋口和相同距离。",
+      "kind": "makeMiss",
+      "diagramId": "test-straight"
+    },
+    {
+      "id": "cut",
+      "name": "切球",
+      "setup": "固定一个中等切球角度。向左切 10 杆，向右切 10 杆。",
+      "attempts": 20,
+      "scoring": "每进 1 球得 1 分。记录 X/20。",
+      "measures": "切球角度判断与左右对称性",
+      "frequency": "每周 2 次",
+      "notes": "失误后也不要改变角度。",
+      "kind": "makeMissLR",
+      "diagramId": "test-cut"
+    },
+    {
+      "id": "stop",
+      "name": "定杆",
+      "setup": "直线球，主球距目标球 24 英寸。",
+      "attempts": 10,
+      "scoring": "目标球进袋且主球停在撞击点约 3 英寸以内算成功。记录 X/10。",
+      "measures": "中杆控制",
+      "frequency": "每周 2 次",
+      "notes": "每次测试使用相同的力度目标。",
+      "kind": "makeMiss",
+      "diagramId": "test-stop"
+    },
+    {
+      "id": "draw",
+      "name": "低杆测试",
+      "setup": "直线球，主球距目标球 24 英寸；目标球离袋口足够近，确保能稳定进球。",
+      "attempts": 5,
+      "scoring": "记录每杆的拉回距离；填写平均值（英寸）。",
+      "measures": "下旋能力 + 适应台呢的技术",
+      "frequency": "每周 2 次",
+      "notes": "每次测试使用同一颗主球。",
+      "kind": "distances",
+      "diagramId": "test-draw"
+    },
+    {
+      "id": "fiveBall",
+      "name": "五球清台",
+      "setup": "尽量使用同一个 5 球模板/球型；开局自由球。",
+      "attempts": 5,
+      "scoring": "记录成功清台次数 /5，以及每次失败的主要原因。",
+      "measures": "进球 + 走位 + 决策",
+      "frequency": "每周 2 次",
+      "notes": "固定球型让成绩更有可比性。",
+      "kind": "runs",
+      "diagramId": "test-5ball"
+    }
+  ],
+  "errorCodes": [
+    {
+      "code": "P",
+      "meaning": "进球 / 瞄准失误"
+    },
+    {
+      "code": "C",
+      "meaning": "主球走位 / 路线失误"
+    },
+    {
+      "code": "S",
+      "meaning": "杆法或力度执行失误"
+    },
+    {
+      "code": "D",
+      "meaning": "决策 / 线路选择失误"
+    }
+  ],
+  "drillRefs": [
+    {
+      "id": "straight-ball",
+      "name": "直线球",
+      "ballPlacement": "目标球与底袋成直线；主球距离在 1–4 英尺之间变化。",
+      "executionCue": "头部保持不动；最后一杆出杆平顺；送杆穿过主球。",
+      "commonMistake": "出杆最后一刻拐杆。",
+      "progression": "达到 8/10 以上的高质量击球后再加大距离。",
+      "whenToUseReducer": "仅在最后 10 分钟用于练精度。"
+    },
+    {
+      "id": "stop-shot",
+      "name": "定杆",
+      "ballPlacement": "直线球；主球与目标球距离固定。",
+      "executionCue": "中杆击球，力度可控；保持收杆姿势。",
+      "commonMistake": "用低杆代替真正的定杆。",
+      "progression": "12 英寸 → 24 英寸 → 36 英寸。",
+      "whenToUseReducer": "一般不用。"
+    },
+    {
+      "id": "draw",
+      "name": "低杆",
+      "ballPlacement": "直线球；先近距离，再逐步拉开距离。",
+      "executionCue": "球杆放平，击球点低，平顺加速。",
+      "commonMistake": "靠加大力量，而不是打得更低、更干净。",
+      "progression": "8 英寸 → 16 英寸 → 24 英寸；然后练指定拉回距离。",
+      "whenToUseReducer": "不用 — 先单独练好旋转。"
+    },
+    {
+      "id": "follow",
+      "name": "高杆",
+      "ballPlacement": "直线球，预先设定主球跟进距离。",
+      "executionCue": "击打中上点；控制力度。",
+      "commonMistake": "推得太重，失去对距离的控制。",
+      "progression": "跟进目标 6 英寸 → 12 英寸 → 24 英寸。",
+      "whenToUseReducer": "不用。"
+    },
+    {
+      "id": "cut-block",
+      "name": "切球分组",
+      "ballPlacement": "固定目标球和袋口；摆出可重复的 30°/45°/60° 切球。",
+      "executionCue": "先看准撞击线路，再直线出杆。",
+      "commonMistake": "每一杆同时改变角度和力度。",
+      "progression": "左右两个方向都要练熟。",
+      "whenToUseReducer": "偶尔使用，在正常袋口练完几组之后。"
+    },
+    {
+      "id": "three-ball",
+      "name": "三球线路",
+      "ballPlacement": "三颗能进的球，彼此留有空间。",
+      "executionCue": "第一杆之前规划好全部三个主球目标区。",
+      "commonMistake": "只想着下一杆。",
+      "progression": "先从简单的开始；逐步增加球之间的阻挡。",
+      "whenToUseReducer": "不用。"
+    },
+    {
+      "id": "five-ball",
+      "name": "五球清台",
+      "ballPlacement": "五颗无遮挡的球；开局自由球。",
+      "executionCue": "选最简单的线路，尽量减少主球移动。",
+      "commonMistake": "滥用加塞，或硬走难度大的位置。",
+      "progression": "用可重复的球型记录成功次数 /5。",
+      "whenToUseReducer": "不用 — 这是 APA 式练习。"
+    }
+  ],
+  "focusMap": {
+    "P": {
+      "blockIds": [
+        "am-straight-warmup",
+        "am-precision-pocket",
+        "pm-cut-blocks"
+      ],
+      "advice": "进球失误最多。放慢瞄准流程：直线球热身、精准进袋练习、切球分组练习。"
+    },
+    "C": {
+      "blockIds": [
+        "pm-one-rail",
+        "pm-3ball"
+      ],
+      "advice": "主球走位失误最多。在一库走位目标区和三球线路练习上多花时间。"
+    },
+    "S": {
+      "blockIds": [
+        "am-stop-ladder",
+        "am-draw-ladder",
+        "am-follow-ladder"
+      ],
+      "advice": "杆法/力度失误最多。优先练定杆、低杆和高杆阶梯练习 — 重在出杆平顺，而不是用力。"
+    },
+    "D": {
+      "blockIds": [
+        "pm-3ball",
+        "pm-5ball"
+      ],
+      "advice": "决策失误最多。在三球和五球练习中，出杆前先说出所有球的打法和主球目标区。"
+    }
+  }
+}
