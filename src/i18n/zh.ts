@@ -84,7 +84,7 @@ export const zh: Record<keyof typeof en, string> = {
   'session.progression': '进阶',
   'session.whenToUseReducer': '何时使用缩袋器',
   'session.pause': '暂停',
-  'session.readAloud': '朗读讲解',
+  'session.repeat': '重播',
   'session.stopReading': '停止朗读',
   'session.resume': '继续',
   'session.addTime': '+2 分钟',

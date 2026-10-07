@@ -57,7 +57,7 @@ Tap **Morning Session** or **Afternoon Session**, then **Start**.
 
 - The top shows the drill's table diagram. Tap it to open it full-size.
 - The big clock counts down the drill's time. **Pause**, **+2 min** and **Back** are at the bottom.
-- The drill's instructions are read aloud when it starts. Tap 🔊 to hear them again, or ■ to stop.
+- The drill's instructions are read aloud when it starts. Tap **↻ Repeat** next to the title to hear them again from the start, or ■ to stop.
 - Tap **Next** to move on to the next drill.
 
 The screen stays on while a session runs. If you leave the app, the session is kept: the Today screen shows it as *In progress* and you can continue.
@@ -87,7 +87,7 @@ Tap **Standard Test** on the Today screen, then **Start test**. For each shot ta
 | **S** | Spin / speed – wrong spin or pace |
 | **D** | Decision – wrong shot or plan |
 
-**Undo last** removes the last shot. **Skip test** moves on if you can't do one today. For the draw test, type the five measured distances.
+**Undo last** removes the last shot. **Skip test** moves on if you can't do one today. Tap **↻ Repeat** to hear the test setup again. For the draw test, type the five measured distances.
 
 Use the same setup each time: normal pockets, the same cue ball, no extra attempts.
 
@@ -116,7 +116,7 @@ Switch between **30-day plan** and **All time** at the top.
 
 - **Start date (Day 1)** of the plan.
 - **Sound**: the chime at the end of each drill.
-- **Read each drill aloud when it starts**: automatic voice instructions on or off. The 🔊 button still works when it is off.
+- **Read each drill aloud when it starts**: automatic voice instructions on or off. **↻ Repeat** still works when it is off.
 - **Language / 语言**: English or 中文.
 - **Backup**: export or import all your records (see below).
 - **Review all diagrams**: every table diagram on one page.

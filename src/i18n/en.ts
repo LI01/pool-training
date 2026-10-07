@@ -82,7 +82,7 @@ export const en = {
   'session.progression': 'Progression',
   'session.whenToUseReducer': 'When to Use Reducer',
   'session.pause': 'Pause',
-  'session.readAloud': 'Read instructions aloud',
+  'session.repeat': 'Repeat',
   'session.stopReading': 'Stop reading',
   'session.resume': 'Resume',
   'session.addTime': '+2 min',
