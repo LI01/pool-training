@@ -281,3 +281,32 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
 .cal__marks { display: flex; justify-content: center; gap: 2px; margin-top: 2px; }
 .cal__marks i { font-style: normal; font-size: 9px; width: 11px; height: 11px; line-height: 11px; border-radius: 3px; color: #5d7268; border: 1px solid #2c4339; }
 .cal__marks i.on { background: var(--good); border-color: var(--good); color: #06130d; font-weight: 700; }
+
+/* ---- Tablet ---- */
+/* Portrait tablet: a wider runner so the diagram at the top is bigger. */
+@media (min-width: 768px) and (min-height: 600px) {
+  .runner { max-width: 900px; }
+}
+/* Landscape tablet (phones in landscape are excluded by min-height): the diagram fills a left column,
+   with the full caption visible; timer, instructions and controls keep their phone order on the right. */
+@media (orientation: landscape) and (min-width: 900px) and (min-height: 600px) {
+  .runner {
+    position: relative; max-width: none;
+    padding-left: calc(56% + env(safe-area-inset-left));
+    padding-right: env(safe-area-inset-right);
+  }
+  .runner__head .diagram-card {
+    position: absolute; margin: 0; box-sizing: border-box;
+    top: env(safe-area-inset-top); bottom: env(safe-area-inset-bottom);
+    left: env(safe-area-inset-left); width: 56%;
+    padding: 16px; display: flex; flex-direction: column; justify-content: center; gap: 4px;
+    overflow-y: auto; border-right: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .runner__head .diagram-card figcaption {
+    font-size: 17px; line-height: 1.45; display: block; -webkit-line-clamp: unset; overflow: visible;
+  }
+  /* Two-panel diagrams stack, each capped so both fit the column height. */
+  .runner .table-diagram--multi { flex-direction: column; flex-wrap: nowrap; }
+  .runner .table-diagram--multi > svg { flex: none; max-height: calc((100dvh - 200px) / 2); }
+  .runner .timer { font-size: 96px; }
+}
