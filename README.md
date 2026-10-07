@@ -14,7 +14,8 @@ npm run preview  # serve dist/ to try the PWA/offline behaviour
 
 ## Editing content
 
-- **Training plan**: `src/plan/plan.json`.
+- **Training plan**: `src/plan/plan.json` (English) and `src/plan/plan.zh.json` (Chinese).
+- **Voice clips**: after changing plan text, run `scripts/make_voice.py` (needs `edge-tts`) to re-record the spoken introductions in `src/voice/`. A test fails while any clip is out of date; until then the app reads that drill with the device voice.
 - **Drill diagrams**: `src/diagram/diagrams.ts`.
 - **Table size**: measure your real table and update the `TABLE` constant in `src/diagram/table.ts` (playing surface in inches, nose to nose).
 - **Icons**: `scripts/make_icons.py` regenerates `public/icons/*` (needs Pillow).

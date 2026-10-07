@@ -1,9 +1,19 @@
-import { getLang, t } from '../i18n';
-import type { Block, TestDef } from '../plan';
+import { getLang } from '../i18n';
+import manifest from '../voice/manifest.json';
+import { forSpeech, type Script } from './scripts';
+
+export { blockScript, forSpeech, testScript, type Script } from './scripts';
+
+/** Pre-recorded neural-voice clips (scripts/make_voice.py), keyed by `<lang>:<script key>`. */
+const MANIFEST: Record<string, { file: string; text: string }> = manifest;
+const CLIP_URLS = import.meta.glob<string>('../voice/*.mp3', { query: '?url', import: 'default', eager: true });
 
 let autoOn = true;
 let speaking = false;
 let current: SpeechSynthesisUtterance | null = null;
+let audio: HTMLAudioElement | null = null;
+/** Bumped on every speak/stop, so events from an earlier clip never change the state. */
+let gen = 0;
 const listeners = new Set<(on: boolean) => void>();
 
 const synth = (): SpeechSynthesis | undefined => (typeof speechSynthesis === 'undefined' ? undefined : speechSynthesis);
@@ -26,36 +36,17 @@ export function onSpeakingChange(l: (on: boolean) => void): () => void {
   return () => { listeners.delete(l); };
 }
 
-/** Makes plan text read naturally: CB/OB, inch marks, number ranges and arrows. */
-export function forSpeech(s: string, lang: 'en' | 'zh'): string {
-  const out = s
-    .replace(/(\d)\s*[–-]\s*(\d)/g, lang === 'zh' ? '$1到$2' : '$1 to $2')
-    .replace(/(\d+(?:\.\d+)?)\s*"/g, lang === 'zh' ? '$1英寸' : '$1 inches')
-    .replace(/(\d)\s*ft\b/g, lang === 'zh' ? '$1英尺' : '$1 feet')
-    .replace(/\s*→\s*/g, lang === 'zh' ? '，然后' : ', then ');
-  return lang === 'zh' ? out : out.replace(/\bCB\b/g, 'cue ball').replace(/\bOB\b/g, 'object ball');
+/** The clip URL for `script` in the current language, only if it was recorded from exactly this text. */
+export function clipUrl(script: Script): string | undefined {
+  const lang = getLang();
+  const clip = MANIFEST[`${lang}:${script.key}`];
+  if (!clip || clip.text !== forSpeech(script.text, lang)) return undefined;
+  return CLIP_URLS[`../voice/${clip.file}`];
 }
 
-const join = (parts: string[]) => {
-  const zh = getLang() === 'zh';
-  return parts.map((p) => p.trim().replace(/[.。]$/, '')).filter(Boolean).join(zh ? '。' : '. ') + (zh ? '。' : '.');
-};
-const labelled = (label: string, text: string) => `${label}${getLang() === 'zh' ? '：' : ': '}${text}`;
-
-/** The spoken introduction of a training block: name, length, setup, how to train, success standard. */
-export const blockScript = (b: Block): string => join([
-  b.name, t('session.minutes', { n: b.minutes }),
-  labelled(t('session.setup'), b.setup), labelled(t('session.howToTrain'), b.howToTrain),
-  labelled(t('session.successStandard'), b.successStandard),
-]);
-
-/** The spoken introduction of a test: name and setup. */
-export const testScript = (d: TestDef): string => join([d.name, d.setup]);
-
-/** Reads `text` aloud in the app language, replacing anything already being read. No-op without speech support. */
-export function speak(text: string): void {
+function speakSynth(text: string): void {
   const s = synth();
-  if (!s) return;
+  if (!s) { setSpeaking(false); return; }
   try {
     // iOS Safari can drop an utterance queued right after an idle cancel(), so cancel only when busy.
     if (s.speaking || s.pending) s.cancel();
@@ -75,13 +66,45 @@ export function speak(text: string): void {
   }
 }
 
-/** Reads `text` only when automatic voice guidance is on. */
-export function speakAuto(text: string): void {
-  if (autoOn) speak(text);
+/** One reused element: iOS lets it play again once a tap has started it. */
+function player(): HTMLAudioElement | null {
+  if (!audio && typeof Audio !== 'undefined') audio = new Audio();
+  return audio;
+}
+
+/**
+ * Reads `script` aloud in the app language, replacing anything already being read: the recorded clip when one
+ * matches the text, otherwise the device's speech synthesis. Call from a tap so iOS allows playback.
+ */
+export function speak(script: Script): void {
+  stopSpeaking();
+  const url = clipUrl(script);
+  const a = url ? player() : null;
+  if (!url || !a) { speakSynth(script.text); return; }
+  const g = gen;
+  a.onended = () => { if (g === gen) setSpeaking(false); };
+  // Clip failed (load error or playback refused): fall back to the device voice, once.
+  const fallback = () => { if (g === gen) { gen++; speakSynth(script.text); } };
+  a.onerror = fallback;
+  setSpeaking(true);
+  try {
+    a.src = url;
+    // Older engines return undefined instead of a promise.
+    a.play()?.catch(fallback);
+  } catch {
+    fallback();
+  }
+}
+
+/** Reads `script` only when automatic voice guidance is on. */
+export function speakAuto(script: Script): void {
+  if (autoOn) speak(script);
 }
 
 export function stopSpeaking(): void {
+  gen++;
   current = null;
-  try { synth()?.cancel(); } catch { /* ignore */ }
+  try { audio?.pause(); } catch { /* ignore */ }
+  try { const s = synth(); if (s && (s.speaking || s.pending)) s.cancel(); } catch { /* ignore */ }
   setSpeaking(false);
 }

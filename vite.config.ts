@@ -5,6 +5,8 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
   base: '/pool-training/',
+  // INLINE_ASSETS=1 inlines everything (voice clips too) for the single-file artifact build.
+  build: process.env.INLINE_ASSETS ? { assetsInlineLimit: () => true } : undefined,
   plugins: [
     preact(),
     VitePWA({
@@ -26,7 +28,7 @@ export default defineConfig({
           { src: 'icons/icon-maskable-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
         ],
       },
-      workbox: { globPatterns: ['**/*.{js,css,html,png,svg,webmanifest}'] },
+      workbox: { globPatterns: ['**/*.{js,css,html,png,svg,webmanifest,mp3}'] },
     }),
   ],
   test: {

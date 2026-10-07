@@ -324,7 +324,7 @@ export function TestRunner({ now }: { now: NowFn }) {
           {saveError && <p class="notice notice--error" role="status">{saveError}</p>}
           <div class="runner__row">
             <h2 class="runner__name">{def.name}</h2>
-            <ReadAloud key={id} text={testScript(def)} />
+            <ReadAloud key={id} script={testScript(def)} />
           </div>
           <p class="test-setup">{def.setup}</p>
           <p class="test-chip">{t('test.chip')}</p>

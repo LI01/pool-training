@@ -228,7 +228,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
           </div>
           <div class="runner__row">
             <h2 class="runner__name">{block.name}</h2>
-            <ReadAloud key={block.id} text={blockScript(block)} />
+            <ReadAloud key={block.id} script={blockScript(block)} />
           </div>
           <Timer ms={rem} paused={paused} />
         </div>

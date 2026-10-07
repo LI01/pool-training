@@ -9,14 +9,20 @@ vi.mock('../../src/platform/wakeLock', () => ({
 
 class Utterance { lang = ''; voice = null; onend: (() => void) | null = null; onerror = null; constructor(public text: string) {} }
 const synth = { speaking: false, pending: false, speak: vi.fn(), cancel: vi.fn(), getVoices: vi.fn(() => []) };
+// Every drill has a recorded clip; record what each play() was asked to play.
+const played: string[] = [];
+const pause = vi.fn();
+class FakeAudio { src = ''; onended = null; onerror = null; pause = pause; play() { played.push(this.src); return Promise.resolve(); } }
 beforeEach(() => {
   vi.stubGlobal('SpeechSynthesisUtterance', Utterance);
   vi.stubGlobal('speechSynthesis', synth);
+  vi.stubGlobal('Audio', FakeAudio);
+  played.length = 0;
   vi.clearAllMocks();
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
-const said = () => synth.speak.mock.calls.map((c) => (c[0] as Utterance).text);
+const said = () => played.map((src) => src.replace(/^.*\/(\w+-\w+-[\w-]+?)(?:-[\w]{8})?\.mp3$/, '$1'));
 let n = 0;
 async function open(hash: string, settings?: object) {
   const store = createStore(`voice-${++n}`);
@@ -29,16 +35,16 @@ test('reads each block when Start/Next enter it; Pause stops; the 🔊 button re
   await open('#/session/am');
   fireEvent.click(await screen.findByRole('button', { name: /^start$/i }));
   expect(said()).toHaveLength(1);
-  expect(said()[0]).toMatch(/^Straight-ball warm-up\. 10 min\. Setup: /);
+  expect(said()[0]).toMatch(/en-block-am-straight-warmup/);
   fireEvent.click(screen.getByRole('button', { name: /^next/i }));
-  expect(said()[1]).toMatch(/^Stop shot ladder\./);
+  expect(said()[1]).toMatch(/en-block-am-stop-ladder/);
   fireEvent.click(screen.getByRole('button', { name: /stop reading/i }));
-  expect(synth.cancel).toHaveBeenCalled();
+  expect(pause).toHaveBeenCalled();
   fireEvent.click(screen.getByRole('button', { name: /read instructions aloud/i }));
-  expect(said()[2]).toMatch(/^Stop shot ladder\./);
-  const cancels = synth.cancel.mock.calls.length;
+  expect(said()[2]).toMatch(/en-block-am-stop-ladder/);
+  const pauses = pause.mock.calls.length;
   fireEvent.click(screen.getByRole('button', { name: /^pause$/i }));
-  expect(synth.cancel.mock.calls.length).toBeGreaterThan(cancels);
+  expect(pause.mock.calls.length).toBeGreaterThan(pauses);
 });
 
 test('voice guidance off: nothing is read automatically, the button still works', async () => {
@@ -52,9 +58,9 @@ test('voice guidance off: nothing is read automatically, the button still works'
 test('test runner reads each test setup on start and on Skip', async () => {
   await open('#/test');
   fireEvent.click(await screen.findByRole('button', { name: /start test/i }));
-  expect(said()[0]).toMatch(/^Long straight pot\./);
+  expect(said()[0]).toMatch(/en-test-straight/);
   fireEvent.click(screen.getByRole('button', { name: /skip test/i }));
-  expect(said()[1]).toMatch(/^Cut shots\./);
+  expect(said()[1]).toMatch(/en-test-cut/);
 });
 
 test('Settings switch saves voice guidance', async () => {

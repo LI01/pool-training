@@ -1,0 +1,122 @@
+{
+ "en:block:am-draw-ladder": {
+  "file": "en-block-am-draw-ladder.mp3",
+  "text": "Draw ladder. 16 minutes. Setup: Straight shot. cue ball-to-object ball: 8 inches, 16 inches, 24 inches. Use the 6-dot cue ball when possible. How to Train: At each distance, first draw back 6 inches, then 12 inches, then farther. Favor a level cue and smooth acceleration over extra force. Success Standard: Pocket object ball and pull cue ball back along the shot line with controlled distance."
+ },
+ "en:block:am-follow-ladder": {
+  "file": "en-block-am-follow-ladder.mp3",
+  "text": "Follow ladder. 12 minutes. Setup: Same straight setup. cue ball-to-object ball: 12 inches, 24 inches, 36 inches. How to Train: Choose a target follow distance before each shot (6 inches, 12 inches, 24 inches). Avoid simply rolling the ball harder. Success Standard: cue ball follows on the intended line and finishes near the chosen distance."
+ },
+ "en:block:am-precision-pocket": {
+  "file": "en-block-am-precision-pocket.mp3",
+  "text": "Precision pocket drill. 10 minutes. Setup: Long straight and slight-cut shots. Use pocket reducer for this block only if desired. How to Train: Alternate left/right corner pockets. Count a rattled or jawed ball as a miss even if it falls on the normal pocket. Success Standard: Center-pocket contact and stable mechanics."
+ },
+ "en:block:am-stop-ladder": {
+  "file": "en-block-am-stop-ladder.mp3",
+  "text": "Stop shot ladder. 12 minutes. Setup: Straight shot. cue ball-to-object ball distances: 12 inches, 24 inches, 36 inches. How to Train: Use center-ball contact first. Adjust speed, not just tip position. Hold finish and watch cue ball. Success Standard: cue ball stops within about 3 inches of contact point."
+ },
+ "en:block:am-straight-warmup": {
+  "file": "en-block-am-straight-warmup.mp3",
+  "text": "Straight-ball warm-up. 10 minutes. Setup: Object ball straight to corner. Start cue ball 1 feet away; gradually move to 2, 3, then 4 feet. How to Train: Do sets of 5. After every miss, identify: aim, stroke, or contact point. Do not rush to the next ball. Success Standard: Clean center-pocket hit; cue ball stays close to the original line."
+ },
+ "en:block:pm-3ball": {
+  "file": "en-block-pm-3ball.mp3",
+  "text": "3-ball pattern drill. 15 minutes. Setup: Random but makeable 3-ball layouts; ball-in-hand on the first shot. How to Train: Before shooting, name all 3 shots and the intended cue ball zones. Restart a layout after a major positional error. Success Standard: Run all 3 without a positional rescue shot."
+ },
+ "en:block:pm-5ball": {
+  "file": "en-block-pm-5ball.mp3",
+  "text": "5-ball clearance. 13 minutes. Setup: Scatter 5 open balls; ball-in-hand to begin. How to Train: Pick the easiest route, minimize cue ball travel, and avoid unnecessary side spin. Log why a failed run ended. Success Standard: Clear all 5 without a miss or positional breakdown."
+ },
+ "en:block:pm-cut-blocks": {
+  "file": "en-block-pm-cut-blocks.mp3",
+  "text": "Cut-shot blocks. 12 minutes. Setup: Choose 3 repeatable cut angles (roughly 30°, 45°, 60°), both directions. How to Train: Keep object ball and pocket fixed for each mini-set. First establish pocketing line, then add cue ball finish awareness. Success Standard: Consistent pocketing on both left and right cuts."
+ },
+ "en:block:pm-one-rail": {
+  "file": "en-block-pm-one-rail.mp3",
+  "text": "One-rail position zones. 15 minutes. Setup: Pocket one object ball and send cue ball to a marked 12 to 18 inches target zone for the next shot. How to Train: Change only one variable at a time: speed, follow/draw, or a touch of side. Predict the route before shooting. Success Standard: cue ball enters the target zone, not merely 'somewhere usable'."
+ },
+ "en:block:pm-review": {
+  "file": "en-block-pm-review.mp3",
+  "text": "Short review / replay. 5 minutes. Setup: Recreate the 2 to 3 worst shots or decisions from the session. How to Train: Do not finish on random free play. Re-shoot the exact problem until you understand the correction. Success Standard: Know what caused the miss and what changes fix it."
+ },
+ "en:test:cut": {
+  "file": "en-test-cut.mp3",
+  "text": "Cut shots. Use one fixed medium cut angle. 10 shots cutting left, 10 cutting right."
+ },
+ "en:test:draw": {
+  "file": "en-test-draw.mp3",
+  "text": "Draw test. Straight shot, cue ball 24 inches from object ball; object ball near enough to pocket reliably."
+ },
+ "en:test:fiveBall": {
+  "file": "en-test-fiveBall.mp3",
+  "text": "5-ball clearance. Use the same 5-ball template/layout if possible; ball-in-hand to start."
+ },
+ "en:test:stop": {
+  "file": "en-test-stop.mp3",
+  "text": "Stop shot. Straight shot, cue ball 24 inches from object ball."
+ },
+ "en:test:straight": {
+  "file": "en-test-straight.mp3",
+  "text": "Long straight pot. object ball about 12 to 18 inches from corner pocket; cue ball 4 feet from object ball, perfectly straight."
+ },
+ "zh:block:am-draw-ladder": {
+  "file": "zh-block-am-draw-ladder.mp3",
+  "text": "低杆阶梯练习。16 分钟。摆放：直线球。主球到目标球距离：8、16、24 英寸。尽量使用六点训练主球。训练方法：每个距离先拉回 6 英寸，再拉回 12 英寸，然后更远。靠球杆放平和平顺加速，而不是多用力。达标标准：目标球进袋，主球沿击球线拉回，距离可控。"
+ },
+ "zh:block:am-follow-ladder": {
+  "file": "zh-block-am-follow-ladder.mp3",
+  "text": "高杆阶梯练习。12 分钟。摆放：同样的直线球摆法。主球到目标球距离：12、24、36 英寸。训练方法：每杆之前先定好跟进目标距离（6、12、24 英寸）。不要只是把球打得更重。达标标准：主球沿预定线路跟进，停在所选距离附近。"
+ },
+ "zh:block:am-precision-pocket": {
+  "file": "zh-block-am-precision-pocket.mp3",
+  "text": "精准进袋练习。10 分钟。摆放：长直线球和小角度切球。如有需要，仅在本环节使用缩袋器。训练方法：左右两个底袋交替打。在袋口晃动或磕袋角的球，即使在正常袋口最终落袋，也算失误。达标标准：球从袋口正中进袋，动作稳定。"
+ },
+ "zh:block:am-stop-ladder": {
+  "file": "zh-block-am-stop-ladder.mp3",
+  "text": "定杆阶梯练习。12 分钟。摆放：直线球。主球到目标球距离：12、24、36 英寸。训练方法：先用中杆击球。主要调整力度，而不只是改变杆头击球点。保持收杆姿势，看清主球的走向。达标标准：主球停在撞击点约 3 英寸以内。"
+ },
+ "zh:block:am-straight-warmup": {
+  "file": "zh-block-am-straight-warmup.mp3",
+  "text": "直线球热身。10 分钟。摆放：目标球与底袋成直线。主球先放在距目标球 1 英尺处，再逐步拉到 2、3、4 英尺。训练方法：每 5 杆一组。每次失误后找出原因：瞄准、出杆还是击球点。不要急着打下一颗。达标标准：球从袋口正中进袋；主球基本停留在原来的线路上。"
+ },
+ "zh:block:pm-3ball": {
+  "file": "zh-block-pm-3ball.mp3",
+  "text": "三球线路练习。15 分钟。摆放：随机但能进的 3 球球型；第一杆自由球。训练方法：出杆前说出全部 3 杆的打法以及主球目标区。出现明显走位失误就重摆这个球型。达标标准：3 颗球全部打完，中途不需要补救走位。"
+ },
+ "zh:block:pm-5ball": {
+  "file": "zh-block-pm-5ball.mp3",
+  "text": "五球清台。13 分钟。摆放：随意散开 5 颗无遮挡的球；开局自由球。训练方法：选最简单的线路，尽量减少主球移动，避免不必要的加塞。记录每次清台失败的原因。达标标准：5 颗球全部清完，没有失误或走位失控。"
+ },
+ "zh:block:pm-cut-blocks": {
+  "file": "zh-block-pm-cut-blocks.mp3",
+  "text": "切球分组练习。12 分钟。摆放：选 3 个可重复的切球角度（约 30°、45°、60°），左右两个方向都练。训练方法：每个小组内目标球和袋口固定不变。先建立进球线路，再加入对主球停点的关注。达标标准：向左切和向右切都能稳定进球。"
+ },
+ "zh:block:pm-one-rail": {
+  "file": "zh-block-pm-one-rail.mp3",
+  "text": "一库走位目标区。15 分钟。摆放：打进一颗目标球，让主球走进为下一杆标出的 12到18 英寸目标区。训练方法：每次只改变一个变量：力度、高低杆，或一点点加塞。出杆前先预判主球路线。达标标准：主球进入目标区，而不只是停在“还能打的某个地方”。"
+ },
+ "zh:block:pm-review": {
+  "file": "zh-block-pm-review.mp3",
+  "text": "简短复盘 / 重打。5 分钟。摆放：把本次训练中最差的 2到3 杆球或决策重新摆出来。训练方法：不要用随意自由打球来收尾。把出问题的那一杆原样重打，直到弄明白怎么纠正。达标标准：清楚失误的原因，以及改什么能解决。"
+ },
+ "zh:test:cut": {
+  "file": "zh-test-cut.mp3",
+  "text": "切球。固定一个中等切球角度。向左切 10 杆，向右切 10 杆。"
+ },
+ "zh:test:draw": {
+  "file": "zh-test-draw.mp3",
+  "text": "低杆测试。直线球，主球距目标球 24 英寸；目标球离袋口足够近，确保能稳定进球。"
+ },
+ "zh:test:fiveBall": {
+  "file": "zh-test-fiveBall.mp3",
+  "text": "五球清台。尽量使用同一个 5 球模板/球型；开局自由球。"
+ },
+ "zh:test:stop": {
+  "file": "zh-test-stop.mp3",
+  "text": "定杆。直线球，主球距目标球 24 英寸。"
+ },
+ "zh:test:straight": {
+  "file": "zh-test-straight.mp3",
+  "text": "长直线球。目标球距底袋约 12到18 英寸；主球距目标球 4 英尺，完全成直线。"
+ }
+}
