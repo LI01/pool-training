@@ -227,8 +227,8 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
 }
 .test-progress { font-size: 32px; font-weight: 750; margin: 0; font-variant-numeric: tabular-nums; }
 .cut-banner {
-  margin: 8px 0 0; padding: 10px 14px; border-radius: 12px; text-align: center;
-  font-size: 28px; font-weight: 800; letter-spacing: 0.02em; background: var(--accent); color: #1a1405;
+  margin: 0 0 10px; padding: 8px 14px; border-radius: 12px; text-align: center;
+  font-size: 26px; font-weight: 800; letter-spacing: 0.02em; background: var(--accent); color: #1a1405;
 }
 .cut-banner--R { background: #7cc4f2; color: #04131d; }
 .score-pad { flex: none; padding: 10px 16px 8px; border-top: 1px solid rgba(255, 255, 255, 0.08); }

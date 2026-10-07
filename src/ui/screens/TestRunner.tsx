@@ -316,13 +316,13 @@ export function TestRunner({ now }: { now: NowFn }) {
           <p class="test-setup">{def.setup}</p>
           <p class="test-chip">Normal pockets · Same setup · No extra attempts</p>
           <p class="test-progress" aria-live="polite">{done} of {limit}</p>
-          {id === 'cut' && (
-            <p class={`cut-banner cut-banner--${side}`}>{side === 'L' ? '← Cutting LEFT' : 'Cutting RIGHT →'}</p>
-          )}
           {id === 'draw' && <DrawInputs draw={state.draw} onChange={(i, v) => apply((s) => setDraw(s, i, v))} />}
         </div>
         {id !== 'draw' && (
           <div class="score-pad">
+            {id === 'cut' && (
+              <p class={`cut-banner cut-banner--${side}`}>{side === 'L' ? '← Cutting LEFT' : 'Cutting RIGHT →'}</p>
+            )}
             <div class="score-pad__buttons">
               <BigButton variant="good" disabled={full} onClick={() => apply((s) => recordShot(s, true))}>{goodLabel}</BigButton>
               <BigButton variant="bad" disabled={full} onClick={miss}>{badLabel}</BigButton>

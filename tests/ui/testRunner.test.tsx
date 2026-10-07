@@ -113,7 +113,11 @@ test('cut test switches from LEFT to RIGHT after 10 shots', async () => {
   await openWith({ ...s, index: 1, shots: { ...s.shots, cut: Array.from({ length: 9 }, () => ({ ok: true, side: 'L' })) } });
   expect(await screen.findByText(/Cutting LEFT/, { selector: 'p' })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /^make$/i }));
-  expect(screen.getByText(/Cutting RIGHT/, { selector: 'p' })).toBeInTheDocument();
+  const banner = screen.getByText(/Cutting RIGHT/, { selector: 'p' });
+  // Pinned with Make/Miss (not in the scrolling body) so it is always visible on a phone.
+  expect(banner.closest('.score-pad')).not.toBeNull();
+  expect(banner.closest('.runner__body')).toBeNull();
+  expect(banner.nextElementSibling).toHaveClass('score-pad__buttons');
   expect(screen.getByText('10 of 20')).toBeInTheDocument();
 });
 
