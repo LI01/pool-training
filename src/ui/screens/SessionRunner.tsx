@@ -1,0 +1,214 @@
+import { useEffect, useRef, useState } from 'preact/hooks';
+import { DiagramCard } from '../../diagram/TableDiagram';
+import { getDrillRef, getSession, plan, type Block, type SessionId } from '../../plan';
+import type { BlockResult } from '../../db/types';
+import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
+import { playChime, unlockAudio } from '../../platform/chime';
+import {
+  addTime, back, next, pause, remainingMs, resume, startSession, toRecord,
+  type EntryInput, type SessionRunState,
+} from '../../runner/session';
+import { BigButton } from '../components/BigButton';
+import { EntrySheet } from '../components/EntrySheet';
+import { Timer } from '../components/Timer';
+import { navigate, type NowFn } from '../nav';
+import { useAppData } from '../useAppData';
+
+const isNum = (v: unknown) => typeof v === 'number' && Number.isFinite(v);
+
+/** Validates a persisted payload; throws if it cannot be resumed. */
+function restore(payload: unknown, sessionId: SessionId, blocks: Block[]): SessionRunState {
+  const p = payload as SessionRunState;
+  const ok = p && p.kind === 'session' && p.sessionId === sessionId
+    && Number.isInteger(p.blockIndex) && p.blockIndex >= 0 && p.blockIndex < blocks.length
+    && isNum(p.startedAt) && isNum(p.blockStartedAt) && isNum(p.pausedTotalMs) && isNum(p.sessionPausedMs)
+    && isNum(p.extraMs) && (p.pausedAt === null || isNum(p.pausedAt))
+    && typeof p.results === 'object' && p.results !== null && typeof p.finished === 'boolean';
+  if (!ok) throw new Error('corrupt session state');
+  return p;
+}
+
+function resultText(r: BlockResult | undefined): string {
+  if (!r) return '—';
+  if (r.skipped) return 'Skipped';
+  if (r.draw) return `Best ${r.draw.bestIn} in · Typical ${r.draw.typicalIn} in`;
+  if (r.runs) return `${r.runs.success}/${r.runs.attempts} runs${r.runs.failTags.length ? ` · ${r.runs.failTags.join(' ')}` : ''}`;
+  if (r.generic) return `${r.generic.made}/${r.generic.attempts} made`;
+  if (r.notes !== undefined) return r.notes || '—';
+  return '—';
+}
+
+function LeaveButton({ onLeave }: { onLeave: () => void }) {
+  return <button type="button" class="runner__leave" aria-label="Leave session" onClick={onLeave}>×</button>;
+}
+
+export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: NowFn }) {
+  const { store, active, refresh } = useAppData();
+  const session = getSession(sessionId);
+  const blocks = session.blocks;
+
+  const [toast, setToast] = useState<string | null>(null);
+  const [state, setState] = useState<SessionRunState | null>(() => {
+    if (active?.type !== 'session' || (active.payload as { sessionId?: unknown } | null)?.sessionId !== sessionId) return null;
+    try { return restore(active.payload, sessionId, blocks); } catch { return null; }
+  });
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [, setTick] = useState(0);
+  const chimed = useRef<string | null>(null);
+  const prevRemaining = useRef<number | null>(null);
+
+  // Corrupt saved state: clear it and tell the user.
+  useEffect(() => {
+    if (state || active?.type !== 'session' || (active.payload as { sessionId?: unknown } | null)?.sessionId !== sessionId) return;
+    void store.setActive(undefined).then(refresh);
+    setToast("Previous session couldn't be restored");
+  }, []);
+
+  // Hold the wake lock while the runner is open with a session in progress.
+  const running = state !== null;
+  useEffect(() => {
+    if (!running) return;
+    void acquireWakeLock();
+    return () => { void releaseWakeLock(); };
+  }, [running]);
+
+  // Tick every second; chime once when a block crosses zero.
+  const finished = state?.finished ?? false;
+  useEffect(() => {
+    if (!running || finished) return;
+    const id = setInterval(() => setTick((x) => x + 1), 1000);
+    return () => clearInterval(id);
+  }, [running, finished]);
+
+  const update = (s: SessionRunState) => {
+    setState(s);
+    void store.setActive({ type: 'session', payload: s, updatedAt: now() });
+  };
+
+  const leave = () => { void refresh(); navigate('#/'); };
+
+  if (!state) {
+    return (
+      <main class="screen runner-pre">
+        <header class="runner__top">
+          <span class="runner__meta">{sessionId === 'am' ? 'Morning Session' : 'Afternoon Session'}</span>
+          <LeaveButton onLeave={leave} />
+        </header>
+        {toast && <p class="notice notice--error" role="status">{toast}</p>}
+        <h1 class="runner-pre__title">{session.title}</h1>
+        <details class="intro">
+          <summary>Training vs testing</summary>
+          {plan.intro.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}
+        </details>
+        <ol class="block-list">
+          {blocks.map((b) => (
+            <li key={b.id}><span>{b.name}</span><span class="block-list__min">{b.minutes} min</span></li>
+          ))}
+        </ol>
+        <div class="runner-pre__start">
+          <BigButton variant="good" onClick={() => {
+            unlockAudio();
+            void acquireWakeLock();
+            update(startSession(sessionId, now()));
+          }}>Start</BigButton>
+        </div>
+      </main>
+    );
+  }
+
+  if (state.finished) {
+    const preview = toRecord(state, blocks, plan.version, now());
+    const finish = async () => {
+      await store.putSession(toRecord(state, blocks, plan.version, now()));
+      await store.setActive(undefined);
+      void releaseWakeLock();
+      await refresh();
+      navigate('#/');
+    };
+    return (
+      <main class="screen runner-summary">
+        <header class="runner__top">
+          <span class="runner__meta">Session complete</span>
+          <LeaveButton onLeave={leave} />
+        </header>
+        <h1>{session.title}</h1>
+        <p class="runner-summary__minutes"><strong>{preview.activeMinutes}</strong> {preview.activeMinutes === 1 ? 'active minute' : 'active minutes'}</p>
+        <dl class="summary-list">
+          {blocks.filter((b) => b.record !== 'no').map((b) => (
+            <div key={b.id}><dt>{b.name}</dt><dd>{resultText(state.results[b.id])}</dd></div>
+          ))}
+        </dl>
+        <div class="controls">
+          <BigButton onClick={() => update(back(state, now()))}>Back</BigButton>
+          <BigButton variant="good" onClick={finish}>Finish</BigButton>
+        </div>
+      </main>
+    );
+  }
+
+  const block = blocks[state.blockIndex];
+  const rem = remainingMs(state, blocks, now());
+  const key = `${state.blockIndex}:${state.blockStartedAt}`;
+  if (prevRemaining.current !== null && prevRemaining.current > 0 && rem <= 0 && chimed.current !== key) {
+    chimed.current = key;
+    playChime();
+  }
+  prevRemaining.current = rem;
+
+  const ref = block.drillRefId ? getDrillRef(block.drillRefId) : undefined;
+  const advance = (entry?: EntryInput) => { setSheetOpen(false); update(next(state, blocks, now(), entry)); };
+  const paused = state.pausedAt !== null;
+
+  const details: [string, string][] = [
+    ['Setup', block.setup], ['Training Volume', block.volume], ['How to Train', block.howToTrain],
+    ['Success Standard', block.successStandard], ['Purpose', block.purpose],
+  ];
+
+  return (
+    <main class="runner" onClickCapture={unlockAudio}>
+      <div class="runner__head">
+        <DiagramCard key={block.diagramId} diagramId={block.diagramId} />
+        <div class="runner__row">
+          <span class="runner__meta">{block.timeLabel} · Block {state.blockIndex + 1}/{blocks.length}</span>
+          <LeaveButton onLeave={leave} />
+        </div>
+        <h2 class="runner__name">{block.name}</h2>
+        <Timer ms={rem} paused={paused} />
+      </div>
+      <div class="runner__body" key={block.id}>
+        <dl class="block-info">
+          {details.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+        </dl>
+        {ref && (
+          <details class="drill-ref">
+            <summary>Drill reference</summary>
+            <dl class="block-info">
+              {([
+                ['Ball Placement', ref.ballPlacement], ['Execution Cue', ref.executionCue], ['Common Mistake', ref.commonMistake],
+                ['Progression', ref.progression], ['When to Use Reducer', ref.whenToUseReducer],
+              ] as [string, string][]).map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}
+            </dl>
+          </details>
+        )}
+      </div>
+      <div class="controls">
+        <button type="button" class="control" disabled={state.blockIndex === 0} onClick={() => update(back(state, now()))}>Back</button>
+        <button type="button" class="control" onClick={() => update(paused ? resume(state, now()) : pause(state, now()))}>{paused ? 'Resume' : 'Pause'}</button>
+        <button type="button" class="control" onClick={() => update(addTime(state, 120000))}>+2 min</button>
+        <button type="button" class="control control--next" onClick={() => (block.record === 'no' || !block.recordKind ? advance() : setSheetOpen(true))}>Next</button>
+      </div>
+      {sheetOpen && block.recordKind && (
+        <EntrySheet
+          key={block.id}
+          kind={block.recordKind}
+          record={block.record}
+          title={block.name}
+          initial={state.results[block.id]}
+          onSubmit={(e) => advance(e)}
+          onSkip={() => advance({ skipped: true })}
+          onClose={() => setSheetOpen(false)}
+        />
+      )}
+    </main>
+  );
+}
