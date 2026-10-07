@@ -1,6 +1,6 @@
 import type { Block, ErrorCodeId, RecordKind, SessionId } from '../plan';
 import type { BlockResult, SessionRecord } from '../db/types';
-import { t } from '../i18n';
+import { fromLen, t } from '../i18n';
 import { localDate } from '../stats/dates';
 
 export interface SessionRunState {
@@ -86,10 +86,16 @@ const num = (v: string | undefined, max: number, integer: boolean): number | nul
   return n;
 };
 
+/** A draw distance typed in the language's unit, as inches (0–120). */
+const len = (v: string | undefined): number | null => {
+  const n = num(v, Infinity, false);
+  return n !== null && fromLen(n) <= 120 ? fromLen(n) : null;
+};
+
 export function validateEntry(kind: RecordKind, raw: Record<string, string>): V {
   switch (kind) {
     case 'draw': {
-      const b = num(raw.bestIn, 120, false), ty = num(raw.typicalIn, 120, false);
+      const b = len(raw.bestIn), ty = len(raw.typicalIn);
       if (b === null || ty === null) return { ok: false, error: t('entry.err.inches') };
       if (ty > b) return { ok: false, error: t('entry.err.typical') };
       return { ok: true, entry: { draw: { bestIn: b, typicalIn: ty } } };

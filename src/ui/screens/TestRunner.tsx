@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { DiagramCard } from '../../diagram/TableDiagram';
 import { getTestDef, plan, TEST_ORDER, type ErrorCodeId, type TestDef, type TestId } from '../../plan';
 import type { Shot } from '../../db/types';
-import { t, type Key } from '../../i18n';
+import { fromLen, t, toLen, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { unlockAudio } from '../../platform/chime';
 import { speakAuto, stopSpeaking, testScript } from '../../platform/speech';
@@ -53,7 +53,7 @@ const r1 = (x: number) => Math.round(x * 10) / 10;
 function parseDraw(text: string): number | null | undefined {
   const s = text.trim().replace(',', '.');
   if (s === '') return null;
-  const v = Number(s);
+  const v = fromLen(Number(s));
   return Number.isFinite(v) && v >= 0 && v <= 120 ? v : undefined;
 }
 
@@ -81,9 +81,9 @@ function ShotDots({ shots, limit, label }: { shots: Shot[]; limit: number; label
 }
 
 function DrawInputs({ draw, onChange }: { draw: (number | null)[]; onChange: (i: number, v: number | null) => void }) {
-  const [text, setText] = useState(() => draw.map((d) => (d === null ? '' : String(d))));
+  const [text, setText] = useState(() => draw.map((d) => (d === null ? '' : String(toLen(d)))));
   const values = draw.filter((d): d is number => d !== null);
-  const avg = values.length ? `${r1(values.reduce((a, b) => a + b, 0) / values.length)}"` : '–';
+  const avg = values.length ? `${toLen(r1(values.reduce((a, b) => a + b, 0) / values.length))}${t('unit.len')}` : '–';
   return (
     <div class="draw-inputs">
       <p class="draw-inputs__avg">{t('test.average', { avg })}</p>
@@ -187,7 +187,7 @@ export function TestRunner({ now }: { now: NowFn }) {
       ['straight', sc.straight === undefined ? undefined : `${sc.straight}/10`],
       ['cut', sc.cut === undefined ? undefined : t('test.cutScore', { cut: sc.cut, l: sc.cutL ?? 0, r: sc.cutR ?? 0 })],
       ['stop', sc.stop === undefined ? undefined : `${sc.stop}/10`],
-      ['draw', sc.drawAvg === undefined ? undefined : `${sc.drawAvg}"`],
+      ['draw', sc.drawAvg === undefined ? undefined : `${toLen(sc.drawAvg)}${t('unit.len')}`],
       ['fiveBall', sc.fiveBall === undefined ? undefined : `${sc.fiveBall}/5`],
     ];
     const save = async () => {

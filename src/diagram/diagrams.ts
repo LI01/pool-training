@@ -77,8 +77,8 @@ const list: Diagram[] = [
     [12, 24, 36], [{ t: 'zone', shape: 'circle', at: S(CONTACT), r: 3, label: 'Stop zone' }]),
   ladder('am-draw-ladder', 'Draw ladder', 'Level cue, low contact. Draw back 6", then 12", then farther.',
     [8, 16, 24], [
-      { t: 'marker', at: along(S(CONTACT + 6), SIDE, 3.5), text: 'draw 6"' },
-      { t: 'marker', at: along(S(CONTACT + 12), SIDE, 3.5), text: 'draw 12"' },
+      { t: 'marker', at: along(S(CONTACT + 6), SIDE, 5.5), text: 'draw 6"' },
+      { t: 'marker', at: along(S(CONTACT + 12), SIDE, 5.5), text: 'draw 12"' },
     ], true),
   ladder('am-follow-ladder', 'Follow ladder', 'High centre. Pick a follow target (6", 12", 24") before each shot.',
     [12, 24, 36], [

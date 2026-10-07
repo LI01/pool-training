@@ -53,10 +53,16 @@ test('getDiagram returns Chinese text in zh and English in en', () => {
   expect(getDiagram(id).panels.length).toBe(DIAGRAMS[id].panels.length);
 });
 
-test('every on-table word has a Chinese label (numbers, angles, inches and single letters may fall back)', () => {
+test('every on-table word or length has a Chinese label (numbers, angles and single letters may fall back)', () => {
   for (const d of Object.values(DIAGRAMS))
     for (const el of d.panels.flat()) {
       const s = 'text' in el ? el.text : el.label;
-      if (s && /[a-z]{2,}/i.test(s)) expect(LABELS_ZH[s], `${d.id}: ${s}`).toBeTruthy();
+      if (s && /[a-z]{2,}|"/i.test(s)) expect(LABELS_ZH[s], `${d.id}: ${s}`).toBeTruthy();
     }
+});
+
+test('Chinese text uses metric lengths only', () => {
+  const imperial = /英寸|英尺|\d\s*("|ft\b)/;
+  const zhText = JSON.stringify([planZh, DIAGRAMS_ZH, Object.values(LABELS_ZH)]);
+  expect(zhText.match(imperial)).toBeNull();
 });

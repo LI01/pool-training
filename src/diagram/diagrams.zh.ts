@@ -2,19 +2,19 @@
 export const DIAGRAMS_ZH: Record<string, { title: string; caption: string }> = {
   'am-straight-warmup': {
     title: '直线球热身',
-    caption: '目标球与底袋成直线。主球 1 英尺 → 2 → 3 → 4 英尺。每 5 杆一组。',
+    caption: '目标球与底袋成直线。主球 30 → 60 → 90 → 120 厘米。每 5 杆一组。',
   },
   'am-stop-ladder': {
     title: '定杆阶梯练习',
-    caption: '中杆。主球停在撞击点约 3 英寸以内。每个距离 10 杆。',
+    caption: '中杆。主球停在撞击点约 8 厘米以内。每个距离 10 杆。',
   },
   'am-draw-ladder': {
     title: '低杆阶梯练习',
-    caption: '球杆放平，击球点低。先拉回 6 英寸，再 12 英寸，然后更远。',
+    caption: '球杆放平，击球点低。先拉回 15 厘米，再 30 厘米，然后更远。',
   },
   'am-follow-ladder': {
     title: '高杆阶梯练习',
-    caption: '中上点击球。每杆前先选好跟进目标（6、12、24 英寸）。',
+    caption: '中上点击球。每杆前先选好跟进目标（15、30、60 厘米）。',
   },
   'am-precision-pocket': {
     title: '精准进袋练习',
@@ -26,7 +26,7 @@ export const DIAGRAMS_ZH: Record<string, { title: string; caption: string }> = {
   },
   'pm-one-rail': {
     title: '一库走位目标区',
-    caption: '打进目标球，主球走一库进入 12–18 英寸目标区。先预判路线。',
+    caption: '打进目标球，主球走一库进入 30–45 厘米目标区。先预判路线。',
   },
   'pm-3ball': {
     title: '三球线路练习',
@@ -42,7 +42,7 @@ export const DIAGRAMS_ZH: Record<string, { title: string; caption: string }> = {
   },
   'test-straight': {
     title: '测试：长直线球',
-    caption: '目标球距底袋约 15 英寸，主球在其后 4 英尺，完全成直线。10 杆。',
+    caption: '目标球距底袋约 38 厘米，主球在其后 120 厘米，完全成直线。10 杆。',
   },
   'test-cut': {
     title: '测试：切球',
@@ -50,11 +50,11 @@ export const DIAGRAMS_ZH: Record<string, { title: string; caption: string }> = {
   },
   'test-stop': {
     title: '测试：定杆',
-    caption: '直线球，主球距目标球 24 英寸。成功 = 目标球进袋且主球停在撞击点约 3 英寸以内。',
+    caption: '直线球，主球距目标球 60 厘米。成功 = 目标球进袋且主球停在撞击点约 8 厘米以内。',
   },
   'test-draw': {
-    title: '测试：低杆 @24英寸',
-    caption: '直线球，主球距目标球 24 英寸。每次测试用同一颗主球。测量拉回距离。',
+    title: '测试：低杆 @60厘米',
+    caption: '直线球，主球距目标球 60 厘米。每次测试用同一颗主球。测量拉回距离。',
   },
   'test-5ball': {
     title: '测试：五球清台（固定球型）',
@@ -73,11 +73,19 @@ export const LABELS_ZH: Record<string, string> = {
   'for 3': '打3号',
   'Set up your worst shots here': '在这里摆出你最差的几杆球',
   'Ball in hand': '自由球',
-  'draw 6"': '拉回 6"',
-  'draw 12"': '拉回 12"',
-  '1 ft': '1英尺',
-  '2 ft': '2英尺',
-  '3 ft': '3英尺',
-  '4 ft': '4英尺',
+  'draw 6"': '拉回15cm',
+  'draw 12"': '拉回30cm',
+  '1 ft': '30cm',
+  '2 ft': '60cm',
+  '3 ft': '90cm',
+  '4 ft': '120cm',
+  '3"': '8cm',
+  '6"': '15cm',
+  '8"': '20cm',
+  '12"': '30cm',
+  '16"': '40cm',
+  '18"': '45cm',
+  '24"': '60cm',
+  '36"': '90cm',
   BIH: '自由球',
 };

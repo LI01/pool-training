@@ -22,3 +22,8 @@ export function t(key: Key, params?: Record<string, string | number>): string {
   const s = (lang === 'zh' ? zh : en)[key];
   return params ? s.replace(/\{(\w+)\}/g, (m, k: string) => (k in params ? String(params[k]) : m)) : s;
 }
+
+/** Draw distances are stored in inches; Chinese shows and takes whole centimetres. */
+export const toLen = (inches: number): number => (lang === 'zh' ? Math.round(inches * 2.54) : inches);
+/** A distance typed in the current language's unit, in inches. */
+export const fromLen = (v: number): number => (lang === 'zh' ? v / 2.54 : v);

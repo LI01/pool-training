@@ -1,7 +1,7 @@
 import { useState } from 'preact/hooks';
 import type { ErrorCodeId, RecordKind, RecordMode } from '../../plan';
 import type { BlockResult } from '../../db/types';
-import { t } from '../../i18n';
+import { t, toLen } from '../../i18n';
 import { validateEntry, type EntryInput } from '../../runner/session';
 import { BigButton } from './BigButton';
 import { Sheet } from './Sheet';
@@ -38,7 +38,7 @@ function Stepper({ label, value, onChange }: { label: string; value: string; onC
 
 function initialRaw(kind: EntrySheetProps['kind'], r?: BlockResult): Record<string, string> {
   switch (kind) {
-    case 'draw': return { bestIn: r?.draw ? String(r.draw.bestIn) : '', typicalIn: r?.draw ? String(r.draw.typicalIn) : '' };
+    case 'draw': return { bestIn: r?.draw ? String(toLen(r.draw.bestIn)) : '', typicalIn: r?.draw ? String(toLen(r.draw.typicalIn)) : '' };
     case 'runs': return { success: String(r?.runs?.success ?? 0), attempts: String(r?.runs?.attempts ?? 0) };
     case 'generic': return { made: String(r?.generic?.made ?? 0), attempts: String(r?.generic?.attempts ?? 0) };
     case 'notes': return { notes: r?.notes ?? '' };

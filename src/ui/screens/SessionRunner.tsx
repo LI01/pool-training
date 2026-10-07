@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { DiagramCard } from '../../diagram/TableDiagram';
 import { getDrillRef, getSession, plan, type Block, type SessionId } from '../../plan';
 import type { BlockResult } from '../../db/types';
-import { t, type Key } from '../../i18n';
+import { t, toLen, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { playChime, unlockAudio } from '../../platform/chime';
 import { blockScript, speakAuto, stopSpeaking } from '../../platform/speech';
@@ -39,7 +39,7 @@ function restore(payload: unknown, sessionId: SessionId, blocks: Block[]): RunSt
 function resultText(r: BlockResult | undefined): string {
   if (!r) return '—';
   if (r.skipped) return t('common.skipped');
-  if (r.draw) return t('result.draw', { best: r.draw.bestIn, typical: r.draw.typicalIn });
+  if (r.draw) return t('result.draw', { best: toLen(r.draw.bestIn), typical: toLen(r.draw.typicalIn) });
   if (r.runs) return `${t('result.runs', { success: r.runs.success, attempts: r.runs.attempts })}${r.runs.failTags.length ? ` · ${r.runs.failTags.join(' ')}` : ''}`;
   if (r.generic) return t('result.made', { made: r.generic.made, attempts: r.generic.attempts });
   if (r.notes !== undefined) return r.notes || '—';

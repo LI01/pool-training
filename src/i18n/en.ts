@@ -126,6 +126,7 @@ export const en = {
   'test.shotMiss': 'Shot {n}: miss',
   'test.shotMissTag': 'Shot {n}: miss, {tag}',
   'test.average': 'Average: {avg}',
+  'unit.len': '"',
   'test.drawN': 'Draw {n} (in)',
   'test.title': 'Standardized Skill Test — 20–25 minutes',
   'test.start': 'Start test',

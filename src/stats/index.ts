@@ -1,4 +1,4 @@
-import { t } from '../i18n';
+import { t, toLen } from '../i18n';
 import { plan, getBlock, BLOCK_IDS, type ErrorCodeId } from '../plan';
 import type { SessionRecord, Settings, Shot, TestRecord } from '../db/types';
 import { addDays, daysBetween } from './dates';
@@ -101,7 +101,7 @@ export function dailySummaryLine(date: string, sessions: SessionRecord[], tests:
   const f = (v: number | undefined, suffix: string) => (v === undefined ? '–' : `${v}${suffix}`);
   const e = errorTotals(sessions, tests, date, date);
   return t('summary.line', {
-    straight: f(s.straight, '/10'), cut: f(s.cut, '/20'), stop: f(s.stop, '/10'), draw: f(s.drawAvg, '"'), fiveBall: f(s.fiveBall, '/5'), ...e,
+    straight: f(s.straight, '/10'), cut: f(s.cut, '/20'), stop: f(s.stop, '/10'), draw: f(s.drawAvg === undefined ? undefined : toLen(s.drawAvg), t('unit.len')), fiveBall: f(s.fiveBall, '/5'), ...e,
   });
 }
 

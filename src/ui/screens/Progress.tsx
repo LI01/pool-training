@@ -4,7 +4,7 @@ import {
   weeklySummary, type Metric,
 } from '../../stats';
 import { addDays, daysBetween } from '../../stats/dates';
-import { t, type Key } from '../../i18n';
+import { t, toLen, type Key } from '../../i18n';
 import { BarChart } from '../components/BarChart';
 import { ERROR_COLORS, SERIES_COLORS } from '../components/chartSetup';
 import { LineChart } from '../components/LineChart';
@@ -16,6 +16,8 @@ const ROWS: [Metric, Key][] = [
   ['straight', 'progress.straight10'], ['cut', 'progress.cut20'], ['stop', 'progress.stop10'], ['drawAvg', 'progress.draw24'], ['fiveBall', 'progress.fiveBall5'],
 ];
 const fmt = (n: number | null) => (n === null ? '–' : (Math.round(n * 10) / 10).toFixed(1).replace(/\.0$/, ''));
+/** Draw averages are inches; shown in the language's unit. */
+const conv = (m: Metric, n: number | null) => (m === 'drawAvg' && n !== null ? toLen(n) : n);
 const short = (d: string) => `${Number(d.slice(5, 7))}/${Number(d.slice(8))}`;
 
 export function Progress() {
@@ -76,7 +78,7 @@ export function Progress() {
               { label: t('progress.right'), data: col('cutR'), color: SERIES_COLORS.right },
             ]} />
             <LineChart title={t('progress.stop10')} labels={labels} yMax={10} stepSize={2} series={[{ label: t('progress.stop'), data: col('stop'), color: SERIES_COLORS.total }]} />
-            <LineChart title={t('progress.drawAvgIn')} labels={labels} series={[{ label: t('progress.drawAvg'), data: col('drawAvg'), color: SERIES_COLORS.total }]} />
+            <LineChart title={t('progress.drawAvgIn')} labels={labels} series={[{ label: t('progress.drawAvg'), data: col('drawAvg').map((n) => (n === null ? null : toLen(n))), color: SERIES_COLORS.total }]} />
             <LineChart title={t('progress.fiveBallChart')} labels={labels} yMax={5} stepSize={1} series={[{ label: t('progress.fiveBall'), data: col('fiveBall'), color: SERIES_COLORS.total }]} />
           </>
         )}
@@ -89,9 +91,9 @@ export function Progress() {
               {ROWS.map(([m, name]) => (
                 <tr key={m}>
                   <th scope="row">{t(name)}</th>
-                  {summary[m].weeks.map((w, i) => <td key={i}>{fmt(w)}</td>)}
-                  <td>{fmt(summary[m].best)}</td>
-                  <td>{fmt(summary[m].avg)}</td>
+                  {summary[m].weeks.map((w, i) => <td key={i}>{fmt(conv(m, w))}</td>)}
+                  <td>{fmt(conv(m, summary[m].best))}</td>
+                  <td>{fmt(conv(m, summary[m].avg))}</td>
                 </tr>
               ))}
             </tbody>
@@ -150,8 +152,8 @@ export function Progress() {
         {recs.length === 0 ? NONE : (
           <>
             <LineChart title={t('progress.drawIn')} labels={rl} series={[
-              { label: t('progress.best'), data: recs.map((r) => r.drawBest ?? null), color: SERIES_COLORS.total },
-              { label: t('progress.typical'), data: recs.map((r) => (r.drawTypical === undefined ? null : Math.round(r.drawTypical * 10) / 10)), color: SERIES_COLORS.alt },
+              { label: t('progress.best'), data: recs.map((r) => (r.drawBest === undefined ? null : toLen(r.drawBest))), color: SERIES_COLORS.total },
+              { label: t('progress.typical'), data: recs.map((r) => (r.drawTypical === undefined ? null : toLen(Math.round(r.drawTypical * 10) / 10))), color: SERIES_COLORS.alt },
             ]} />
             <LineChart title={t('progress.successRate')} labels={rl} yMax={100} series={[
               { label: t('progress.threeBall'), data: recs.map((r) => pct(r.threeBallRate)), color: SERIES_COLORS.left },

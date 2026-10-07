@@ -1,5 +1,6 @@
 import { startSession, pause, resume, addTime, remainingMs, formatClock, next, back, toRecord, validateEntry, endSession } from '../../src/runner/session';
 import { getSession } from '../../src/plan';
+import { setLang } from '../../src/i18n';
 
 const blocks = getSession('am').blocks; // 10,12,16,12,10 minutes
 const MIN = 60000;
@@ -154,7 +155,12 @@ describe('validateEntry', () => {
   test('draw: valid', () => expect(validateEntry('draw', { bestIn: '18', typicalIn: '10.5' })).toEqual({ ok: true, entry: { draw: { bestIn: 18, typicalIn: 10.5 } } }));
   test.each([['', '10'], ['-3', '10'], ['abc', '10'], ['10', '200']])('draw rejects %s/%s', (b, t) =>
     expect(validateEntry('draw', { bestIn: b, typicalIn: t }).ok).toBe(false));
-  test('draw: typical cannot exceed best', () => expect(validateEntry('draw', { bestIn: '8', typicalIn: '12' }).ok).toBe(false));
+  test('draw: Chinese takes centimetres and stores inches', () => {
+  setLang('zh');
+  expect(validateEntry('draw', { bestIn: '254', typicalIn: '127' })).toEqual({ ok: true, entry: { draw: { bestIn: 100, typicalIn: 50 } } });
+  expect(validateEntry('draw', { bestIn: '310', typicalIn: '10' }).ok).toBe(false);
+});
+test('draw: typical cannot exceed best', () => expect(validateEntry('draw', { bestIn: '8', typicalIn: '12' }).ok).toBe(false));
   test('runs: success > attempts rejected', () => expect(validateEntry('runs', { success: '6', attempts: '5' }).ok).toBe(false));
   test('runs: valid with tags', () => expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'C,D' }))
     .toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: ['C', 'D'] } } }));
