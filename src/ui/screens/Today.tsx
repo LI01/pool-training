@@ -2,7 +2,7 @@ import { useState } from 'preact/hooks';
 import { getSession, type SessionId } from '../../plan';
 import { dailySummaryLine, dayNumber, resolveStartDate, testDue } from '../../stats';
 import { wakeLockSupported } from '../../platform/wakeLock';
-import { navigate, type NowFn } from '../App';
+import { navigate, type NowFn } from '../nav';
 import { BigButton } from '../components/BigButton';
 import { Sheet } from '../components/Sheet';
 import { useAppData } from '../useAppData';

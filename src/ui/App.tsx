@@ -6,11 +6,10 @@ import { Settings } from './screens/Settings';
 import { Today } from './screens/Today';
 import { AppDataContext, useAppDataLoader } from './useAppData';
 
-export type NowFn = () => number;
+import { navigate, type NowFn } from './nav';
 
-export function navigate(hash: string): void {
-  location.hash = hash;
-}
+export { navigate };
+export type { NowFn };
 
 function ComingSoon() {
   return <main class="screen"><p>Coming soon</p></main>;

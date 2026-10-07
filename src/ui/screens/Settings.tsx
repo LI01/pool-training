@@ -4,7 +4,7 @@ import type { Backup } from '../../db/types';
 import { setChimeEnabled } from '../../platform/chime';
 import { resolveStartDate } from '../../stats';
 import { localDate } from '../../stats/dates';
-import { type NowFn } from '../App';
+import { type NowFn } from '../nav';
 import { BigButton } from '../components/BigButton';
 import { Sheet } from '../components/Sheet';
 import { useAppData } from '../useAppData';
@@ -22,60 +22,79 @@ export function Settings({ now }: { now: NowFn }) {
 
   const resolved = resolveStartDate(settings, sessions, tests) ?? today;
 
-  const saveStart = async () => {
-    await store.saveSettings({ ...settings, startDate: startDate || undefined });
-    await refresh();
-    setMessage('Start date saved.');
+  const run = async (label: string, fn: () => Promise<string>) => {
+    try {
+      const ok = await fn();
+      setError(null);
+      setMessage(ok);
+    } catch (err) {
+      setMessage(null);
+      setError(`${label} failed: ${err instanceof Error ? err.message : String(err)}`);
+    }
   };
 
-  const toggleSound = async () => {
+  const saveStart = () => run('Save', async () => {
+    await store.saveSettings({ ...settings, startDate: startDate || undefined });
+    await refresh();
+    return 'Start date saved.';
+  });
+
+  const toggleSound = () => run('Save', async () => {
     const soundOn = !settings.soundOn;
     setChimeEnabled(soundOn);
     await store.saveSettings({ ...settings, soundOn });
     await refresh();
-  };
+    return soundOn ? 'Sound on.' : 'Sound off.';
+  });
 
-  const exportBackup = async () => {
+  const exportBackup = () => run('Export', async () => {
     const b = await store.exportBackup(now());
     const url = URL.createObjectURL(new Blob([JSON.stringify(b, null, 2)], { type: 'application/json' }));
     const a = document.createElement('a');
     a.href = url;
     a.download = `pool-training-backup-${localDate(now())}.json`;
+    document.body.appendChild(a);
     a.click();
+    a.remove();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
     await refresh();
-    setError(null);
-    setMessage('Backup downloaded.');
-  };
+    return 'Backup downloaded.';
+  });
 
   const onImportFile = async (e: Event) => {
     const input = e.currentTarget as HTMLInputElement;
     const file = input.files?.[0];
     setMessage(null);
     if (!file) return;
-    let data: unknown;
     try {
-      data = JSON.parse(await file.text());
-    } catch {
-      setError('Invalid file: not JSON');
-      return;
+      let data: unknown;
+      try {
+        data = JSON.parse(await file.text());
+      } catch {
+        setError('Invalid file: not JSON');
+        return;
+      }
+      try {
+        setPendingImport(validateBackup(data));
+        setError(null);
+      } catch (err) {
+        setError(err instanceof BackupError
+          ? `Invalid file: not a pool-training backup (${err.message})`
+          : 'Invalid file');
+      }
+    } finally {
+      input.value = '';
     }
-    try {
-      setPendingImport(validateBackup(data));
-      setError(null);
-    } catch (err) {
-      if (!(err instanceof BackupError)) throw err;
-      setError(`Invalid file: not a pool-training backup (${err.message})`);
-    }
-    input.value = '';
   };
 
-  const confirmImport = async () => {
+  const confirmImport = () => {
     const b = pendingImport!;
     setPendingImport(null);
-    await store.importBackup(b);
-    await refresh();
-    setMessage('Backup imported.');
+    return run('Import', async () => {
+      await store.importBackup(b);
+      await refresh();
+      return 'Backup imported.';
+    });
   };
 
   const onReset = async () => {
@@ -86,10 +105,11 @@ export function Settings({ now }: { now: NowFn }) {
     }
     clearTimeout(resetTimer.current);
     setResetArmed(false);
-    await store.resetAll();
-    await refresh();
-    setError(null);
-    setMessage('All data erased.');
+    await run('Reset', async () => {
+      await store.resetAll();
+      await refresh();
+      return 'All data erased.';
+    });
   };
 
   return (
