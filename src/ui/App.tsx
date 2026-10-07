@@ -9,15 +9,14 @@ import { Settings } from './screens/Settings';
 import { TestRunner } from './screens/TestRunner';
 import { Today } from './screens/Today';
 import { AppDataContext, useAppDataLoader } from './useAppData';
+import { BigButton } from './components/BigButton';
 
 import { navigate, type NowFn } from './nav';
 
 export { navigate };
 export type { NowFn };
 
-function ComingSoon() {
-  return <main class="screen"><p>Coming soon</p></main>;
-}
+const ROUTES = ['#/', '#/session/am', '#/session/pm', '#/test', '#/progress', '#/settings', '#/diagrams'];
 
 const defaultStore = () => createStore();
 
@@ -31,13 +30,21 @@ export function App({ store, now = Date.now }: { store?: Store; now?: NowFn }) {
     return () => window.removeEventListener('hashchange', on);
   }, []);
   useEffect(() => { if (!data.loading) setChimeEnabled(data.settings.soundOn); }, [data.loading, data.settings.soundOn]);
+  const known = ROUTES.includes(hash);
+  useEffect(() => { if (!known) navigate('#/'); }, [known]);
 
-  const isRunner = hash.startsWith('#/session/') || hash === '#/test';
+  const isRunner = known && (hash.startsWith('#/session/') || hash === '#/test');
   let screen;
-  if (data.loading) screen = <main class="screen" />;
+  if (data.loading && data.loadError) {
+    screen = (
+      <main class="screen">
+        <p class="notice notice--error" role="alert">Couldn't load your data: {data.loadError}</p>
+        <BigButton onClick={data.retry}>Retry</BigButton>
+      </main>
+    );
+  } else if (data.loading) screen = <main class="screen" />;
   else if (hash === '#/session/am' || hash === '#/session/pm') screen = <SessionRunner key={hash} sessionId={hash.slice(10) as SessionId} now={now} />;
   else if (hash === '#/test') screen = <TestRunner now={now} />;
-  else if (isRunner) screen = <ComingSoon />;
   else if (hash === '#/progress') screen = <Progress />;
   else if (hash === '#/settings') screen = <Settings now={now} />;
   else if (hash === '#/diagrams') screen = <DiagramsReview />;

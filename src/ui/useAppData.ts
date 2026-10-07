@@ -11,6 +11,9 @@ export interface AppData {
   settings: Settings;
   active: ActiveState | undefined;
   loading: boolean;
+  /** Set when the first load failed; `retry` tries again. */
+  loadError: string | null;
+  retry(): void;
   refresh(): Promise<void>;
   today: string;
 }
@@ -25,7 +28,8 @@ export function useAppData(): AppData {
 
 /** Loads everything from the store; used once by App to build the context value. */
 export function useAppDataLoader(store: Store, now: () => number): AppData {
-  const [state, setState] = useState<Omit<AppData, 'store' | 'refresh' | 'today'>>({
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [state, setState] = useState<Omit<AppData, 'store' | 'refresh' | 'today' | 'loadError' | 'retry'>>({
     sessions: [], tests: [], settings: { soundOn: true }, active: undefined, loading: true,
   });
   const refresh = useCallback(async () => {
@@ -34,9 +38,13 @@ export function useAppDataLoader(store: Store, now: () => number): AppData {
     ]);
     setState({ sessions, tests, settings, active, loading: false });
   }, [store]);
-  useEffect(() => {
-    void refresh();
-    void requestPersistence();
+  const retry = useCallback(() => {
+    setLoadError(null);
+    refresh().catch((err: unknown) => setLoadError(err instanceof Error ? err.message : String(err)));
   }, [refresh]);
-  return { store, ...state, refresh, today: localDate(now()) };
+  useEffect(() => {
+    retry();
+    void requestPersistence();
+  }, [retry]);
+  return { store, ...state, loadError, retry, refresh, today: localDate(now()) };
 }
