@@ -3,9 +3,9 @@ import { mountChart } from './chartSetup';
 
 export interface LineSeries { label: string; data: (number | null)[]; color: string }
 
-export function LineChart({ labels, series, yMax, title }: { labels: string[]; series: LineSeries[]; yMax?: number; title?: string }) {
+export function LineChart({ labels, series, yMax, stepSize, title }: { labels: string[]; series: LineSeries[]; yMax?: number; stepSize?: number; title?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  const key = JSON.stringify([labels, series, yMax]);
+  const key = JSON.stringify([labels, series, yMax, stepSize]);
   useEffect(() => {
     if (!ref.current) return;
     const chart = mountChart(ref.current, {
@@ -17,7 +17,7 @@ export function LineChart({ labels, series, yMax, title }: { labels: string[]; s
           pointRadius: 3, borderWidth: 2, tension: 0.2, spanGaps: true,
         })),
       },
-      options: { scales: { y: { min: 0, ...(yMax !== undefined ? { max: yMax } : {}), beginAtZero: true } } },
+      options: { scales: { y: { min: 0, ...(yMax !== undefined ? { max: yMax } : {}), beginAtZero: true, ...(stepSize ? { ticks: { stepSize, maxTicksLimit: 11 } } : {}) } } },
     });
     return () => chart?.destroy();
   }, [key]);

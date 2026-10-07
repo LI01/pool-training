@@ -37,9 +37,12 @@ export function Progress() {
   const summary = weeklySummary(tests, start);
 
   const totals = errorTotals(sessions, tests, from, to);
-  const nBuckets = Math.max(1, Math.ceil((daysBetween(from, to) + 1) / 7));
-  const bucketLabels = Array.from({ length: nBuckets }, (_, i) => short(addDays(from, i * 7)));
-  const buckets = Array.from({ length: nBuckets }, (_, i) => errorTotals(sessions, tests, addDays(from, i * 7), addDays(from, i * 7 + 6)));
+  // 7-day buckets aligned to the plan start; in All time, records before start fall into earlier (negative-index) buckets.
+  const b0 = Math.floor(daysBetween(start, from) / 7);
+  const nBuckets = Math.max(1, Math.floor(daysBetween(start, to) / 7) - b0 + 1);
+  const bStart = (i: number) => addDays(start, (b0 + i) * 7);
+  const bucketLabels = Array.from({ length: nBuckets }, (_, i) => short(bStart(i)));
+  const buckets = Array.from({ length: nBuckets }, (_, i) => errorTotals(sessions, tests, bStart(i), addDays(bStart(i), 6)));
   const hasErrors = CODES.some((c) => totals[c] > 0);
   const focus = focusSuggestion(sessions, tests, today);
 
@@ -64,15 +67,15 @@ export function Progress() {
         <h2>Test scores</h2>
         {rTests.length === 0 ? NONE : (
           <>
-            <LineChart title="Straight /10" labels={labels} yMax={10} series={[{ label: 'Straight', data: col('straight'), color: SERIES_COLORS.total }]} />
-            <LineChart title="Cut /20" labels={labels} yMax={20} series={[
+            <LineChart title="Straight /10" labels={labels} yMax={10} stepSize={2} series={[{ label: 'Straight', data: col('straight'), color: SERIES_COLORS.total }]} />
+            <LineChart title="Cut /20" labels={labels} yMax={20} stepSize={5} series={[
               { label: 'Total', data: col('cut'), color: SERIES_COLORS.total },
               { label: 'Left', data: col('cutL'), color: SERIES_COLORS.left },
               { label: 'Right', data: col('cutR'), color: SERIES_COLORS.right },
             ]} />
-            <LineChart title="Stop /10" labels={labels} yMax={10} series={[{ label: 'Stop', data: col('stop'), color: SERIES_COLORS.total }]} />
+            <LineChart title="Stop /10" labels={labels} yMax={10} stepSize={2} series={[{ label: 'Stop', data: col('stop'), color: SERIES_COLORS.total }]} />
             <LineChart title="Draw avg (in)" labels={labels} series={[{ label: 'Draw avg', data: col('drawAvg'), color: SERIES_COLORS.total }]} />
-            <LineChart title="5-ball /5" labels={labels} yMax={5} series={[{ label: '5-ball', data: col('fiveBall'), color: SERIES_COLORS.total }]} />
+            <LineChart title="5-ball /5" labels={labels} yMax={5} stepSize={1} series={[{ label: '5-ball', data: col('fiveBall'), color: SERIES_COLORS.total }]} />
           </>
         )}
         <div class="table-wrap">
@@ -100,7 +103,7 @@ export function Progress() {
           <>
             <ul class="err-list">
               {CODES.map((c) => (
-                <li key={c}><span class="dot" style={{ background: ERROR_COLORS[c] }} />{`${c} — ${CODE_NAMES[c]}: ${totals[c]}`}</li>
+                <li key={c}><span class="err-dot" style={{ background: ERROR_COLORS[c] }} />{`${c} — ${CODE_NAMES[c]}: ${totals[c]}`}</li>
               ))}
             </ul>
             <BarChart title="Errors per week" stacked labels={bucketLabels}
@@ -123,10 +126,10 @@ export function Progress() {
         <p class="streak">{`Streak: ${n} ${n === 1 ? 'day' : 'days'}`}</p>
         {rSessions.length === 0 && rTests.length === 0 ? NONE : (
           <>
-            <div class="cal" role="grid" aria-label="Training calendar">
+            <div class="cal" aria-label="Training calendar">
               {days.map((d) => (
-                <div class="cal__cell" role="gridcell" key={d} aria-label={d}>
-                  <span class="cal__day">{dayNumber(d, start)}</span>
+                <div class="cal__cell" key={d}>
+                  <span class="cal__day">{dayNumber(d, start) >= 1 ? dayNumber(d, start) : short(d)}</span>
                   <span class="cal__marks">
                     <i class={done(d, 'am') ? 'on' : ''} title="AM">A</i>
                     <i class={done(d, 'pm') ? 'on' : ''} title="PM">P</i>
@@ -146,7 +149,7 @@ export function Progress() {
           <>
             <LineChart title="Draw (in)" labels={rl} series={[
               { label: 'Best', data: recs.map((r) => r.drawBest ?? null), color: SERIES_COLORS.total },
-              { label: 'Typical', data: recs.map((r) => r.drawTypical ?? null), color: SERIES_COLORS.alt },
+              { label: 'Typical', data: recs.map((r) => (r.drawTypical === undefined ? null : Math.round(r.drawTypical * 10) / 10)), color: SERIES_COLORS.alt },
             ]} />
             <LineChart title="Success rate (%)" labels={rl} yMax={100} series={[
               { label: '3-ball', data: recs.map((r) => pct(r.threeBallRate)), color: SERIES_COLORS.left },

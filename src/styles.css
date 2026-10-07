@@ -261,13 +261,13 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
 .chart { margin: 0 0 18px; }
 .chart h3, .focus-card h3 { font-size: 16px; margin: 0 0 6px; }
 .chart canvas { width: 100%; display: block; }
-.table-wrap { overflow-x: auto; margin: 8px 0; }
-.summary { border-collapse: collapse; font-size: 14px; width: 100%; min-width: 440px; }
-.summary th, .summary td { padding: 8px 6px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap; }
-.summary th:first-child { text-align: left; position: sticky; left: 0; background: var(--bg); }
+.table-wrap { margin: 8px 0; }
+.summary { border-collapse: collapse; font-size: 12px; width: 100%; table-layout: fixed; }
+.summary th, .summary td { padding: 6px 2px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.08); }
+.summary th:first-child { text-align: left; width: 22%; }
 .summary thead th { color: var(--muted); font-weight: 600; }
 .err-list { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
-.dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
+.err-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
 .focus-card { background: var(--surface); border-left: 4px solid var(--accent); border-radius: 12px; padding: 14px 16px; margin-top: 8px; }
 .focus-card p { margin: 0 0 6px; }
 .streak { font-size: 20px; font-weight: 650; margin: 0 0 12px; }
