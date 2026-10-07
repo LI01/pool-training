@@ -34,12 +34,20 @@ test('export → reset → import round-trip restores everything', async () => {
   await s.putSession(sess); await s.putTest(tst); await s.saveSettings({ soundOn: false });
   const b = await s.exportBackup(1000);
   expect(b.settings.lastExportAt).toBe(1000);
+  expect((await s.getSettings()).lastExportAt).toBeUndefined(); // building a backup does not stamp
   await s.resetAll();
   expect(await s.listSessions()).toEqual([]);
   await s.importBackup(JSON.parse(JSON.stringify(b)));
   expect(await s.listSessions()).toEqual([sess]);
   expect(await s.listTests()).toEqual([tst]);
   expect((await s.getSettings()).soundOn).toBe(false);
+});
+
+test('markExported stamps lastExportAt and keeps other settings', async () => {
+  const s = fresh();
+  await s.saveSettings({ soundOn: false, startDate: '2026-10-01' });
+  await s.markExported(2000);
+  expect(await s.getSettings()).toEqual({ soundOn: false, startDate: '2026-10-01', lastExportAt: 2000 });
 });
 
 test.each([

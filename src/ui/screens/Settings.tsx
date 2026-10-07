@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { BackupError, validateBackup } from '../../db/store';
+import { BackupError, buildBackup, validateBackup } from '../../db/store';
 import type { Backup } from '../../db/types';
 import { setChimeEnabled } from '../../platform/chime';
 import { resolveStartDate } from '../../stats';
@@ -22,7 +22,8 @@ export function Settings({ now }: { now: NowFn }) {
 
   const resolved = resolveStartDate(settings, sessions, tests) ?? today;
 
-  const run = async (label: string, fn: () => Promise<string>) => {
+  /** Runs an action; a null result means it was cancelled (no message). */
+  const run = async (label: string, fn: () => Promise<string | null>) => {
     try {
       const ok = await fn();
       setError(null);
@@ -47,18 +48,41 @@ export function Settings({ now }: { now: NowFn }) {
     return soundOn ? 'Sound on.' : 'Sound off.';
   });
 
-  const exportBackup = () => run('Export', async () => {
-    const b = await store.exportBackup(now());
-    const url = URL.createObjectURL(new Blob([JSON.stringify(b, null, 2)], { type: 'application/json' }));
+  const download = (json: string, name: string) => {
+    const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
     const a = document.createElement('a');
     a.href = url;
-    a.download = `pool-training-backup-${localDate(now())}.json`;
+    a.download = name;
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    setTimeout(() => URL.revokeObjectURL(url), 60000);
+  };
+
+  // Built synchronously from the loaded data so navigator.share runs inside the tap (iOS needs the user gesture).
+  // lastExportAt is stamped only once the file was handed over.
+  const exportBackup = () => run('Export', async () => {
+    const t = now();
+    const json = JSON.stringify(buildBackup({ sessions, tests, settings }, t), null, 2);
+    const name = `pool-training-backup-${localDate(t)}.json`;
+    const file = new File([json], name, { type: 'application/json' });
+    let how = 'downloaded';
+    if (navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file] }); // iOS share sheet → Save to Files
+        how = 'shared';
+      } catch (err) {
+        const errName = (err as { name?: string } | null)?.name;
+        if (errName === 'AbortError') return null; // user cancelled: nothing was saved
+        if (errName !== 'NotAllowedError') throw err;
+        download(json, name); // share refused (e.g. gesture expired): fall back
+      }
+    } else {
+      download(json, name);
+    }
+    await store.markExported(t);
     await refresh();
-    return 'Backup downloaded.';
+    return `Backup ${how}.`;
   });
 
   const onImportFile = async (e: Event) => {

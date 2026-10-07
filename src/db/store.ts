@@ -12,7 +12,10 @@ export interface Store {
   setActive(a: ActiveState | undefined): Promise<void>;
   getSettings(): Promise<Settings>;
   saveSettings(s: Settings): Promise<void>;
+  /** Builds a backup; does not mark it exported (delivery may still fail). */
   exportBackup(now: number): Promise<Backup>;
+  /** Records a successfully delivered backup. */
+  markExported(now: number): Promise<void>;
   importBackup(data: unknown): Promise<void>;
   resetAll(): Promise<void>;
 }
@@ -74,6 +77,14 @@ export function validateBackup(data: unknown): Backup {
   return data as unknown as Backup;
 }
 
+/** The backup file contents; its settings carry lastExportAt = now. */
+export function buildBackup(data: { sessions: SessionRecord[]; tests: TestRecord[]; settings: Settings }, now: number): Backup {
+  return {
+    app: 'pool-training', schema: 1, exportedAt: now,
+    sessions: data.sessions, tests: data.tests, settings: { ...data.settings, lastExportAt: now },
+  };
+}
+
 export function createStore(dbName = 'pool-training'): Store {
   const dbp = openDB(dbName, 1, {
     upgrade(db) {
@@ -98,12 +109,11 @@ export function createStore(dbName = 'pool-training'): Store {
     async getSettings() { return (await (await dbp).get('kv', 'settings')) ?? { soundOn: true }; },
     async saveSettings(s) { await (await dbp).put('kv', s, 'settings'); },
     async exportBackup(now) {
-      const settings: Settings = { ...(await store.getSettings()), lastExportAt: now };
-      await store.saveSettings(settings);
-      return {
-        app: 'pool-training', schema: 1, exportedAt: now,
-        sessions: await store.listSessions(), tests: await store.listTests(), settings,
-      };
+      const [sessions, tests, settings] = await Promise.all([store.listSessions(), store.listTests(), store.getSettings()]);
+      return buildBackup({ sessions, tests, settings }, now);
+    },
+    async markExported(now) {
+      await store.saveSettings({ ...(await store.getSettings()), lastExportAt: now });
     },
     async importBackup(data) {
       const b = validateBackup(data);
