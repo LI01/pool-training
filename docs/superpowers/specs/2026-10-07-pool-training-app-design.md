@@ -41,6 +41,7 @@ A personal phone web app that **guides the daily 2-hour pool training** (60-min 
 | Stack | Vite + Preact + TypeScript, `vite-plugin-pwa`, IndexedDB via `idb`, Chart.js (bundled), Vitest |
 | Block advance | Never auto-advance; chime at zero, user taps **Next** |
 | P/C/S/D tags | Always optional (prompted on a miss/fail, dismissible) |
+| Setup diagrams | Every drill block and every test has a top-down table diagram with ball positions, lines, zones, and text labels. It is shown at the top of the screen; tap to open it full screen. v1 uses a realistic, to-scale drawn 7 ft table; a photo of the user's own table is a later option (§3.5) |
 
 ## 3. Screens and Flow
 
@@ -58,6 +59,7 @@ A personal phone web app that **guides the daily 2-hour pool training** (60-min 
 ### 3.2 Session Runner (morning or afternoon)
 
 - One block per screen, showing:
+  - the block's **setup diagram** (§3.5) at the top; tap it to open it full screen
   - the time range label (e.g., "22–38 min")
   - the drill name and a **large countdown** for the block's duration
   - Setup, Training Volume, How to Train, Success Standard, Purpose
@@ -76,7 +78,7 @@ A personal phone web app that **guides the daily 2-hour pool training** (60-min 
 
 ### 3.3 Test Runner
 
-- The 5 tests in fixed order. Each test opens with its exact setup text and the reminder: "Normal pockets. Same setup. No extra attempts."
+- The 5 tests in fixed order. Each test opens with its **setup diagram** (§3.5), its exact setup text, and the reminder: "Normal pockets. Same setup. No extra attempts." The diagram stays at the top of the screen while scoring; tap it to open it full screen.
   1. **Long straight pot** — 10 attempts: **Make / Miss**.
   2. **Cut shots** — 10 cutting left, then 10 cutting right: **Make / Miss**. The current side is shown prominently.
   3. **Stop shot** — 10 attempts: **Success / Fail** (OB made and CB within ~3").
@@ -96,7 +98,44 @@ A personal phone web app that **guides the daily 2-hour pool training** (60-min 
 4. **Training records**: charts of draw best/typical, 3-ball success rate, and 5-ball success rate over time.
 - A toggle switches the range between **30-day plan** (days 1–30) and **All time**.
 
-### 3.5 Settings
+### 3.5 Setup Diagrams
+
+A top-down view of the table for every drill block (10) and every test (5), so the user can set up balls without reading the text closely.
+
+**Table rendering (v1).** A realistic SVG drawing of a 7 ft table matching the GoSports Rustic. It includes:
+- wood-grain rails and cushions
+- cloth with a subtle texture
+- 18 diamonds
+- 6 pockets with a ~4.8" mouth
+
+The table is drawn to scale. The default playing surface is **78" × 39"**, set by one constant in `src/diagram/table.ts`. The user should measure the real table (cushion nose to cushion nose) before diagrams are finalized, and the constant should be updated if it differs.
+
+**Coordinate system.** Diagrams are defined in **inches on the playing surface**, with the origin at the top-left cushion nose. The x axis runs along the long side.
+- The table is drawn in landscape orientation.
+- In full-screen view on a phone held upright, the diagram rotates 90° to use the full screen height.
+- Pinch-zoom is available in full-screen view.
+
+**Elements** a diagram can contain:
+- `ball`: cue ball (white), 6-dot cue ball, object ball (numbered or solid color), or ghost ball (dashed outline).
+- `line`: aim line, cue-ball path, or object-ball path. Each can be solid, dashed, or an arrow.
+- `zone`: target area as a circle or rectangle, e.g., the 3" stop zone or a 12–18" position zone.
+- `marker`: a distance tick with a label, e.g., "12"", "24"", "36"". Used for ladders.
+- `label`: short text placed on the cloth. There is also a caption bar under the table showing 1–2 lines of the key instruction.
+- `pocket`: highlight on the target pocket.
+
+**Variants.**
+- **Ladder drills** (stop, draw, follow) show all distances at once: one cue-ball position per distance, labeled "1", "2", "3", with the distance markers.
+- **Cut drills and the cut test** show the left and right setups side by side as two small tables, or as one table with both cut lines when they fit.
+- **Random-layout drills** (3-ball pattern, 5-ball clearance training) show one *example* layout. The caption reads: "Example — use any open, makeable layout."
+- **The 5-ball clearance test** uses a **fixed template layout**, defined in the diagram data. This makes the test repeatable, as the plan recommends ("a fixed layout improves comparability"). The full-screen view for this test also shows each ball's position in inches from the nearest rails, so the user can set it up exactly.
+
+**Later option (not in v1): use a photo of the user's own table.**
+- The user uploads a top-down photo and taps the 4 corner pockets.
+- The app corrects the camera angle, crops the photo to the playing surface, and uses it as the background layer instead of the drawn table.
+- No diagram data changes, because the overlays are already in table inches.
+- v1 must keep the table background and the overlays as separate layers so this can be added later.
+
+### 3.6 Settings
 
 - Start date (Day 1) override.
 - Sound on/off.
@@ -127,6 +166,7 @@ interface Block {
   record: RecordMode;
   recordKind: RecordKind;
   drillRefId?: string;   // links to DrillRef.id
+  diagramId: string;     // links to a diagram in diagrams.json (§4.1a)
 }
 
 interface Session { id: 'am' | 'pm'; title: string; blocks: Block[]; }
@@ -141,6 +181,7 @@ interface TestDef {
   name: string; setup: string; attempts: number; scoring: string;
   measures: string; frequency: string; notes: string;
   kind: 'makeMiss' | 'makeMissLR' | 'distances' | 'runs';
+  diagramId: string;
 }
 
 interface ErrorCode { code: 'P' | 'C' | 'S' | 'D'; meaning: string; }
@@ -172,7 +213,35 @@ Block mapping from the spreadsheet ("Record?" column → `record` / `recordKind`
 | PM | 5-ball clearance (42–55) | yes | runs |
 | PM | Short review / replay (55–60) | notes | notes |
 
-A build-time schema check (Vitest test) validates `plan.json` against these types: unique IDs, `drillRefId`s that resolve, `focusMap` block IDs that exist, and session minutes summing to 60.
+A build-time schema check (Vitest test) validates `plan.json` against these types: unique IDs, `drillRefId`s that resolve, `diagramId`s that resolve, `focusMap` block IDs that exist, and session minutes summing to 60.
+
+### 4.1a Diagram file — `src/plan/diagrams.json`
+
+Diagrams are data, kept separate from the plan text so they can be edited on their own. All coordinates and sizes are in inches on the playing surface (§3.5).
+
+```ts
+type Pt = { x: number; y: number };   // inches, origin top-left cushion nose
+type PocketId = 'TL' | 'TM' | 'TR' | 'BL' | 'BM' | 'BR';
+
+type DiagramEl =
+  | { t: 'ball'; at: Pt; kind: 'cue' | 'cue6dot' | 'object' | 'ghost'; num?: number; label?: string }
+  | { t: 'line'; from: Pt; to: Pt; style: 'aim' | 'cuePath' | 'objPath'; arrow?: boolean; label?: string }
+  | { t: 'zone'; shape: 'circle'; at: Pt; r: number; label?: string }
+  | { t: 'zone'; shape: 'rect'; at: Pt; w: number; h: number; label?: string }
+  | { t: 'marker'; at: Pt; text: string }
+  | { t: 'label'; at: Pt; text: string }
+  | { t: 'pocket'; id: PocketId; label?: string };
+
+interface Diagram {
+  id: string;
+  title: string;
+  caption: string;          // 1–2 short lines under the table
+  panels: DiagramEl[][];    // 1 panel normally; 2 for left/right cut setups
+  showMeasurements?: boolean; // full-screen inch offsets from rails (5-ball test)
+}
+```
+
+The table geometry lives in `src/diagram/table.ts`: playing surface 78" × 39" (to be confirmed by the user's measurement), ball diameter 2.25", pocket mouth 4.8", and pocket and diamond positions derived from these values.
 
 ### 4.2 Stored data — IndexedDB (database `pool-training`, schema v1)
 
@@ -237,6 +306,7 @@ Backup format: `{ app: 'pool-training', schema: 1, exportedAt, sessions, tests, 
 | `src/stats/` | Pure functions over records (see 5.3) | — |
 | `src/runner/` | Pure reducers for session and test runners (see 5.2) | plan types |
 | `src/ui/` | Preact screens: Today, Session, Test, Progress, Settings; shared components (Timer, BigButton, TagPicker, Chart) | all above |
+| `src/diagram/` | Table geometry constants. A `TableDiagram` Preact component renders the SVG, with the **table layer** (realistic drawn table; later replaceable by a photo) kept separate from the **overlay layer** (diagram elements). A `DiagramViewer` component provides the full-screen view with rotate and pinch-zoom | plan types |
 | `src/platform/` | Wake lock, audio chime (unlocked on Start), small wrappers that fail soft | — |
 | PWA | `vite-plugin-pwa`: manifest, icons, precache all assets | — |
 
@@ -284,7 +354,13 @@ Backup format: `{ app: 'pool-training', schema: 1, exportedAt, sessions, tests, 
   - `runner/`: timer math across pause, add-time and simulated lock; next/back/record; undo; cut side switching after 10; skip; resume from serialized state
   - `db/`: export → import round-trip (using `fake-indexeddb`) and rejection of a malformed backup
 - **Plan schema test** on `plan.json`.
-- **Render tests** (`@testing-library/preact`) for the Session and Test runners' main interactions.
+- **Diagram data test** on `diagrams.json`:
+  - every block and test has a diagram
+  - every ball, zone, and point lies inside the playing surface
+  - no two balls overlap (centers at least 2.25" apart)
+  - ladder markers match the distances in the block text (e.g., draw ladder 8"/16"/24")
+- **Render tests** (`@testing-library/preact`) for the Session and Test runners' main interactions, and for `TableDiagram`: it renders each diagram and the table layer is separate from the overlay layer.
+- **Visual review:** a dev-only `/diagrams` page shows all 15 diagrams on one screen, for the user to check before shipping.
 - **Manual on-device checklist** (iPhone, home-screen install):
   1. installs and opens offline
   2. lock the phone mid-block, then resume with the correct time
@@ -292,6 +368,7 @@ Backup format: `{ app: 'pool-training', schema: 1, exportedAt, sessions, tests, 
   4. the screen stays awake
   5. a full test can be scored one-handed
   6. export → reset → import restores everything
+  7. diagrams are readable at arm's length; full-screen view rotates and zooms
 
 ## 8. Build and Deployment
 
@@ -310,3 +387,10 @@ Backup format: `{ app: 'pool-training', schema: 1, exportedAt, sessions, tests, 
 - Browsing session notes (notes are stored and included in backups)
 - Reducer-score tracking in tests
 - Notifications and reminders
+- A photo of the user's own table as the diagram background (designed for in §3.5; built later)
+- Animated shot paths
+
+## 10. Open Items
+
+- **Table measurement:** the user measures the GoSports playing surface (cushion nose to cushion nose, long and short side) and the corner pocket mouth. Until then, the defaults are 78" × 39" and 4.8".
+- **5-ball test template layout:** v1 ships with a proposed fixed layout. The user approves it (or adjusts it) on the `/diagrams` review page before running the first test, because changing it later breaks comparability with earlier tests.
