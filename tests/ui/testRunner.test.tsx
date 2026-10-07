@@ -191,3 +191,63 @@ test('Discard asks to confirm, then clears the active test without saving', asyn
   expect(await store.listTests()).toHaveLength(0);
   await waitFor(() => expect(location.hash).toBe('#/'));
 });
+
+// ---- review fix round 1 ----
+
+test('pre-start screen shows the xlsx title, intro line and the 5 tests', async () => {
+  location.hash = '#/test';
+  render(<App store={createStore(`tr-${++n}`)} now={now} />);
+  expect(await screen.findByRole('heading', { level: 1 })).toHaveTextContent('Standardized Skill Test — 20–25 minutes');
+  expect(screen.getByText(/^Use the same ball positions, normal pockets, same cue ball/)).toBeInTheDocument();
+  for (const name of ['Long straight pot', 'Cut shots', 'Stop shot', 'Draw test', '5-ball clearance'])
+    expect(screen.getByText(name)).toBeInTheDocument();
+});
+
+test('a retried Save after the active clear failed reuses the record id (exactly one record)', async () => {
+  const base = createStore(`tr-${++n}`);
+  let failClear = true;
+  const store = {
+    ...base,
+    setActive: vi.fn((a: Parameters<typeof base.setActive>[0]) => {
+      if (a === undefined && failClear) { failClear = false; return Promise.reject(new Error('disk')); }
+      return base.setActive(a);
+    }),
+  };
+  await base.setActive({ type: 'test', updatedAt: t0, payload: finishedState() });
+  location.hash = '#/test';
+  render(<App store={store} now={now} />);
+  fireEvent.click(await screen.findByRole('button', { name: /save/i }));
+  await waitFor(() => expect(location.hash).toBe('#/'));
+  expect(await base.listTests()).toHaveLength(1);
+  expect((await base.getActive())?.type).toBe('test');                     // clear failed: still active
+  location.hash = '#/test';                                                 // re-enter and save again
+  fireEvent.click(await screen.findByRole('button', { name: /save/i }));
+  await waitFor(async () => expect(await base.getActive()).toBeUndefined());
+  expect(await base.listTests()).toHaveLength(1);
+  await waitFor(() => expect(location.hash).toBe('#/'));
+});
+
+test('cut test caps at 20 shots', async () => {
+  const s = startTest(t0);
+  await openWith({ ...s, index: 1 });
+  const make = await screen.findByRole('button', { name: /^make$/i });
+  for (let i = 0; i < 23; i++) fireEvent.click(screen.getByRole('button', { name: /^make$/i }));
+  expect(make).toBeDisabled();
+  expect(screen.getByText('20 of 20')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: /^miss$/i })).toBeDisabled();
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+});
+
+test('Skip test asks to confirm only when the test already has entries', async () => {
+  const store = await openTest();
+  fireEvent.click(screen.getByRole('button', { name: /^make$/i }));
+  fireEvent.click(screen.getByRole('button', { name: /skip test/i }));
+  fireEvent.click(await screen.findByRole('button', { name: /keep going/i }));
+  expect(screen.getByText('1 of 10')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: /skip test/i }));
+  fireEvent.click(await screen.findByRole('button', { name: /skip this test/i }));
+  expect(screen.getByText('Cut shots')).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: /skip test/i }));       // empty: skips at once
+  expect(screen.getByText('Stop shot')).toBeInTheDocument();
+  await waitFor(async () => expect(((await store.getActive())?.payload as any).skipped).toEqual(['straight', 'cut']));
+});

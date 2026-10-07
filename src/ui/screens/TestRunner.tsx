@@ -29,15 +29,19 @@ const isShot = (s: unknown) => {
     && (x.side === undefined || x.side === 'L' || x.side === 'R');
 };
 
+/** Run state plus the id of the TestRecord once Save has started, so a retried Save overwrites instead of duplicating. */
+type RunState = TestRunState & { recordId?: string };
+
 /** Validates a persisted payload; throws if it cannot be resumed. */
-function restore(payload: unknown): TestRunState {
-  const p = payload as TestRunState;
+function restore(payload: unknown): RunState {
+  const p = payload as RunState;
   const ok = p && p.kind === 'test' && isNum(p.startedAt)
     && Number.isInteger(p.index) && p.index >= 0 && p.index <= TEST_ORDER.length
     && typeof p.shots === 'object' && p.shots !== null
     && SHOT_TESTS.every((id) => Array.isArray(p.shots[id]) && p.shots[id].length <= LIMITS[id] && p.shots[id].every(isShot))
     && Array.isArray(p.draw) && p.draw.length === 5 && p.draw.every((d) => d === null || isNum(d))
-    && Array.isArray(p.skipped) && p.skipped.every((id) => TEST_ORDER.includes(id));
+    && Array.isArray(p.skipped) && p.skipped.every((id) => TEST_ORDER.includes(id))
+    && (p.recordId === undefined || typeof p.recordId === 'string');
   if (!ok) throw new Error('corrupt test state');
   return p;
 }
@@ -106,11 +110,11 @@ export function TestRunner({ now }: { now: NowFn }) {
   const { store, active, refresh } = useAppData();
 
   const [toast, setToast] = useState<string | null>(null);
-  const [state, setState] = useState<TestRunState | null>(() => {
+  const [state, setState] = useState<RunState | null>(() => {
     if (active?.type !== 'test') return null;
     try { return restore(active.payload); } catch { return null; }
   });
-  const [sheet, setSheet] = useState<'tag' | 'end' | 'discard' | null>(null);
+  const [sheet, setSheet] = useState<'tag' | 'end' | 'skip' | 'discard' | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [finishing, setFinishing] = useState(false);
   const finishingRef = useRef(false);
@@ -132,7 +136,7 @@ export function TestRunner({ now }: { now: NowFn }) {
     return () => { void releaseWakeLock(); };
   }, [running]);
 
-  const update = (s: TestRunState) => {
+  const update = (s: RunState) => {
     stateRef.current = s;
     setState(s);
     store.setActive({ type: 'test', payload: s, updatedAt: now() }).then(
@@ -152,7 +156,7 @@ export function TestRunner({ now }: { now: NowFn }) {
           <LeaveButton onLeave={leave} />
         </header>
         {toast && <p class="notice notice--error" role="status">{toast}</p>}
-        <h1 class="runner-pre__title">Standard Skill Test — 20–25 minutes</h1>
+        <h1 class="runner-pre__title">Standardized Skill Test — 20–25 minutes</h1>
         <p class="test-intro">{TEST_INTRO}</p>
         <ol class="block-list">
           {TEST_ORDER.map((id) => {
@@ -189,7 +193,15 @@ export function TestRunner({ now }: { now: NowFn }) {
       setFinishing(true);
       setSaveError(null);
       try {
-        await store.putTest(toTestRecord(state, plan.version, now()));
+        // Persist the record id before the put, so a Save after a failed clear (or a reload) reuses it.
+        const recordId = state.recordId ?? crypto.randomUUID();
+        if (!state.recordId) {
+          const withId = { ...state, recordId };
+          await store.setActive({ type: 'test', payload: withId, updatedAt: now() });
+          stateRef.current = withId;
+          setState(withId);
+        }
+        await store.putTest({ ...toTestRecord(state, plan.version, now()), id: recordId });
       } catch {
         finishingRef.current = false;
         setFinishing(false);
@@ -271,10 +283,11 @@ export function TestRunner({ now }: { now: NowFn }) {
     if (currentTest(cur) === id) update(f(cur));
   };
   const miss = () => {
-    if (full) return;
+    const before = stateRef.current;
     apply((s) => recordShot(s, false));
-    setSheet('tag');
+    if (stateRef.current !== before) setSheet('tag');
   };
+  const skipNow = () => { setSheet(null); apply(skip); };
   const pickTag = (tag: ErrorCodeId | null) => {
     setSheet(null);
     if (tag) apply((s) => tagLast(s, tag));
@@ -324,7 +337,7 @@ export function TestRunner({ now }: { now: NowFn }) {
         )}
         <div class="controls">
           <button type="button" class="control" disabled={id === 'draw' || shots.length === 0} onClick={() => apply(undo)}>Undo last</button>
-          <button type="button" class="control" onClick={() => apply(skip)}>Skip test</button>
+          <button type="button" class="control" onClick={() => (done > 0 ? setSheet('skip') : skipNow())}>Skip test</button>
           <button type="button" class="control control--next" disabled={!isComplete(state, id)} onClick={() => apply((s) => (isComplete(s, id) ? advance(s) : s))}>
             {isLast ? 'Finish test' : 'Next test'}
           </button>
@@ -334,6 +347,15 @@ export function TestRunner({ now }: { now: NowFn }) {
         <Sheet title="Why did it miss?" onClose={() => setSheet(null)}>
           <p class="sheet__text">Why did it miss? (optional)</p>
           <TagPicker onPick={pickTag} />
+        </Sheet>
+      )}
+      {sheet === 'skip' && (
+        <Sheet title="Skip test" onClose={() => setSheet(null)}>
+          <p class="sheet__text">Skip {def.name}? Its {done} recorded {done === 1 ? 'entry is' : 'entries are'} cleared and it is not counted.</p>
+          <div class="sheet__actions sheet__actions--row">
+            <BigButton onClick={() => setSheet(null)}>Keep going</BigButton>
+            <BigButton variant="bad" onClick={skipNow}>Skip this test</BigButton>
+          </div>
         </Sheet>
       )}
       {sheet === 'end' && (
