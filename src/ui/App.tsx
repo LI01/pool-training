@@ -29,8 +29,10 @@ export function App({ store, now = Date.now }: { store?: Store; now?: NowFn }) {
   const [hash, setHash] = useState(location.hash || '#/');
   useEffect(() => {
     const on = () => setHash(location.hash || '#/');
-    window.addEventListener('hashchange', on);
-    return () => window.removeEventListener('hashchange', on);
+    // Captured: the cleanup can run after a test environment has removed the global.
+    const w = window;
+    w.addEventListener('hashchange', on);
+    return () => w.removeEventListener('hashchange', on);
   }, []);
   useEffect(() => { if (!data.loading) setChimeEnabled(data.settings.soundOn); }, [data.loading, data.settings.soundOn]);
   // Set before the screens render, which read the language through t() and the plan/diagram getters.
