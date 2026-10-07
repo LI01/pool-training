@@ -4,7 +4,10 @@ import { createStore } from '../../src/db/store';
 import type { SessionRecord, TestRecord } from '../../src/db/types';
 
 vi.mock('../../src/ui/components/LineChart', () => ({ LineChart: () => <div data-testid="line-chart" /> }));
-vi.mock('../../src/ui/components/BarChart', () => ({ BarChart: () => <div data-testid="bar-chart" /> }));
+const bar = vi.hoisted(() => ({ errors: null as null | { labels: string[]; series: { label: string; data: number[] }[] } }));
+vi.mock('../../src/ui/components/BarChart', () => ({
+  BarChart: (p: any) => { if (p.title === 'Errors per week') bar.errors = p; return <div data-testid="bar-chart" />; },
+}));
 
 const NOW = () => new Date(2026, 9, 7, 20).getTime();
 const sess = (id: string, date: string, p = 0): SessionRecord => ({
@@ -58,4 +61,13 @@ test('error buckets align to the plan start, including all time', async () => {
   await open('prog-bucket', [sess('before', '2026-09-20', 3), sess('in', '2026-10-01', 2)], []);
   fireEvent.click(screen.getByRole('button', { name: /all time/i }));
   expect(screen.getByText('P — Potting: 5')).toBeInTheDocument();
+});
+
+test('30-day plan error chart has 4 plan weeks (days 1–7, 8–14, 15–21, 22–30) and excludes day 31+', async () => {
+  // start 2026-10-01: day 22 = 10-22, day 30 = 10-30, day 31 = 10-31
+  await open('prog-plan-buckets', [
+    sess('d1', '2026-10-01', 1), sess('d22', '2026-10-22', 2), sess('d30', '2026-10-30', 3), sess('d31', '2026-10-31', 4),
+  ], []);
+  expect(bar.errors!.labels).toEqual(['10/1', '10/8', '10/15', '10/22']);
+  expect(bar.errors!.series.find((x) => x.label === 'P')!.data).toEqual([1, 0, 0, 5]);
 });

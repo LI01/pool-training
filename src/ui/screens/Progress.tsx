@@ -38,11 +38,13 @@ export function Progress() {
 
   const totals = errorTotals(sessions, tests, from, to);
   // 7-day buckets aligned to the plan start; in All time, records before start fall into earlier (negative-index) buckets.
+  // In the 30-day plan the 4 plan weeks match the weekly table: days 1–7, 8–14, 15–21, 22–30.
   const b0 = Math.floor(daysBetween(start, from) / 7);
-  const nBuckets = Math.max(1, Math.floor(daysBetween(start, to) / 7) - b0 + 1);
+  const nBuckets = range === 'plan' ? 4 : Math.max(1, Math.floor(daysBetween(start, to) / 7) - b0 + 1);
   const bStart = (i: number) => addDays(start, (b0 + i) * 7);
+  const bEnd = (i: number) => (range === 'plan' && i === nBuckets - 1 ? planEnd : addDays(bStart(i), 6));
   const bucketLabels = Array.from({ length: nBuckets }, (_, i) => short(bStart(i)));
-  const buckets = Array.from({ length: nBuckets }, (_, i) => errorTotals(sessions, tests, bStart(i), addDays(bStart(i), 6)));
+  const buckets = Array.from({ length: nBuckets }, (_, i) => errorTotals(sessions, tests, bStart(i), bEnd(i)));
   const hasErrors = CODES.some((c) => totals[c] > 0);
   const focus = focusSuggestion(sessions, tests, today);
 
