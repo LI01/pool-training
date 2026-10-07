@@ -13,6 +13,8 @@ export interface Block {
   volume: string;
   howToTrain: string;
   successStandard: string;
+  /** The spoken introduction: the drill explained the way a coach would say it. */
+  speech: string;
   purpose: string;
   record: RecordMode;
   recordKind: RecordKind;
@@ -45,6 +47,8 @@ export interface TestDef {
   measures: string;
   frequency: string;
   notes: string;
+  /** The spoken introduction: the test setup explained the way a coach would say it. */
+  speech: string;
   kind: 'makeMiss' | 'makeMissLR' | 'distances' | 'runs';
   diagramId: string;
 }

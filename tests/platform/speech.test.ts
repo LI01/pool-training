@@ -38,23 +38,18 @@ test('forSpeech makes plan shorthand readable', () => {
   expect(forSpeech('距离 12" · 30–40 杆 · 1 ft → 2', 'zh')).toBe('距离 12英寸 · 30到40 杆 · 1英尺，然后2');
 });
 
-test('block script reads name, length, setup, how to train and success standard, not volume or purpose', () => {
+test('block and test scripts say the hand-written speech, not the plan fields', () => {
   const b = getBlock('am-draw-ladder')!;
-  const { key, text } = blockScript(b);
-  expect(key).toBe('block:am-draw-ladder');
-  expect(text).toContain('Draw ladder');
-  expect(text).toContain('16 min');
-  expect(text).toContain(`Setup: ${b.setup.replace(/\.$/, '')}`);
-  expect(text).toContain('How to Train');
-  expect(text).toContain('Success Standard');
-  expect(text).not.toContain(b.volume);
-  expect(text).not.toContain(b.purpose);
+  expect(blockScript(b)).toEqual({ key: 'block:am-draw-ladder', text: b.speech });
+  expect(b.speech).not.toContain(b.setup);
+  const d = getTestDef('cut');
+  expect(testScript(d)).toEqual({ key: 'test:cut', text: d.speech });
 });
 
 test('scripts follow the app language', () => {
   setLang('zh');
-  expect(blockScript(getBlock('am-draw-ladder')!).text).toMatch(/^低杆阶梯练习。16 分钟。摆放：/);
-  expect(testScript(getTestDef('cut')).text).toMatch(/^切球。/);
+  expect(blockScript(getBlock('am-draw-ladder')!).text).toMatch(/^现在练低杆/);
+  expect(testScript(getTestDef('cut')).text).toMatch(/^下一项，切球/);
 });
 
 test.each(['en', 'zh'] as Lang[])('every block and test has an up-to-date recorded clip (%s) — rerun scripts/make_voice.py if not', (lang) => {
@@ -85,7 +80,7 @@ test('a refused clip falls back to the device voice once; an earlier clip ending
   a.onerror!();
   await Promise.resolve(); await Promise.resolve();
   expect(synth.speak).toHaveBeenCalledTimes(1);
-  expect(spoken().text).toMatch(/^Cut shots/);
+  expect(spoken().text).toMatch(/^Next, cut shots/);
   const staleEnded = a.onended!;
   playResult = Promise.resolve();
   speak(testScript(getTestDef('stop')));

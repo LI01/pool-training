@@ -1,4 +1,3 @@
-import { getLang, t } from '../i18n';
 import type { Block, TestDef } from '../plan';
 
 /** A spoken introduction: `key` names its pre-recorded clip (per language), `text` is what it says. */
@@ -15,21 +14,8 @@ export function forSpeech(s: string, lang: 'en' | 'zh'): string {
   return lang === 'zh' ? out : out.replace(/\bCB\b/g, 'cue ball').replace(/\bOB\b/g, 'object ball');
 }
 
-const join = (parts: string[]) => {
-  const zh = getLang() === 'zh';
-  return parts.map((p) => p.trim().replace(/[.。]$/, '')).filter(Boolean).join(zh ? '。' : '. ') + (zh ? '。' : '.');
-};
-const labelled = (label: string, text: string) => `${label}${getLang() === 'zh' ? '：' : ': '}${text}`;
+/** The spoken introduction of a training block. */
+export const blockScript = (b: Block): Script => ({ key: `block:${b.id}`, text: b.speech });
 
-/** The spoken introduction of a training block: name, length, setup, how to train, success standard. */
-export const blockScript = (b: Block): Script => ({
-  key: `block:${b.id}`,
-  text: join([
-    b.name, t('session.minutes', { n: b.minutes }),
-    labelled(t('session.setup'), b.setup), labelled(t('session.howToTrain'), b.howToTrain),
-    labelled(t('session.successStandard'), b.successStandard),
-  ]),
-});
-
-/** The spoken introduction of a test: name and setup. */
-export const testScript = (d: TestDef): Script => ({ key: `test:${d.id}`, text: join([d.name, d.setup]) });
+/** The spoken introduction of a test. */
+export const testScript = (d: TestDef): Script => ({ key: `test:${d.id}`, text: d.speech });
