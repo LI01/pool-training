@@ -1,0 +1,123 @@
+/* Table diagram: SVG scales to its container width; two panels sit side by side, stacking on narrow screens. */
+.table-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  width: 100%;
+}
+.table-diagram > svg {
+  display: block;
+  flex: 1 1 100%;
+  width: 100%;
+  height: auto;
+}
+.table-diagram--multi > svg {
+  flex-basis: 280px;
+  min-width: 0;
+}
+
+/* Inline card */
+.diagram-card {
+  margin: 0 0 12px;
+}
+.diagram-card__open {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  cursor: zoom-in;
+  overflow: hidden;
+}
+.diagram-card__open:focus-visible {
+  outline: 3px solid var(--accent, #f2c14e);
+  outline-offset: 2px;
+}
+.diagram-card figcaption {
+  margin-top: 6px;
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--muted, #9fb3a9);
+}
+
+/* Full-screen viewer */
+.diagram-viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: #050a08;
+  color: var(--text, #eef3ef);
+}
+.diagram-viewer__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: calc(8px + env(safe-area-inset-top)) 12px 8px;
+}
+.diagram-viewer__header h2 {
+  flex: 1;
+  margin: 0;
+  font-size: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.diagram-viewer__header button {
+  min-width: 48px;
+  min-height: 48px;
+  border: 1px solid #2c4a3d;
+  background: #13231d;
+  color: inherit;
+}
+.diagram-viewer__header button:disabled {
+  opacity: 0.4;
+}
+.diagram-viewer__close {
+  padding: 0 16px;
+  font-weight: 600;
+}
+.diagram-viewer__body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  touch-action: pan-x pan-y pinch-zoom;
+  -webkit-overflow-scrolling: touch;
+}
+.diagram-viewer__stage {
+  margin: 0 auto;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+/* Full screen: panels always stack vertically. */
+.diagram-viewer .table-diagram {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+.diagram-viewer .table-diagram > svg {
+  flex: 0 0 auto;
+}
+.diagram-viewer__footer {
+  padding: 8px 16px calc(12px + env(safe-area-inset-bottom));
+  font-size: 15px;
+  line-height: 1.4;
+}
+.diagram-viewer__footer p {
+  margin: 0;
+}
+.diagram-viewer__measure {
+  margin: 6px 0 0;
+  padding-left: 18px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Review page */
+.diagrams-review__item {
+  margin-bottom: 24px;
+}
+.diagrams-review__item code {
+  font-size: 13px;
+  color: var(--muted, #9fb3a9);
+}
