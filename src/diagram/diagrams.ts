@@ -1,4 +1,4 @@
-import { cutCueBall, ghostBall, lineFromPocket } from './geometry';
+import { along, cutCueBall, ghostBall, lineFromPocket, tangentDir, toRail, unit } from './geometry';
 import { POCKETS, TABLE } from './table';
 import type { Diagram, DiagramEl, Pt } from './types';
 
@@ -6,6 +6,8 @@ const S = lineFromPocket('TR', { x: 0, y: TABLE.height }); // standard straight-
 const SB = lineFromPocket('BR', { x: 0, y: 0 });           // mirrored line to bottom-right corner
 const OB_D = 15;                                           // object ball 15" from the pocket
 const CONTACT = OB_D + TABLE.ball;                         // cue-ball centre at contact
+// unit vector perpendicular to the standard shot line, pointing to the open (lower) side
+const SIDE: Pt = (() => { const u = unit(S(0), S(10)); return { x: u.y, y: -u.x }; })();
 const ob = (at: Pt, num = 1): DiagramEl => ({ t: 'ball', at, kind: 'object', num });
 const cue = (at: Pt, label?: string): DiagramEl => ({ t: 'ball', at, kind: 'cue', label });
 const cue6 = (at: Pt, label?: string): DiagramEl => ({ t: 'ball', at, kind: 'cue6dot', label });
@@ -38,6 +40,26 @@ function cutPanel(side: 'L' | 'R', angles: number[]): DiagramEl[] {
   ];
 }
 
+function oneRail(): Diagram {
+  const o: Pt = { x: 70, y: 6 }, c: Pt = { x: 52, y: 4 };
+  const g = ghostBall(o, 'TR');
+  const hit = toRail(g, tangentDir(c, o, 'TR'));
+  const end = along(hit.pt, hit.dir, 15);
+  return {
+    id: 'pm-one-rail', title: 'One-rail position zones',
+    caption: 'Pot the OB, send CB one rail into the 12–18" zone. Predict the route first.',
+    panels: [[
+      { t: 'pocket', id: 'TR' }, ob(o, 1), cue(c),
+      { t: 'line', from: o, to: POCKETS.TR, style: 'objPath', arrow: true },
+      { t: 'line', from: c, to: g, style: 'aim' },
+      { t: 'line', from: g, to: hit.pt, style: 'cuePath' },
+      { t: 'line', from: hit.pt, to: end, style: 'cuePath', arrow: true },
+      { t: 'zone', shape: 'rect', at: { x: 60, y: 25 }, w: 14, h: 12, label: 'Target zone' },
+      ob({ x: 54, y: 34 }, 2), { t: 'pocket', id: 'BM', label: 'next' },
+    ]],
+  };
+}
+
 const list: Diagram[] = [
   {
     id: 'am-straight-warmup', title: 'Straight-ball warm-up',
@@ -53,8 +75,8 @@ const list: Diagram[] = [
     [12, 24, 36], [{ t: 'zone', shape: 'circle', at: S(CONTACT), r: 3, label: 'Stop zone' }]),
   ladder('am-draw-ladder', 'Draw ladder', 'Level cue, low contact. Draw back 6", then 12", then farther.',
     [8, 16, 24], [
-      { t: 'zone', shape: 'circle', at: S(CONTACT + 6), r: 2, label: '6"' },
-      { t: 'zone', shape: 'circle', at: S(CONTACT + 12), r: 2, label: '12"' },
+      { t: 'marker', at: along(S(CONTACT + 6), SIDE, 3.5), text: 'draw 6"' },
+      { t: 'marker', at: along(S(CONTACT + 12), SIDE, 3.5), text: 'draw 12"' },
     ], true),
   ladder('am-follow-ladder', 'Follow ladder', 'High centre. Pick a follow target (6", 12", 24") before each shot.',
     [12, 24, 36], [
@@ -78,19 +100,7 @@ const list: Diagram[] = [
     caption: '30°, 45°, 60° — both directions. 6 shots per angle/direction. Keep OB & pocket fixed.',
     panels: [cutPanel('L', [30, 45, 60]), cutPanel('R', [30, 45, 60])],
   },
-  {
-    id: 'pm-one-rail', title: 'One-rail position zones',
-    caption: 'Pot the OB, send CB one rail into the 12–18" zone. Predict the route first.',
-    panels: [[
-      { t: 'pocket', id: 'BR' }, ob({ x: 66, y: 31 }, 1), cue({ x: 50, y: 24 }),
-      { t: 'line', from: { x: 66, y: 31 }, to: POCKETS.BR, style: 'objPath', arrow: true },
-      { t: 'line', from: { x: 50, y: 24 }, to: ghostBall({ x: 66, y: 31 }, 'BR'), style: 'aim' },
-      { t: 'line', from: ghostBall({ x: 66, y: 31 }, 'BR'), to: { x: 56, y: 0 }, style: 'cuePath' },
-      { t: 'line', from: { x: 56, y: 0 }, to: { x: 40, y: 16 }, style: 'cuePath', arrow: true },
-      { t: 'zone', shape: 'rect', at: { x: 32.5, y: 8.5 }, w: 15, h: 15, label: 'Target zone' },
-      ob({ x: 20, y: 8 }, 2), { t: 'pocket', id: 'TL', label: 'next' },
-    ]],
-  },
+  oneRail(),
   {
     id: 'pm-3ball', title: '3-ball pattern drill',
     caption: 'Example — use any open, makeable layout. Name all 3 shots & CB zones first.',
