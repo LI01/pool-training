@@ -1,0 +1,30 @@
+:root {
+  --bg: #0b1512;
+  --surface: #13231d;
+  --felt: #0e5a3f;
+  --text: #eef3ef;
+  --muted: #9fb3a9;
+  --accent: #f2c14e;
+  --good: #3fbf7f;
+  --bad: #e5534b;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  font-size: 17px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.screen {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 16px 16px calc(16px + env(safe-area-inset-bottom));
+}
+
+button {
+  min-height: 48px;
+  border-radius: 12px;
+  font-size: 17px;
+}
