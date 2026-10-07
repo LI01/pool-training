@@ -6,22 +6,32 @@ OUT = Path(__file__).resolve().parent.parent / "public" / "icons"
 S = 1024  # draw large, downsample for smooth edges
 
 
-def draw() -> Image.Image:
-    img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+def draw(maskable: bool = False) -> Image.Image:
+    """maskable: opaque felt to the edges, artwork shrunk to sit well inside the 80% safe zone."""
+    if maskable:
+        img = Image.new("RGBA", (S, S), "#0e5a3f")  # felt, full bleed
+        k = 0.8
+    else:
+        img = Image.new("RGBA", (S, S), (0, 0, 0, 0))
+        k = 1.0
     d = ImageDraw.Draw(img)
-    d.rounded_rectangle((0, 0, S - 1, S - 1), radius=S // 5, fill="#4a2c17")  # wood
-    b = S // 14
-    d.rounded_rectangle((b, b, S - 1 - b, S - 1 - b), radius=S // 5 - b, fill="#0e5a3f")  # felt
+    if not maskable:
+        d.rounded_rectangle((0, 0, S - 1, S - 1), radius=S // 5, fill="#4a2c17")  # wood
+        b = S // 14
+        d.rounded_rectangle((b, b, S - 1 - b, S - 1 - b), radius=S // 5 - b, fill="#0e5a3f")  # felt
 
-    cue = (S * 0.30, S * 0.70)
-    one = (S * 0.70, S * 0.30)
-    r = S * 0.11
+    def at(x: float, y: float):  # scale about the centre
+        return (S * (0.5 + (x - 0.5) * k), S * (0.5 + (y - 0.5) * k))
+
+    cue = at(0.30, 0.70)
+    one = at(0.70, 0.30)
+    r = S * 0.11 * k
 
     # dashed aim line
     dx, dy = one[0] - cue[0], one[1] - cue[1]
     length = (dx * dx + dy * dy) ** 0.5
     ux, uy = dx / length, dy / length
-    pos, dash, gap = r * 1.5, S * 0.04, S * 0.035
+    pos, dash, gap = r * 1.5, S * 0.04 * k, S * 0.035 * k
     while pos + dash < length - r * 1.5:
         d.line((cue[0] + ux * pos, cue[1] + uy * pos,
                 cue[0] + ux * (pos + dash), cue[1] + uy * (pos + dash)),
@@ -51,6 +61,7 @@ def main() -> None:
             bg.paste(img, mask=img.split()[3])
             img = bg
         img.save(OUT / name)
+    draw(maskable=True).convert("RGB").resize((512, 512), Image.LANCZOS).save(OUT / "icon-maskable-512.png")
 
 
 if __name__ == "__main__":
