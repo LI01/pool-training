@@ -15,13 +15,13 @@ export const startSession = (sessionId: SessionId, now: number): SessionRunState
   pausedTotalMs: 0, sessionPausedMs: 0, extraMs: 0, results: {}, finished: false,
 });
 
-export const pause = (s: SessionRunState, now: number): SessionRunState => (s.pausedAt !== null ? s : { ...s, pausedAt: now });
+export const pause = (s: SessionRunState, now: number): SessionRunState => (s.pausedAt !== null || s.finished ? s : { ...s, pausedAt: now });
 export const resume = (s: SessionRunState, now: number): SessionRunState => {
-  if (s.pausedAt === null) return s;
+  if (s.pausedAt === null || s.finished) return s;
   const d = now - s.pausedAt;
   return { ...s, pausedAt: null, pausedTotalMs: s.pausedTotalMs + d, sessionPausedMs: s.sessionPausedMs + d };
 };
-export const addTime = (s: SessionRunState, ms: number): SessionRunState => ({ ...s, extraMs: s.extraMs + ms });
+export const addTime = (s: SessionRunState, ms: number): SessionRunState => (s.finished ? s : { ...s, extraMs: s.extraMs + ms });
 
 export function remainingMs(s: SessionRunState, blocks: Block[], now: number): number {
   const eff = s.pausedAt ?? now;
@@ -39,6 +39,7 @@ const resetBlock = (s: SessionRunState, now: number, blockIndex: number): Sessio
   ({ ...s, blockIndex, blockStartedAt: now, pausedAt: null, pausedTotalMs: 0, extraMs: 0 });
 
 export function next(s0: SessionRunState, blocks: Block[], now: number, entry?: EntryInput): SessionRunState {
+  if (s0.finished) return s0;
   const s = resume(s0, now);
   const block = blocks[s.blockIndex];
   const result: BlockResult = { blockId: block.id, startedAt: s.blockStartedAt, endedAt: now, ...(entry ?? {}) };
@@ -49,7 +50,7 @@ export function next(s0: SessionRunState, blocks: Block[], now: number, entry?: 
 
 export function back(s0: SessionRunState, now: number): SessionRunState {
   const s = resume(s0, now);
-  return { ...resetBlock(s, now, Math.max(0, s.blockIndex - 1)), finished: false };
+  return { ...resetBlock(s, now, s.finished ? s.blockIndex : Math.max(0, s.blockIndex - 1)), finished: false };
 }
 
 export function toRecord(s0: SessionRunState, blocks: Block[], planVersion: number, now: number): SessionRecord {
@@ -82,7 +83,7 @@ export function validateEntry(kind: RecordKind, raw: Record<string, string>): V 
       const sc = num(raw.success, 100, true), at = num(raw.attempts, 100, true);
       if (sc === null || at === null || at === 0) return { ok: false, error: 'Enter whole numbers; attempts at least 1.' };
       if (sc > at) return { ok: false, error: 'Successes cannot exceed attempts.' };
-      const failTags = (raw.failTags ?? '').split(',').filter((x): x is ErrorCodeId => ['P', 'C', 'S', 'D'].includes(x));
+      const failTags = (raw.failTags ?? '').split(',').map((x) => x.trim()).filter((x): x is ErrorCodeId => ['P', 'C', 'S', 'D'].includes(x));
       return { ok: true, entry: { runs: { success: sc, attempts: at, failTags } } };
     }
     case 'generic': {

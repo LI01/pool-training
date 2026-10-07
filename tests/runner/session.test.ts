@@ -71,7 +71,46 @@ test('formatClock', () => {
   expect(formatClock(500)).toBe('0:01'); // rounds up partial seconds while counting down
 });
 
+function finishedState() {
+  let s = startSession('am', T0);
+  for (let i = 0; i < blocks.length; i++) s = next(s, blocks, T0 + (i + 1) * MIN, i === blocks.length - 1 ? { notes: 'last' } : undefined);
+  return s;
+}
+
+test('double next on finished state is a no-op and keeps the entry', () => {
+  const s = finishedState();
+  expect(next(s, blocks, T0 + 99 * MIN, { skipped: true })).toBe(s);
+  expect(s.results[blocks[blocks.length - 1].id].notes).toBe('last');
+  expect(pause(s, T0 + 50 * MIN)).toBe(s);
+  expect(resume(s, T0 + 50 * MIN)).toBe(s);
+  expect(addTime(s, MIN)).toBe(s);
+});
+
+test('back from finished returns to the last block, unfinished, timer reset', () => {
+  const b = back(finishedState(), T0 + 30 * MIN);
+  expect(b.blockIndex).toBe(blocks.length - 1);
+  expect(b.finished).toBe(false);
+  expect(remainingMs(b, blocks, T0 + 30 * MIN)).toBe(blocks[blocks.length - 1].minutes * MIN);
+});
+
+test('back while paused does not count paused time as active', () => {
+  let s = next(startSession('am', T0), blocks, T0 + MIN);
+  s = pause(s, T0 + 2 * MIN);
+  s = back(s, T0 + 12 * MIN);
+  expect(s.pausedAt).toBeNull();
+  expect(s.sessionPausedMs).toBe(10 * MIN);
+  for (let i = 0; i < blocks.length; i++) s = next(s, blocks, T0 + (12 + i) * MIN);
+  expect(toRecord(s, blocks, 1, T0 + 20 * MIN).activeMinutes).toBe(10);
+});
+
 describe('validateEntry', () => {
+  test('runs: tags trimmed, not deduped', () => {
+    expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'C, D' })).toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: ['C', 'D'] } } });
+    expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'C,C' })).toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: ['C', 'C'] } } });
+  });
+  test('runs: zero attempts rejected', () => expect(validateEntry('runs', { success: '0', attempts: '0' }).ok).toBe(false));
+  test('generic: blank field rejected', () => expect(validateEntry('generic', { made: '', attempts: '10' }).ok).toBe(false));
+
   test('draw: valid', () => expect(validateEntry('draw', { bestIn: '18', typicalIn: '10.5' })).toEqual({ ok: true, entry: { draw: { bestIn: 18, typicalIn: 10.5 } } }));
   test.each([['', '10'], ['-3', '10'], ['abc', '10'], ['10', '200']])('draw rejects %s/%s', (b, t) =>
     expect(validateEntry('draw', { bestIn: b, typicalIn: t }).ok).toBe(false));
