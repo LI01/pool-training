@@ -6,6 +6,13 @@ export function setChimeEnabled(on: boolean): void {
 }
 
 export function unlockAudio(): void {
+  // iOS 17+: 'playback' lets Web Audio play with the silent switch on.
+  try {
+    const session = (navigator as Navigator & { audioSession?: { type: string } }).audioSession;
+    if (session) session.type = 'playback';
+  } catch {
+    /* ignore */
+  }
   try {
     if (!ctx) {
       const Ctor = window.AudioContext ?? (window as any).webkitAudioContext;

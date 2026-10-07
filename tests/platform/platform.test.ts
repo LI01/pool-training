@@ -101,3 +101,21 @@ describe('chime with AudioContext', () => {
     expect(oscillators).toBe(3);
   });
 });
+
+describe('iOS audio session', () => {
+  afterEach(() => { delete (navigator as any).audioSession; });
+
+  test('unlockAudio sets navigator.audioSession.type to playback so the silent switch does not mute the chime', () => {
+    const session = { type: 'auto' };
+    Object.defineProperty(navigator, 'audioSession', { value: session, configurable: true });
+    unlockAudio();
+    expect(session.type).toBe('playback');
+  });
+
+  test('unlockAudio fails soft when setting the audio session throws', () => {
+    Object.defineProperty(navigator, 'audioSession', {
+      value: { set type(_v: string) { throw new Error('nope'); } }, configurable: true,
+    });
+    expect(() => unlockAudio()).not.toThrow();
+  });
+});
