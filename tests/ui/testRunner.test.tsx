@@ -21,13 +21,13 @@ async function openTest() {
   return store;
 }
 
-test('straight test: makes, miss with optional tag, progress and cap at 10', async () => {
+test('straight test: makes, miss (no reason asked), progress and cap at 10', async () => {
   await openTest();
   expect(screen.getByText('Long straight pot')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /open diagram/i })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /^make$/i }));
   fireEvent.click(screen.getByRole('button', { name: /^miss$/i }));
-  fireEvent.click(screen.getByRole('button', { name: /no tag/i }));        // tag optional
+  expect(screen.queryByRole('dialog')).toBeNull();                         // no "why did it miss?" sheet
   expect(screen.getByText('2 of 10')).toBeInTheDocument();
   for (let i = 0; i < 12; i++) fireEvent.click(screen.getByRole('button', { name: /^make$/i }));
   expect(screen.getByText('10 of 10')).toBeInTheDocument();
@@ -46,7 +46,7 @@ test('full test with skips saves a record', async () => {
   expect(screen.getByText(/Average: 11"/)).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /next test/i }));
   for (let i = 0; i < 3; i++) fireEvent.click(screen.getByRole('button', { name: /^cleared$/i }));
-  for (let i = 0; i < 2; i++) { fireEvent.click(screen.getByRole('button', { name: /^failed$/i })); fireEvent.click(screen.getByRole('button', { name: /^C/ })); }
+  for (let i = 0; i < 2; i++) fireEvent.click(screen.getByRole('button', { name: /^failed$/i }));
   fireEvent.click(screen.getByRole('button', { name: /finish test/i }));
   fireEvent.click(await screen.findByRole('button', { name: /save/i }));
   await waitFor(async () => expect(await store.listTests()).toHaveLength(1));
@@ -54,7 +54,7 @@ test('full test with skips saves a record', async () => {
   expect(r.straight).toHaveLength(10);
   expect(r.cut).toBeUndefined();
   expect(r.draw).toEqual([12, 10, 14, 8, 11]);
-  expect(r.fiveBall?.filter((s) => s.tag === 'C')).toHaveLength(2);
+  expect(r.fiveBall?.filter((s) => !s.ok)).toEqual([{ ok: false }, { ok: false }]);
   await waitFor(() => expect(location.hash).toBe('#/'));                  // let Save finish before the next test
 });
 
@@ -87,7 +87,7 @@ test('restores a test in progress from the saved active state', async () => {
   await openWith({ ...s, shots: { ...s.shots, straight: [{ ok: true }, { ok: false, tag: 'P' }, { ok: true }, { ok: true }] } });
   expect(await screen.findByText('4 of 10')).toBeInTheDocument();
   expect(screen.getByText('Long straight pot')).toBeInTheDocument();
-  expect(screen.getByLabelText('Shot 2: miss, P')).toBeInTheDocument();
+  expect(screen.getByLabelText('Shot 2: miss')).toBeInTheDocument();      // a tag saved by an older version still restores
 });
 
 test('corrupt saved test is cleared with a message and the pre-start screen shows', async () => {
@@ -101,7 +101,6 @@ test('Undo removes the last shot and is persisted', async () => {
   const store = await openTest();
   fireEvent.click(screen.getByRole('button', { name: /^make$/i }));
   fireEvent.click(screen.getByRole('button', { name: /^miss$/i }));
-  fireEvent.click(screen.getByRole('button', { name: /^S/ }));
   expect(screen.getByText('2 of 10')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /undo last/i }));
   expect(screen.getByText('1 of 10')).toBeInTheDocument();
@@ -126,9 +125,8 @@ test('stop test uses Success / Fail labels', async () => {
   await openWith({ ...s, index: 2 });
   fireEvent.click(await screen.findByRole('button', { name: /^success$/i }));
   fireEvent.click(screen.getByRole('button', { name: /^fail$/i }));
-  fireEvent.click(screen.getByRole('button', { name: /^D/ }));
   expect(screen.getByText('2 of 10')).toBeInTheDocument();
-  expect(screen.getByLabelText('Shot 2: miss, D')).toBeInTheDocument();
+  expect(screen.getByLabelText('Shot 2: miss')).toBeInTheDocument();
 });
 
 test('invalid draw input is marked invalid and not counted', async () => {

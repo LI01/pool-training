@@ -2,7 +2,7 @@ import { getLang } from '../i18n';
 import manifest from '../voice/manifest.json';
 import { forSpeech, type Script } from './scripts';
 
-export { blockScript, forSpeech, testScript, type Script } from './scripts';
+export { blockScript, forSpeech, testScript, tipsScript, type Script } from './scripts';
 
 /** Pre-recorded neural-voice clips (scripts/make_voice.py), keyed by `<lang>:<script key>`. */
 const MANIFEST: Record<string, { file: string; text: string }> = manifest;

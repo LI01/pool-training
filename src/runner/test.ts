@@ -1,4 +1,4 @@
-import { TEST_ORDER, type ErrorCodeId, type TestId } from '../plan';
+import { TEST_ORDER, type TestId } from '../plan';
 import type { Shot, TestRecord } from '../db/types';
 import { localDate } from '../stats/dates';
 
@@ -23,17 +23,6 @@ export function recordShot(s: TestRunState, ok: boolean): TestRunState {
   if (!isShotTest(id) || s.shots[id].length >= LIMITS[id]) return s;
   const shot: Shot = id === 'cut' ? { ok, side: nextCutSide(s) } : { ok };
   return { ...s, shots: { ...s.shots, [id]: [...s.shots[id], shot] } };
-}
-
-export function tagLast(s: TestRunState, tag: ErrorCodeId | null): TestRunState {
-  const id = currentTest(s);
-  if (!isShotTest(id)) return s;
-  const list = s.shots[id];
-  const last = list.at(-1);
-  if (!last || last.ok) return s;
-  const updated: Shot = { ...last };
-  if (tag) updated.tag = tag; else delete updated.tag;
-  return { ...s, shots: { ...s.shots, [id]: [...list.slice(0, -1), updated] } };
 }
 
 export function undo(s: TestRunState): TestRunState {

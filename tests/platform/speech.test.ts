@@ -1,4 +1,4 @@
-import { blockScript, clipUrl, forSpeech, isSpeaking, setAutoSpeak, speak, speakAuto, stopSpeaking, testScript } from '../../src/platform/speech';
+import { blockScript, clipUrl, forSpeech, isSpeaking, setAutoSpeak, speak, speakAuto, stopSpeaking, testScript, tipsScript } from '../../src/platform/speech';
 import { setLang, type Lang } from '../../src/i18n';
 import { getBlock, getTestDef, plan, TEST_ORDER } from '../../src/plan';
 
@@ -54,7 +54,8 @@ test('scripts follow the app language', () => {
 
 test.each(['en', 'zh'] as Lang[])('every block and test has an up-to-date recorded clip (%s) — rerun scripts/make_voice.py if not', (lang) => {
   setLang(lang);
-  const scripts = [...plan.sessions.flatMap((s) => s.blocks.map(blockScript)), ...TEST_ORDER.map((id) => testScript(getTestDef(id)))];
+  const items = [...plan.sessions.flatMap((s) => s.blocks), ...TEST_ORDER.map(getTestDef)];
+  const scripts = [...items.map((x) => ('kind' in x ? testScript(x) : blockScript(x))), ...items.map(tipsScript)];
   for (const s of scripts) expect(clipUrl(s), `${lang}:${s.key}`).toMatch(new RegExp(`${lang}-${s.key.replace(':', '-')}.*\\.mp3`));
 });
 

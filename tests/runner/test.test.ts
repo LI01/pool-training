@@ -1,4 +1,4 @@
-import { startTest, currentTest, recordShot, tagLast, undo, setDraw, isComplete, nextCutSide, skip, advance, toTestRecord } from '../../src/runner/test';
+import { startTest, currentTest, recordShot, undo, setDraw, isComplete, nextCutSide, skip, advance, toTestRecord } from '../../src/runner/test';
 
 const T0 = new Date(2026, 9, 7, 18, 0).getTime();
 const rep = <T,>(s: T, n: number, f: (s: T) => T) => { for (let i = 0; i < n; i++) s = f(s); return s; };
@@ -11,12 +11,9 @@ test('extra taps after the test is full are ignored', () => {
   expect(isComplete(s, 'straight')).toBe(true);
 });
 
-test('tag only applies to a miss; undo removes last shot', () => {
-  let s = recordShot(startTest(T0), true);
-  s = tagLast(s, 'P');
-  expect(s.shots.straight[0].tag).toBeUndefined();
-  s = tagLast(recordShot(s, false), 'P');
-  expect(s.shots.straight[1]).toEqual({ ok: false, tag: 'P' });
+test('a miss records no reason; undo removes last shot', () => {
+  let s = recordShot(recordShot(startTest(T0), true), false);
+  expect(s.shots.straight[1]).toEqual({ ok: false });
   s = undo(s);
   expect(s.shots.straight).toHaveLength(1);
 });
@@ -62,7 +59,6 @@ test('every action is a no-op once all tests are done', () => {
   expect(currentTest(s)).toBeNull();
   expect(recordShot(s, true)).toBe(s);
   expect(recordShot(s, false)).toEqual(s);
-  expect(tagLast(s, 'P')).toEqual(s);
   expect(undo(s)).toEqual(s);
   expect(skip(s)).toEqual(s);
   expect(advance(s)).toEqual(s);

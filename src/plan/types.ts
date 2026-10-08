@@ -15,6 +15,10 @@ export interface Block {
   successStandard: string;
   /** The spoken introduction: the drill explained the way a coach would say it. */
   speech: string;
+  /** What commonly goes wrong in this drill, shown as a short list. */
+  pitfalls: string[];
+  /** The spoken version of the pitfalls (the "Tips" button). */
+  tipsSpeech: string;
   purpose: string;
   record: RecordMode;
   recordKind: RecordKind;
@@ -49,13 +53,12 @@ export interface TestDef {
   notes: string;
   /** The spoken introduction: the test setup explained the way a coach would say it. */
   speech: string;
+  /** What commonly goes wrong in this test, shown as a short list. */
+  pitfalls: string[];
+  /** The spoken version of the pitfalls (the "Tips" button). */
+  tipsSpeech: string;
   kind: 'makeMiss' | 'makeMissLR' | 'distances' | 'runs';
   diagramId: string;
-}
-
-export interface ErrorCode {
-  code: ErrorCodeId;
-  meaning: string;
 }
 
 export interface Plan {
@@ -64,7 +67,5 @@ export interface Plan {
   intro: string;
   sessions: Session[];
   tests: TestDef[];
-  errorCodes: ErrorCode[];
   drillRefs: DrillRef[];
-  focusMap: Record<ErrorCodeId, { blockIds: string[]; advice: string }>;
 }

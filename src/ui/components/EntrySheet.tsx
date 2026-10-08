@@ -1,11 +1,10 @@
 import { useState } from 'preact/hooks';
-import type { ErrorCodeId, RecordKind, RecordMode } from '../../plan';
+import type { RecordKind, RecordMode } from '../../plan';
 import type { BlockResult } from '../../db/types';
 import { t, toLen } from '../../i18n';
 import { validateEntry, type EntryInput } from '../../runner/session';
 import { BigButton } from './BigButton';
 import { Sheet } from './Sheet';
-import { TagPicker } from './TagPicker';
 
 export interface EntrySheetProps {
   kind: Exclude<RecordKind, null>;
@@ -48,14 +47,11 @@ function initialRaw(kind: EntrySheetProps['kind'], r?: BlockResult): Record<stri
 /** Quick-entry bottom sheet shown on Next for blocks that record something. */
 export function EntrySheet({ kind, record, title, initial, onSubmit, onSkip, onClose }: EntrySheetProps) {
   const [raw, setRaw] = useState(() => initialRaw(kind, initial));
-  const [tags, setTags] = useState<ErrorCodeId[]>(initial?.runs?.failTags ?? []);
   const [error, setError] = useState<string | null>(null);
   const set = (k: string, v: string) => setRaw((r) => ({ ...r, [k]: v }));
-  const int = (k: string) => Number(raw[k]) || 0;
-  const tagsFull = tags.length >= int('attempts') - int('success');
 
   const save = () => {
-    const v = validateEntry(kind, kind === 'runs' ? { ...raw, failTags: tags.join(',') } : raw);
+    const v = validateEntry(kind, raw);
     if (!v.ok) { setError(v.error); return; }
     onSubmit(v.entry);
   };
@@ -80,17 +76,6 @@ export function EntrySheet({ kind, record, title, initial, onSubmit, onSkip, onC
           <>
             <Stepper label={t('entry.successfulRuns')} value={raw.success} onChange={(v) => set('success', v)} />
             <Stepper label={t('entry.layouts')} value={raw.attempts} onChange={(v) => set('attempts', v)} />
-            <p class="entry__hint">{t('entry.failedHint')}</p>
-            <TagPicker noTag={false} disabled={tagsFull} onPick={(tag) => tag && !tagsFull && setTags((ts) => [...ts, tag])} />
-            {tags.length > 0 && (
-              <div class="chips">
-                {tags.map((tag, i) => (
-                  <button type="button" key={i} class="chip" aria-label={t('entry.remove', { tag })} onClick={() => setTags((ts) => ts.filter((_, j) => j !== i))}>
-                    {tag} ×
-                  </button>
-                ))}
-              </div>
-            )}
           </>
         )}
         {kind === 'generic' && (

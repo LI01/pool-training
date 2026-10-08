@@ -1,11 +1,10 @@
 import { t, toLen } from '../i18n';
-import { plan, getBlock, BLOCK_IDS, type ErrorCodeId } from '../plan';
+import { BLOCK_IDS } from '../plan';
 import type { SessionRecord, Settings, Shot, TestRecord } from '../db/types';
 import { addDays, daysBetween } from './dates';
 
 export type Metric = 'straight' | 'cut' | 'stop' | 'drawAvg' | 'fiveBall';
 export const METRICS: Metric[] = ['straight', 'cut', 'stop', 'drawAvg', 'fiveBall'];
-export type ErrorCounts = Record<ErrorCodeId, number>;
 export interface TestScores { straight?: number; cutL?: number; cutR?: number; cut?: number; stop?: number; drawAvg?: number; fiveBall?: number }
 export interface MetricSummary { weeks: (number | null)[]; best: number | null; avg: number | null }
 
@@ -52,28 +51,6 @@ export function weeklySummary(tests: TestRecord[], startDate: string): Record<Me
   return out;
 }
 
-const inRange = (d: string, from?: string, to?: string) => (!from || d >= from) && (!to || d <= to);
-export function errorTotals(sessions: SessionRecord[], tests: TestRecord[], from?: string, to?: string): ErrorCounts {
-  const c: ErrorCounts = { P: 0, C: 0, S: 0, D: 0 };
-  for (const t of tests) if (inRange(t.date, from, to))
-    for (const s of [t.straight, t.cut, t.stop, t.fiveBall]) for (const x of s ?? []) if (!x.ok && x.tag) c[x.tag]++;
-  for (const s of sessions) if (inRange(s.date, from, to))
-    for (const b of s.blocks) for (const tag of b.runs?.failTags ?? []) c[tag]++;
-  return c;
-}
-
-export interface FocusSuggestion { code: ErrorCodeId; share: number; advice: string; blockNames: string[] }
-export function focusSuggestion(sessions: SessionRecord[], tests: TestRecord[], today: string): FocusSuggestion | null {
-  const c = errorTotals(sessions, tests, addDays(today, -6), today);
-  const total = c.P + c.C + c.S + c.D;
-  if (total < 10) return null;
-  const [code, n] = (Object.entries(c) as [ErrorCodeId, number][]).sort((a, b) => b[1] - a[1])[0];
-  const share = n / total;
-  if (share < 0.35) return null;
-  const f = plan.focusMap[code];
-  return { code, share, advice: f.advice, blockNames: f.blockIds.map((id) => getBlock(id)?.name ?? id) };
-}
-
 export function streak(sessions: SessionRecord[], today: string): number {
   const days = new Set(sessions.map((s) => s.date));
   let d = days.has(today) ? today : days.has(addDays(today, -1)) ? addDays(today, -1) : null;
@@ -95,13 +72,12 @@ export function testDue(tests: TestRecord[], today: string): { daysSinceLast: nu
   return { daysSinceLast: n, due: n >= 3 };
 }
 
-export function dailySummaryLine(date: string, sessions: SessionRecord[], tests: TestRecord[]): string {
+export function dailySummaryLine(date: string, tests: TestRecord[]): string {
   const latest = tests.filter((t) => t.date === date).sort((a, b) => a.endedAt - b.endedAt).at(-1);
   const s = latest ? testScores(latest) : {};
   const f = (v: number | undefined, suffix: string) => (v === undefined ? '–' : `${v}${suffix}`);
-  const e = errorTotals(sessions, tests, date, date);
   return t('summary.line', {
-    straight: f(s.straight, '/10'), cut: f(s.cut, '/20'), stop: f(s.stop, '/10'), draw: f(s.drawAvg === undefined ? undefined : toLen(s.drawAvg), t('unit.len')), fiveBall: f(s.fiveBall, '/5'), ...e,
+    straight: f(s.straight, '/10'), cut: f(s.cut, '/20'), stop: f(s.stop, '/10'), draw: f(s.drawAvg === undefined ? undefined : toLen(s.drawAvg), t('unit.len')), fiveBall: f(s.fiveBall, '/5'),
   });
 }
 

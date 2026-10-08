@@ -1,11 +1,11 @@
 import {
-  resolveStartDate, dayNumber, weekOfPlan, testScores, weeklySummary, errorTotals,
-  focusSuggestion, streak, minutesByDay, testDue, dailySummaryLine, trainingRecords,
+  resolveStartDate, dayNumber, weekOfPlan, testScores, weeklySummary,
+  streak, minutesByDay, testDue, dailySummaryLine, trainingRecords,
 } from '../../src/stats';
 import type { SessionRecord, TestRecord, Shot } from '../../src/db/types';
 
-const shots = (made: number, total: number, tag?: 'P' | 'C' | 'S' | 'D'): Shot[] =>
-  Array.from({ length: total }, (_, i) => (i < made ? { ok: true } : { ok: false, tag }));
+const shots = (made: number, total: number): Shot[] =>
+  Array.from({ length: total }, (_, i) => ({ ok: i < made }));
 const cutShots = (l: number, r: number): Shot[] => [
   ...shots(l, 10).map((s) => ({ ...s, side: 'L' as const })),
   ...shots(r, 10).map((s) => ({ ...s, side: 'R' as const })),
@@ -49,30 +49,6 @@ test('weeklySummary averages per week, ignores missing, best and avg over days 1
   expect(w.stop).toEqual({ weeks: [null, null, null, null], best: null, avg: null });
 });
 
-test('errorTotals counts test tags and failed-run tags in date range', () => {
-  const tests = [test_('2026-10-07', { straight: shots(7, 10, 'P'), fiveBall: [{ ok: false, tag: 'C' }, { ok: false }] })];
-  const sessions = [sess('2026-10-08', { blocks: [{ blockId: 'pm-5ball', startedAt: 0, runs: { success: 1, attempts: 3, failTags: ['D', 'C'] } }] })];
-  expect(errorTotals(sessions, tests)).toEqual({ P: 3, C: 2, S: 0, D: 1 });
-  expect(errorTotals(sessions, tests, '2026-10-08', '2026-10-08')).toEqual({ P: 0, C: 1, S: 0, D: 1 });
-});
-
-test('focusSuggestion thresholds: needs ≥10 errors and top ≥35%', () => {
-  const t = (p: number, c: number) => [test_('2026-10-07', { straight: shots(10 - p, 10, 'P'), stop: shots(10 - c, 10, 'C') })];
-  expect(focusSuggestion([], t(5, 4), '2026-10-07')).toBeNull();          // 9 errors
-  expect(focusSuggestion([], t(6, 4), '2026-10-07')?.code).toBe('P');     // 10 errors, P 60%
-  const even = [test_('2026-10-07', { straight: shots(7, 10, 'P'), stop: shots(7, 10, 'C'), cut: [...shots(17, 20, 'S')] }),
-    test_('2026-10-07', { straight: shots(7, 10, 'D') })];               // 3 each = 25%
-  expect(focusSuggestion([], even, '2026-10-07')).toBeNull();
-  expect(focusSuggestion([], t(6, 4), '2026-10-20')).toBeNull();          // outside last 7 days
-});
-
-test('focusSuggestion returns advice and block names', () => {
-  const r = focusSuggestion([], [test_('2026-10-07', { stop: shots(0, 10, 'S') })], '2026-10-07')!;
-  expect(r.code).toBe('S');
-  expect(r.blockNames).toContain('Draw ladder');
-  expect(r.advice).toMatch(/ladders/);
-});
-
 test('streak counts consecutive days ending today or yesterday', () => {
   const s = ['2026-10-03', '2026-10-05', '2026-10-06', '2026-10-07'].map((d) => sess(d));
   expect(streak(s, '2026-10-07')).toBe(3);
@@ -90,13 +66,13 @@ test('testDue after 3 days or when never tested', () => {
   expect(testDue([test_('2026-10-04')], '2026-10-07')).toEqual({ daysSinceLast: 3, due: true });
 });
 
-test('dailySummaryLine uses latest test and day error totals', () => {
+test('dailySummaryLine uses the latest test of the day', () => {
   const tests = [
     test_('2026-10-07', { straight: shots(5, 10), endedAt: 1 }),
-    test_('2026-10-07', { straight: shots(7, 10, 'P'), cut: cutShots(7, 7), stop: shots(8, 10), draw: [12, 12, 12, 12, 12], fiveBall: shots(3, 5), endedAt: 2 }),
+    test_('2026-10-07', { straight: shots(7, 10), cut: cutShots(7, 7), stop: shots(8, 10), draw: [12, 12, 12, 12, 12], fiveBall: shots(3, 5), endedAt: 2 }),
   ];
-  expect(dailySummaryLine('2026-10-07', [], tests)).toBe('Straight 7/10 | Cut 14/20 | Stop 8/10 | Draw 12" | 5-ball 3/5 | P3 C0 S0 D0');
-  expect(dailySummaryLine('2026-10-08', [], tests)).toBe('Straight – | Cut – | Stop – | Draw – | 5-ball – | P0 C0 S0 D0');
+  expect(dailySummaryLine('2026-10-07', tests)).toBe('Straight 7/10 | Cut 14/20 | Stop 8/10 | Draw 12" | 5-ball 3/5');
+  expect(dailySummaryLine('2026-10-08', tests)).toBe('Straight – | Cut – | Stop – | Draw – | 5-ball –');
 });
 
 test('trainingRecords aggregates draw/3-ball/5-ball per day', () => {

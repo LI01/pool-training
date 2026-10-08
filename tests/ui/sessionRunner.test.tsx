@@ -84,7 +84,7 @@ test('corrupt saved state is cleared with a message and the pre-start screen sho
   await waitFor(async () => expect(await store.getActive()).toBeUndefined());
 });
 
-test('runs sheet records fail tags; Back pre-fills; Leave keeps the active session', async () => {
+test('runs sheet records successes; Back pre-fills; Leave keeps the active session', async () => {
   const store = createStore(`sr-${++n}`);
   await store.setActive({ type: 'session', updatedAt: t, payload: {
     kind: 'session', sessionId: 'pm', startedAt: t, blockIndex: 2, blockStartedAt: t, pausedAt: null,
@@ -95,19 +95,16 @@ test('runs sheet records fail tags; Back pre-fills; Leave keeps the active sessi
   fireEvent.click(await screen.findByRole('button', { name: 'Increase Layouts attempted' }));
   fireEvent.click(screen.getByRole('button', { name: 'Increase Layouts attempted' }));
   fireEvent.click(screen.getByRole('button', { name: 'Increase Successful runs' }));
-  fireEvent.click(screen.getByRole('button', { name: /^P Potting/ }));
-  fireEvent.click(screen.getByRole('button', { name: 'Remove P' }));
-  fireEvent.click(screen.getByRole('button', { name: /^S Spin/ }));     // 1 failed run → 1 tag max
   fireEvent.click(screen.getByRole('button', { name: /save/i }));
   expect(await screen.findByText('5-ball clearance')).toBeInTheDocument();
   await waitFor(async () => {
     const a = await store.getActive();
-    expect((a?.payload as any).results['pm-3ball'].runs).toEqual({ success: 1, attempts: 2, failTags: ['S'] });
+    expect((a?.payload as any).results['pm-3ball'].runs).toEqual({ success: 1, attempts: 2, failTags: [] });
   });
   fireEvent.click(screen.getByRole('button', { name: 'Back' }));
   fireEvent.click(await screen.findByRole('button', { name: /^next/i }));
   expect(screen.getByLabelText('Layouts attempted')).toHaveValue('2');
-  expect(screen.getByRole('button', { name: 'Remove S' })).toBeInTheDocument();
+  expect(screen.getByLabelText('Successful runs')).toHaveValue('1');
   fireEvent.keyDown(document, { key: 'Escape' });
   fireEvent.click(screen.getByRole('button', { name: /leave session/i }));
   expect(await screen.findByText('Afternoon Session')).toBeInTheDocument();

@@ -51,6 +51,19 @@ test('reads each block when Start/Next enter it; Pause stops; Repeat rereads fro
   expect(pause.mock.calls.length).toBeGreaterThan(pauses);
 });
 
+test('the Tips button talks through the common mistakes, in training and in tests', async () => {
+  await open('#/session/am', { voiceOn: false });
+  fireEvent.click(await screen.findByRole('button', { name: /^start$/i }));
+  expect(screen.getByRole('heading', { name: 'Common mistakes' })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: /^tips$/i }));
+  expect(said()).toEqual([expect.stringMatching(/en-tips-am-straight-warmup/)]);
+  cleanup();
+  await open('#/test', { voiceOn: false });
+  fireEvent.click(await screen.findByRole('button', { name: /start test/i }));
+  fireEvent.click(screen.getByRole('button', { name: /^tips$/i }));
+  expect(said()[1]).toMatch(/en-tips-straight/);
+});
+
 test('voice guidance off: nothing is read automatically, the button still works', async () => {
   await open('#/session/am', { voiceOn: false });
   fireEvent.click(await screen.findByRole('button', { name: /^start$/i }));

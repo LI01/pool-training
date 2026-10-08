@@ -5,7 +5,7 @@ import { createStore } from '../../src/db/store';
 vi.mock('../../src/ui/components/LineChart', () => ({ LineChart: (p: { title?: string }) => <div data-testid="line-chart">{p.title}</div> }));
 vi.mock('../../src/ui/components/BarChart', () => ({ BarChart: (p: { title?: string }) => <div data-testid="bar-chart">{p.title}</div> }));
 
-test('progress shows weekly table, error totals, focus and streak', async () => {
+test('progress shows weekly table and streak, and no error statistics', async () => {
   const store = createStore('prog-1');
   const miss = (tag: 'C') => ({ ok: false, tag });
   await store.saveSettings({ soundOn: true, startDate: '2026-10-01' });
@@ -17,8 +17,7 @@ test('progress shows weekly table, error totals, focus and streak', async () => 
   render(<App store={store} now={() => new Date(2026, 9, 7, 20).getTime()} />);
   await waitFor(() => expect(screen.getByText('Week 1')).toBeInTheDocument());
   expect(screen.getByRole('row', { name: /Straight \/10/ })).toHaveTextContent('7');
-  expect(screen.getByText(/C — Cue-ball/)).toBeInTheDocument();
-  expect(screen.getByText(/Cue-ball position errors lead/)).toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: /errors|focus/i })).toBeNull();   // tags saved by older versions are ignored
   expect(screen.getByText(/Streak: 1 day/)).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /all time/i }));
   expect(screen.getAllByTestId('line-chart').length).toBeGreaterThan(0);

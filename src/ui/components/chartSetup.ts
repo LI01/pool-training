@@ -8,8 +8,7 @@ Chart.register(LineController, LineElement, PointElement, LinearScale, CategoryS
 const TICK = '#9fb3a9';
 const GRID = 'rgba(255,255,255,0.06)';
 
-/** Fixed colors: one per error code, and per test/line series, used consistently across charts. */
-export const ERROR_COLORS = { P: '#5ab0ff', C: '#ff9f43', S: '#b48cff', D: '#ff6b9d' } as const;
+/** Fixed colors per test/line series, used consistently across charts. */
 export const SERIES_COLORS = { total: '#3fbf7f', left: '#5ab0ff', right: '#ff9f43', alt: '#f2c14e' } as const;
 
 /** Creates a chart on the canvas; returns undefined where canvas is unavailable (jsdom). */

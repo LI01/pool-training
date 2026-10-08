@@ -5,13 +5,14 @@ import type { BlockResult } from '../../db/types';
 import { t, toLen, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { playChime, unlockAudio } from '../../platform/chime';
-import { blockScript, speakAuto, stopSpeaking } from '../../platform/speech';
+import { blockScript, speakAuto, stopSpeaking, tipsScript } from '../../platform/speech';
 import {
   addTime, back, endSession, next, pause, remainingMs, resume, startSession, toRecord,
   type EntryInput, type SessionRunState,
 } from '../../runner/session';
 import { BigButton } from '../components/BigButton';
 import { EntrySheet } from '../components/EntrySheet';
+import { Pitfalls } from '../components/Pitfalls';
 import { ReadAloud } from '../components/ReadAloud';
 import { Sheet } from '../components/Sheet';
 import { Timer } from '../components/Timer';
@@ -237,6 +238,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
           <dl class="block-info">
             {details.map(([k, v]) => <div key={k}><dt>{t(k)}</dt><dd>{v}</dd></div>)}
           </dl>
+          <Pitfalls items={block.pitfalls} script={tipsScript(block)} />
           {ref && (
             <details class="drill-ref">
               <summary>{t('session.drillRef')}</summary>

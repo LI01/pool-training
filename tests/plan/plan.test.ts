@@ -1,4 +1,4 @@
-import { plan, getBlock, getDrillRef, TEST_ORDER } from '../../src/plan';
+import { plan, getDrillRef, TEST_ORDER } from '../../src/plan';
 
 const blocks = plan.sessions.flatMap((s) => s.blocks);
 
@@ -26,9 +26,11 @@ test('record kind consistent with record mode', () => {
   }
 });
 
-test('focusMap block ids exist', () => {
-  for (const code of ['P', 'C', 'S', 'D'] as const)
-    for (const id of plan.focusMap[code].blockIds) expect(getBlock(id)).toBeDefined();
+test('every block and test lists three common mistakes and has spoken tips', () => {
+  for (const x of [...plan.sessions.flatMap((s) => s.blocks), ...plan.tests]) {
+    expect(x.pitfalls, x.id).toHaveLength(3);
+    expect(x.tipsSpeech.length, x.id).toBeGreaterThan(40);
+  }
 });
 
 test('five tests in canonical order', () => {

@@ -204,21 +204,7 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
   width: 100%; min-height: 56px; box-sizing: border-box; padding: 0; text-align: center; font: inherit; font-size: 26px; font-weight: 700;
   color: var(--text); background: transparent; border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 10px;
 }
-.entry__hint { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
 .sheet__actions--row { grid-auto-flow: column; grid-auto-columns: 1fr; }
-.tag-picker { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.tag-picker button {
-  min-height: 56px; display: flex; align-items: center; gap: 10px; padding: 0 14px; text-align: left;
-  background: #1f3a2f; color: var(--text); border: 1px solid rgba(255, 255, 255, 0.12); font-weight: 600;
-}
-.tag-picker button:disabled { opacity: 0.4; }
-.tag-picker__code { font-size: 22px; font-weight: 800; color: var(--accent); }
-.tag-picker__none { grid-column: 1 / -1; justify-content: center; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip {
-  min-height: 48px; min-width: 56px; padding: 0 14px; border-radius: 999px;
-  background: none; color: var(--accent); border: 1px solid var(--accent); font-weight: 700;
-}
 
 /* ---- Test runner ---- */
 .test-intro { line-height: 1.45; color: var(--muted); margin: 0 0 8px; }
@@ -254,8 +240,6 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
 .draw-inputs__field input[aria-invalid='true'] { border-color: var(--bad); }
 .draw-inputs__avg { grid-column: 1 / -1; margin: 0; font-size: 26px; font-weight: 750; }
 .summary-note { margin-left: 10px; font-size: 14px; color: var(--muted); }
-.summary-errors { display: flex; gap: 18px; font-size: 18px; margin: 16px 0 0; }
-.summary-errors b { color: var(--accent); }
 
 /* ---- Progress ---- */
 .progress section { margin: 0 0 28px; }
@@ -263,17 +247,13 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
 .seg button { flex: 1; background: var(--surface); color: var(--muted); border: 1px solid rgba(255,255,255,0.08); }
 .seg button.seg__on { background: var(--felt); color: var(--text); border-color: var(--felt); }
 .chart { margin: 0 0 18px; }
-.chart h3, .focus-card h3 { font-size: 16px; margin: 0 0 6px; }
+.chart h3 { font-size: 16px; margin: 0 0 6px; }
 .chart canvas { width: 100%; display: block; }
 .table-wrap { margin: 8px 0; }
 .summary { border-collapse: collapse; font-size: 12px; width: 100%; table-layout: fixed; }
 .summary th, .summary td { padding: 6px 2px; text-align: right; border-bottom: 1px solid rgba(255,255,255,0.08); }
 .summary th:first-child { text-align: left; width: 22%; }
 .summary thead th { color: var(--muted); font-weight: 600; }
-.err-list { list-style: none; padding: 0; margin: 0 0 12px; display: grid; gap: 6px; }
-.err-dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; margin-right: 8px; }
-.focus-card { background: var(--surface); border-left: 4px solid var(--accent); border-radius: 12px; padding: 14px 16px; margin-top: 8px; }
-.focus-card p { margin: 0 0 6px; }
 .streak { font-size: 20px; font-weight: 650; margin: 0 0 12px; }
 .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin: 0 0 18px; }
 .cal__cell { background: var(--surface); border-radius: 8px; padding: 4px 2px; text-align: center; }
@@ -318,3 +298,7 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
   background: none; color: var(--text); font-weight: 650; white-space: nowrap;
 }
 .runner__speak-btn--on { border-color: var(--accent); color: var(--accent); }
+.pitfalls { margin: 16px 0 0; }
+.pitfalls__head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pitfalls h3 { margin: 0; font-size: 13px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+.pitfalls ul { margin: 6px 0 0; padding-left: 20px; line-height: 1.45; }

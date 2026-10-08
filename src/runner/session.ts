@@ -1,4 +1,4 @@
-import type { Block, ErrorCodeId, RecordKind, SessionId } from '../plan';
+import type { Block, RecordKind, SessionId } from '../plan';
 import type { BlockResult, SessionRecord } from '../db/types';
 import { fromLen, t } from '../i18n';
 import { localDate } from '../stats/dates';
@@ -104,9 +104,7 @@ export function validateEntry(kind: RecordKind, raw: Record<string, string>): V 
       const sc = num(raw.success, 100, true), at = num(raw.attempts, 100, true);
       if (sc === null || at === null || at === 0) return { ok: false, error: t('entry.err.whole') };
       if (sc > at) return { ok: false, error: t('entry.err.successes') };
-      const failTags = (raw.failTags ?? '').split(',').map((x) => x.trim()).filter((x): x is ErrorCodeId => ['P', 'C', 'S', 'D'].includes(x));
-      if (failTags.length > at - sc) return { ok: false, error: t('entry.err.tags') };
-      return { ok: true, entry: { runs: { success: sc, attempts: at, failTags } } };
+      return { ok: true, entry: { runs: { success: sc, attempts: at, failTags: [] } } };
     }
     case 'generic': {
       const m = num(raw.made, 200, true), at = num(raw.attempts, 200, true);

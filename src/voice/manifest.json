@@ -59,6 +59,66 @@
   "file": "en-test-straight.mp3",
   "text": "First test: the long straight pot. Place the object ball about a foot, or a foot and a half, from a corner pocket. Put the cue ball four feet behind it, in a perfectly straight line. You get ten shots. Use the same pocket and the same distances every time you take this test."
  },
+ "en:tips:am-draw-ladder": {
+  "file": "en-tips-am-draw-ladder.mp3",
+  "text": "Here's what usually goes wrong with draw. People hit harder, when they should hit lower and cleaner. Keep the back of your cue down, so the cue stays level. And keep accelerating through the cue ball. Don't slow down at contact."
+ },
+ "en:tips:am-follow-ladder": {
+  "file": "en-tips-am-follow-ladder.mp3",
+  "text": "Watch out for a few things. Don't just push harder; control the distance with a smooth stroke. Pick your distance before you get down on the shot. And hit straight above center, so the cue ball doesn't drift off the line."
+ },
+ "en:tips:am-precision-pocket": {
+  "file": "en-tips-am-precision-pocket.mp3",
+  "text": "A couple of reminders. Be honest: a ball that rattles in the jaws is a miss. Aim for the very center of the pocket, not just somewhere in it. And if you notice you're speeding up, pause and go through your routine again."
+ },
+ "en:tips:am-stop-ladder": {
+  "file": "en-tips-am-stop-ladder.mp3",
+  "text": "Quick reminders. A real stop shot is hit at center, not with draw. When the distance gets longer, add a little speed rather than hitting lower. And stay down after the shot, so you can see exactly what the cue ball did."
+ },
+ "en:tips:am-straight-warmup": {
+  "file": "en-tips-am-straight-warmup.mp3",
+  "text": "A few things to watch. Keep your head still until the ball is in the pocket. Let the cue go straight through, and don't steer it at the end. And after a miss, take a breath and work out why before you set up again."
+ },
+ "en:tips:cut": {
+  "file": "en-tips-cut.mp3",
+  "text": "Keep the same angle all the way through, even after a miss. Don't rush the side you find harder. And put the object ball back in exactly the same spot each time."
+ },
+ "en:tips:draw": {
+  "file": "en-tips-draw.mp3",
+  "text": "Measure each draw properly; don't just guess. Keep the same stroke for all five, and don't start hitting harder. And put the object ball close enough to the pocket that you never miss it."
+ },
+ "en:tips:fiveBall": {
+  "file": "en-tips-fiveBall.mp3",
+  "text": "Use the same layout if you can, so the results mean something. Take your time on the first shot; it sets up the whole run. And when a run fails, notice why it ended."
+ },
+ "en:tips:pm-3ball": {
+  "file": "en-tips-pm-3ball.mp3",
+  "text": "A few reminders. Plan all three shots before you hit the first one. You don't need perfect position, just a good angle for the next shot. And if the position goes badly wrong, set the layout up again instead of trying to rescue it."
+ },
+ "en:tips:pm-5ball": {
+  "file": "en-tips-pm-5ball.mp3",
+  "text": "Here's what usually ends a run. Picking a route that's harder than it needs to be. Sending the cue ball a long way when a short move would do. And using side spin when you don't need it. Keep it simple."
+ },
+ "en:tips:pm-cut-blocks": {
+  "file": "en-tips-pm-cut-blocks.mp3",
+  "text": "Common mistakes on cuts. Changing the angle and the speed at the same time, so you can't tell what went wrong. Missing the same way again and again, always too thin or always too thick. Notice which way you miss, and adjust. And thinking about the cue ball too early, before the pot itself feels solid."
+ },
+ "en:tips:pm-one-rail": {
+  "file": "en-tips-pm-one-rail.mp3",
+  "text": "Be strict here. If the cue ball isn't in the target area, it doesn't count, even if you still have a shot. Change just one thing at a time, so you learn what each change does. And always picture the cue ball's path before you shoot."
+ },
+ "en:tips:pm-review": {
+  "file": "en-tips-pm-review.mp3",
+  "text": "For the review, don't just knock balls around. Pick the shots that really cost you, set them up exactly, and don't move on until you can say what caused the miss and what you'll do differently."
+ },
+ "en:tips:stop": {
+  "file": "en-tips-stop.mp3",
+  "text": "Hit center ball for a true stop. Don't use draw to fake it. Use the same speed on every shot. And be honest: if the cue ball rolls more than about three inches, it's not a success."
+ },
+ "en:tips:straight": {
+  "file": "en-tips-straight.mp3",
+  "text": "For this test, keep the setup exactly the same every time, so your scores can be compared. Take your time on every shot, including the last few. And on a long shot, stay down until the ball drops."
+ },
  "zh:block:am-draw-ladder": {
   "file": "zh-block-am-draw-ladder.mp3",
   "text": "现在练低杆，这个环节十六分钟。还是直线球，主球离目标球先放二十厘米，差不多一个手掌，然后四十、六十厘米。有带点的训练主球的话，就用它。每个距离，先试着把主球拉回十五厘米左右，就是拇指和食指张开那么长；再拉回三十厘米；然后再远一点。球杆尽量放平，出杆平顺地加速，不用使蛮劲。目标是球打进，主球沿着原来的线拉回来，停在你想要的位置。"
@@ -118,5 +178,65 @@
  "zh:test:straight": {
   "file": "zh-test-straight.mp3",
   "text": "第一项测试：长直线球。目标球放在离底袋三十到四十五厘米的地方，主球放在目标球后面一百二十厘米，完全成一条直线。一共打十杆。每次测试都用同一个袋口、同样的距离。"
+ },
+ "zh:tips:am-draw-ladder": {
+  "file": "zh-tips-am-draw-ladder.mp3",
+  "text": "低杆最常见的问题是：靠使劲，而不是打得更低、更干净。杆尾要压低，让球杆尽量放平。击球的时候要一直加速穿过主球，别在碰到球的时候收力。"
+ },
+ "zh:tips:am-follow-ladder": {
+  "file": "zh-tips-am-follow-ladder.mp3",
+  "text": "注意几点。不要光靠推得更猛，要用顺滑的出杆控制距离。趴下之前，先想好让主球跟多远。击球点要在正中线的上方，不然主球会带塞跑偏。"
+ },
+ "zh:tips:am-precision-pocket": {
+  "file": "zh-tips-am-precision-pocket.mp3",
+  "text": "提醒两三点。对自己诚实一点，在袋口晃进去的球算没进。要瞄袋口的正中间，而不是只要进袋就行。发现自己越打越快的时候，停一下，把击球前的准备动作再走一遍。"
+ },
+ "zh:tips:am-stop-ladder": {
+  "file": "zh-tips-am-stop-ladder.mp3",
+  "text": "提醒几点。真正的定杆是打中杆，不是用低杆凑出来的。距离远了，要加一点力度，而不是把杆打得更低。打完先别起身，看清楚主球到底怎么走的。"
+ },
+ "zh:tips:am-straight-warmup": {
+  "file": "zh-tips-am-straight-warmup.mp3",
+  "text": "注意这几点。球进袋之前，头不要动。出杆要直直地送出去，最后一刻别拐杆。没进的时候，先缓一口气，想明白原因再摆下一颗。"
+ },
+ "zh:tips:cut": {
+  "file": "zh-tips-cut.mp3",
+  "text": "整个测试都用同一个角度，没进也别改。自己不擅长的那一边，别急着打。每次都把目标球放回完全相同的位置。"
+ },
+ "zh:tips:draw": {
+  "file": "zh-tips-draw.mp3",
+  "text": "每一杆都认真量一下，别光用眼睛估。五杆用同样的出杆，别越打越用力。目标球要放得离袋口够近，保证不会打丢。"
+ },
+ "zh:tips:fiveBall": {
+  "file": "zh-tips-fiveBall.mp3",
+  "text": "能用同一个球型就用同一个，成绩才有意义。第一杆别急，它决定了整盘的走位。没清完的时候，留意一下是因为什么断的。"
+ },
+ "zh:tips:pm-3ball": {
+  "file": "zh-tips-pm-3ball.mp3",
+  "text": "提醒几点。打第一杆之前，先把三杆都想好。走位不用完美，给下一杆留一个好角度就够了。如果走位出了大问题，就把球摆回去再来，不要硬救。"
+ },
+ "zh:tips:pm-5ball": {
+  "file": "zh-tips-pm-5ball.mp3",
+  "text": "清台失败，常常是因为这几个原因：线路选得太难；主球本来走一小段就行，却让它跑了大半张台；还有没必要的时候加了塞。越简单越好。"
+ },
+ "zh:tips:pm-cut-blocks": {
+  "file": "zh-tips-pm-cut-blocks.mp3",
+  "text": "切球常见的错误有这几个。角度和力度一起改，结果不知道问题出在哪。总往同一边偏，老是切薄，或者老是切厚，要留意自己偏向哪边，然后调整。还有，进球还没打稳，就开始想主球停哪儿。"
+ },
+ "zh:tips:pm-one-rail": {
+  "file": "zh-tips-pm-one-rail.mp3",
+  "text": "这项要严格。主球没进目标区就不算，哪怕还有球可打。每次只改一样东西，这样才知道每个改变的效果。出杆前，一定先想好主球的路线。"
+ },
+ "zh:tips:pm-review": {
+  "file": "zh-tips-pm-review.mp3",
+  "text": "复盘的时候，别随便打打。挑真正让你丢分的球，按原样摆好。没想明白为什么没进、下次怎么改之前，不要换下一个。"
+ },
+ "zh:tips:stop": {
+  "file": "zh-tips-stop.mp3",
+  "text": "用中杆打真正的定杆，别用低杆去凑。每一杆用同样的力度。还有要诚实，主球滚出去超过四根手指宽，就不算成功。"
+ },
+ "zh:tips:straight": {
+  "file": "zh-tips-straight.mp3",
+  "text": "这项测试，每次摆法要完全一样，成绩才有可比性。每一杆都别着急，最后几杆也一样。长台更要注意，球进之前头别抬。"
  }
 }

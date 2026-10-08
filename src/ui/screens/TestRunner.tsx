@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { DiagramCard } from '../../diagram/TableDiagram';
-import { getTestDef, plan, TEST_ORDER, type ErrorCodeId, type TestDef, type TestId } from '../../plan';
+import { getTestDef, plan, TEST_ORDER, type TestDef, type TestId } from '../../plan';
 import type { Shot } from '../../db/types';
 import { fromLen, t, toLen, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { unlockAudio } from '../../platform/chime';
-import { speakAuto, stopSpeaking, testScript } from '../../platform/speech';
+import { speakAuto, stopSpeaking, testScript, tipsScript } from '../../platform/speech';
 import {
-  advance, currentTest, isComplete, LIMITS, nextCutSide, recordShot, setDraw, skip, startTest, tagLast,
+  advance, currentTest, isComplete, LIMITS, nextCutSide, recordShot, setDraw, skip, startTest,
   toTestRecord, undo, type TestRunState,
 } from '../../runner/test';
-import { errorTotals, testScores } from '../../stats';
+import { testScores } from '../../stats';
 import { BigButton } from '../components/BigButton';
+import { Pitfalls } from '../components/Pitfalls';
 import { ReadAloud } from '../components/ReadAloud';
 import { Sheet } from '../components/Sheet';
-import { TagPicker } from '../components/TagPicker';
 import { navigate, type NowFn } from '../nav';
 import { useAppData } from '../useAppData';
 
@@ -70,9 +70,7 @@ function ShotDots({ shots, limit, label }: { shots: Shot[]; limit: number; label
           const s = shots[i];
           if (!s) return <li key={i} class="dot dot--empty" />;
           return (
-            <li key={i} class={s.ok ? 'dot dot--ok' : 'dot dot--miss'} aria-label={t(s.ok ? 'test.shotMake' : s.tag ? 'test.shotMissTag' : 'test.shotMiss', { n: i + 1, tag: s.tag ?? '' })}>
-              {s.ok ? '' : s.tag ?? ''}
-            </li>
+            <li key={i} class={s.ok ? 'dot dot--ok' : 'dot dot--miss'} aria-label={t(s.ok ? 'test.shotMake' : 'test.shotMiss', { n: i + 1 })} />
           );
         })}
       </ol>
@@ -115,7 +113,7 @@ export function TestRunner({ now }: { now: NowFn }) {
     if (active?.type !== 'test') return null;
     try { return restore(active.payload); } catch { return null; }
   });
-  const [sheet, setSheet] = useState<'tag' | 'end' | 'skip' | 'discard' | null>(null);
+  const [sheet, setSheet] = useState<'end' | 'skip' | 'discard' | null>(null);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [finishing, setFinishing] = useState(false);
   const finishingRef = useRef(false);
@@ -182,7 +180,6 @@ export function TestRunner({ now }: { now: NowFn }) {
   if (id === null) {
     const record = toTestRecord(state, plan.version, now());
     const sc = testScores(record);
-    const errs = errorTotals([], [record]);
     const rows: [TestId, string | undefined][] = [
       ['straight', sc.straight === undefined ? undefined : `${sc.straight}/10`],
       ['cut', sc.cut === undefined ? undefined : t('test.cutScore', { cut: sc.cut, l: sc.cutL ?? 0, r: sc.cutR ?? 0 })],
@@ -250,9 +247,6 @@ export function TestRunner({ now }: { now: NowFn }) {
               </div>
             ))}
           </dl>
-          <p class="summary-errors">
-            {(['P', 'C', 'S', 'D'] as ErrorCodeId[]).map((c) => <span key={c}><b>{c}</b> {errs[c]}</span>)}
-          </p>
           <div class="controls">
             <BigButton onClick={() => setSheet('discard')}>{t('common.discard')}</BigButton>
             <BigButton variant="good" onClick={save} disabled={finishing}>{t('common.save')}</BigButton>
@@ -292,16 +286,7 @@ export function TestRunner({ now }: { now: NowFn }) {
     if (nid) speakAuto(testScript(getTestDef(nid)));
     else stopSpeaking();
   };
-  const miss = () => {
-    const before = stateRef.current;
-    apply((s) => recordShot(s, false));
-    if (stateRef.current !== before) setSheet('tag');
-  };
   const skipNow = () => { setSheet(null); apply(skip); announce(); };
-  const pickTag = (tag: ErrorCodeId | null) => {
-    setSheet(null);
-    if (tag) apply((s) => tagLast(s, tag));
-  };
 
   return (
     <>
@@ -330,6 +315,7 @@ export function TestRunner({ now }: { now: NowFn }) {
           <p class="test-chip">{t('test.chip')}</p>
           <p class="test-progress" aria-live="polite">{t('test.progress', { done, limit })}</p>
           {id === 'draw' && <DrawInputs draw={state.draw} onChange={(i, v) => apply((s) => setDraw(s, i, v))} />}
+          <Pitfalls items={def.pitfalls} script={tipsScript(def)} />
         </div>
         {id !== 'draw' && (
           <div class="score-pad">
@@ -338,7 +324,7 @@ export function TestRunner({ now }: { now: NowFn }) {
             )}
             <div class="score-pad__buttons">
               <BigButton variant="good" disabled={full} onClick={() => apply((s) => recordShot(s, true))}>{goodLabel}</BigButton>
-              <BigButton variant="bad" disabled={full} onClick={miss}>{badLabel}</BigButton>
+              <BigButton variant="bad" disabled={full} onClick={() => apply((s) => recordShot(s, false))}>{badLabel}</BigButton>
             </div>
             {id === 'cut' ? (
               <>
@@ -356,12 +342,6 @@ export function TestRunner({ now }: { now: NowFn }) {
           </button>
         </div>
       </main>
-      {sheet === 'tag' && (
-        <Sheet title={t('test.whyMiss')} onClose={() => setSheet(null)}>
-          <p class="sheet__text">{t('test.whyMissOptional')}</p>
-          <TagPicker onPick={pickTag} />
-        </Sheet>
-      )}
       {sheet === 'skip' && (
         <Sheet title={t('test.skip')} onClose={() => setSheet(null)}>
           <p class="sheet__text">{t(done === 1 ? 'test.skipText1' : 'test.skipTextN', { name: def.name, n: done })}</p>

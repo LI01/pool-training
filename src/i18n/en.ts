@@ -21,13 +21,6 @@ export const en = {
   'session.pm': 'Afternoon Session',
   'test.standard': 'Standard Test',
 
-  // Error tags
-  'tag.P': 'Potting',
-  'tag.C': 'Cue-ball',
-  'tag.S': 'Spin/Speed',
-  'tag.D': 'Decision',
-  'tag.none': 'No tag',
-
   // Today
   'today.day': 'Day {day}',
   'today.dayOf30': 'Day {day} of 30',
@@ -52,7 +45,7 @@ export const en = {
   'today.saveIt': 'Save it',
   'today.resumeIt': 'Resume it',
   'today.discardStart': 'Discard & start',
-  'summary.line': 'Straight {straight} | Cut {cut} | Stop {stop} | Draw {draw} | 5-ball {fiveBall} | P{P} C{C} S{S} D{D}',
+  'summary.line': 'Straight {straight} | Cut {cut} | Stop {stop} | Draw {draw} | 5-ball {fiveBall}',
 
   // Session runner
   'session.leave': 'Leave session',
@@ -83,6 +76,8 @@ export const en = {
   'session.whenToUseReducer': 'When to Use Reducer',
   'session.pause': 'Pause',
   'session.repeat': 'Repeat',
+  'tips.title': 'Common mistakes',
+  'tips.listen': 'Tips',
   'session.stopReading': 'Stop reading',
   'session.resume': 'Resume',
   'session.addTime': '+2 min',
@@ -97,8 +92,6 @@ export const en = {
   'entry.typicalDraw': 'Typical draw (in)',
   'entry.successfulRuns': 'Successful runs',
   'entry.layouts': 'Layouts attempted',
-  'entry.failedHint': 'Failed runs — tap a tag for each (optional)',
-  'entry.remove': 'Remove {tag}',
   'entry.made': 'Made',
   'entry.attempts': 'Attempts',
   'entry.notes': 'Notes',
@@ -108,7 +101,6 @@ export const en = {
   'entry.err.typical': 'Typical cannot be more than best.',
   'entry.err.whole': 'Enter whole numbers; attempts at least 1.',
   'entry.err.successes': 'Successes cannot exceed attempts.',
-  'entry.err.tags': 'More tags than failed runs; remove a tag.',
   'entry.err.makes': 'Makes cannot exceed attempts.',
 
   // Test runner
@@ -124,7 +116,6 @@ export const en = {
   'test.sideShots': '{side} shots',
   'test.shotMake': 'Shot {n}: make',
   'test.shotMiss': 'Shot {n}: miss',
-  'test.shotMissTag': 'Shot {n}: miss, {tag}',
   'test.average': 'Average: {avg}',
   'unit.len': '"',
   'test.drawN': 'Draw {n} (in)',
@@ -152,8 +143,6 @@ export const en = {
   'test.skip': 'Skip test',
   'test.finish': 'Finish test',
   'test.next': 'Next test',
-  'test.whyMiss': 'Why did it miss?',
-  'test.whyMissOptional': 'Why did it miss? (optional)',
   'test.skipText1': 'Skip {name}? Its {n} recorded entry is cleared and it is not counted.',
   'test.skipTextN': 'Skip {name}? Its {n} recorded entries are cleared and it is not counted.',
   'test.skipThis': 'Skip this test',
@@ -181,10 +170,6 @@ export const en = {
   'progress.week': 'Week {n}',
   'progress.best30': '30-Day Best',
   'progress.avg30': '30-Day Avg',
-  'progress.errors': 'Errors',
-  'progress.errorsPerWeek': 'Errors per week',
-  'progress.focus': 'Focus',
-  'progress.noFocus': 'Not enough tagged errors in the last 7 days for a suggestion (need 10).',
   'progress.consistency': 'Consistency',
   'progress.streak1': 'Streak: {n} day',
   'progress.streakN': 'Streak: {n} days',

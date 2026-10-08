@@ -19,3 +19,6 @@ export const blockScript = (b: Block): Script => ({ key: `block:${b.id}`, text: 
 
 /** The spoken introduction of a test. */
 export const testScript = (d: TestDef): Script => ({ key: `test:${d.id}`, text: d.speech });
+
+/** The spoken tips (common mistakes) of a training block or test. */
+export const tipsScript = (x: Block | TestDef): Script => ({ key: `tips:${x.id}`, text: x.tipsSpeech });

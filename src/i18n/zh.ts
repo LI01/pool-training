@@ -23,13 +23,6 @@ export const zh: Record<keyof typeof en, string> = {
   'session.pm': '下午训练',
   'test.standard': '标准测试',
 
-  // Error tags
-  'tag.P': '进球',
-  'tag.C': '走位',
-  'tag.S': '杆法/力度',
-  'tag.D': '决策',
-  'tag.none': '不标记',
-
   // Today
   'today.day': '第 {day} 天',
   'today.dayOf30': '第 {day} 天 / 共 30 天',
@@ -54,7 +47,7 @@ export const zh: Record<keyof typeof en, string> = {
   'today.saveIt': '去保存',
   'today.resumeIt': '继续它',
   'today.discardStart': '放弃并开始',
-  'summary.line': '直线球 {straight} | 切球 {cut} | 定杆 {stop} | 低杆 {draw} | 五球 {fiveBall} | P{P} C{C} S{S} D{D}',
+  'summary.line': '直线球 {straight} | 切球 {cut} | 定杆 {stop} | 低杆 {draw} | 五球 {fiveBall}',
 
   // Session runner
   'session.leave': '离开训练',
@@ -85,6 +78,8 @@ export const zh: Record<keyof typeof en, string> = {
   'session.whenToUseReducer': '何时使用缩袋器',
   'session.pause': '暂停',
   'session.repeat': '重播',
+  'tips.title': '容易出错的地方',
+  'tips.listen': '听要点',
   'session.stopReading': '停止朗读',
   'session.resume': '继续',
   'session.addTime': '+2 分钟',
@@ -99,8 +94,6 @@ export const zh: Record<keyof typeof en, string> = {
   'entry.typicalDraw': '一般低杆距离（厘米）',
   'entry.successfulRuns': '成功清台次数',
   'entry.layouts': '尝试球型数',
-  'entry.failedHint': '失败的清台 — 每次点一个标记（可选）',
-  'entry.remove': '移除 {tag}',
   'entry.made': '进球数',
   'entry.attempts': '尝试次数',
   'entry.notes': '备注',
@@ -110,7 +103,6 @@ export const zh: Record<keyof typeof en, string> = {
   'entry.err.typical': '一般距离不能大于最佳距离。',
   'entry.err.whole': '请输入整数；尝试次数至少为 1。',
   'entry.err.successes': '成功次数不能超过尝试次数。',
-  'entry.err.tags': '标记数多于失败次数；请移除一个标记。',
   'entry.err.makes': '进球数不能超过尝试次数。',
 
   // Test runner
@@ -126,7 +118,6 @@ export const zh: Record<keyof typeof en, string> = {
   'test.sideShots': '{side} 击球',
   'test.shotMake': '第 {n} 杆：进',
   'test.shotMiss': '第 {n} 杆：没进',
-  'test.shotMissTag': '第 {n} 杆：没进，{tag}',
   'test.average': '平均：{avg}',
   'unit.len': ' 厘米',
   'test.drawN': '低杆 {n}（厘米）',
@@ -154,8 +145,6 @@ export const zh: Record<keyof typeof en, string> = {
   'test.skip': '跳过此项',
   'test.finish': '完成测试',
   'test.next': '下一项',
-  'test.whyMiss': '为什么没进？',
-  'test.whyMissOptional': '为什么没进？（可选）',
   'test.skipText1': '跳过{name}？已记录的 {n} 次将被清除，且不计分。',
   'test.skipTextN': '跳过{name}？已记录的 {n} 次将被清除，且不计分。',
   'test.skipThis': '跳过此项测试',
@@ -183,10 +172,6 @@ export const zh: Record<keyof typeof en, string> = {
   'progress.week': '第 {n} 周',
   'progress.best30': '30 天最佳',
   'progress.avg30': '30 天平均',
-  'progress.errors': '失误',
-  'progress.errorsPerWeek': '每周失误',
-  'progress.focus': '重点',
-  'progress.noFocus': '最近 7 天标记的失误不足，无法给出建议（需要 10 次）。',
   'progress.consistency': '坚持',
   'progress.streak1': '连续天数：{n} 天',
   'progress.streakN': '连续天数：{n} 天',

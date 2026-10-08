@@ -112,7 +112,7 @@ export function Today({ now }: { now: NowFn }) {
         ))}
       </div>
 
-      <code class="summary-line">{dailySummaryLine(today, sessions, tests)}</code>
+      <code class="summary-line">{dailySummaryLine(today, tests)}</code>
 
       {pending && (
         <Sheet title={activeFinished ? t('today.notSaved') : t('today.anotherInProgress')} onClose={closePending}>

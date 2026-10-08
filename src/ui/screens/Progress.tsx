@@ -1,17 +1,16 @@
 import { useState } from 'preact/hooks';
 import {
-  dayNumber, errorTotals, focusSuggestion, minutesByDay, resolveStartDate, streak, testScores, trainingRecords,
+  dayNumber, minutesByDay, resolveStartDate, streak, testScores, trainingRecords,
   weeklySummary, type Metric,
 } from '../../stats';
 import { addDays, daysBetween } from '../../stats/dates';
 import { t, toLen, type Key } from '../../i18n';
 import { BarChart } from '../components/BarChart';
-import { ERROR_COLORS, SERIES_COLORS } from '../components/chartSetup';
+import { SERIES_COLORS } from '../components/chartSetup';
 import { LineChart } from '../components/LineChart';
 import { useAppData } from '../useAppData';
 
 type Range = 'plan' | 'all';
-const CODES = ['P', 'C', 'S', 'D'] as const;
 const ROWS: [Metric, Key][] = [
   ['straight', 'progress.straight10'], ['cut', 'progress.cut20'], ['stop', 'progress.stop10'], ['drawAvg', 'progress.draw24'], ['fiveBall', 'progress.fiveBall5'],
 ];
@@ -36,18 +35,6 @@ export function Progress() {
   const scores = rTests.map(testScores);
   const col = (k: 'straight' | 'cutL' | 'cutR' | 'cut' | 'stop' | 'drawAvg' | 'fiveBall') => scores.map((s) => s[k] ?? null);
   const summary = weeklySummary(tests, start);
-
-  const totals = errorTotals(sessions, tests, from, to);
-  // 7-day buckets aligned to the plan start; in All time, records before start fall into earlier (negative-index) buckets.
-  // In the 30-day plan the 4 plan weeks match the weekly table: days 1–7, 8–14, 15–21, 22–30.
-  const b0 = Math.floor(daysBetween(start, from) / 7);
-  const nBuckets = range === 'plan' ? 4 : Math.max(1, Math.floor(daysBetween(start, to) / 7) - b0 + 1);
-  const bStart = (i: number) => addDays(start, (b0 + i) * 7);
-  const bEnd = (i: number) => (range === 'plan' && i === nBuckets - 1 ? planEnd : addDays(bStart(i), 6));
-  const bucketLabels = Array.from({ length: nBuckets }, (_, i) => short(bStart(i)));
-  const buckets = Array.from({ length: nBuckets }, (_, i) => errorTotals(sessions, tests, bStart(i), bEnd(i)));
-  const hasErrors = CODES.some((c) => totals[c] > 0);
-  const focus = focusSuggestion(sessions, tests, today);
 
   const days = Array.from({ length: daysBetween(from, to) + 1 }, (_, i) => addDays(from, i));
   const mins = minutesByDay(rSessions);
@@ -98,30 +85,6 @@ export function Progress() {
               ))}
             </tbody>
           </table>
-        </div>
-      </section>
-
-      <section>
-        <h2>{t('progress.errors')}</h2>
-        {!hasErrors ? NONE : (
-          <>
-            <ul class="err-list">
-              {CODES.map((c) => (
-                <li key={c}><span class="err-dot" style={{ background: ERROR_COLORS[c] }} />{`${c} — ${t(`tag.${c}`)}: ${totals[c]}`}</li>
-              ))}
-            </ul>
-            <BarChart title={t('progress.errorsPerWeek')} stacked labels={bucketLabels}
-              series={CODES.map((c) => ({ label: c, data: buckets.map((b) => b[c]), color: ERROR_COLORS[c] }))} />
-          </>
-        )}
-        <div class="focus-card">
-          <h3>{t('progress.focus')}</h3>
-          {focus ? (
-            <>
-              <p>{focus.advice}</p>
-              <p class="muted">{focus.blockNames.join(', ')}</p>
-            </>
-          ) : <p class="muted">{t('progress.noFocus')}</p>}
         </div>
       </section>
 

@@ -16,31 +16,12 @@ test('steppers accept a typed number; +/− still work', () => {
   expect(onSubmit).toHaveBeenCalledWith({ generic: { made: 21, attempts: 31 } });
 });
 
-test('runs: fail tags are capped at attempts − successes', () => {
+test('runs: only successes and layouts are asked, no failure reasons', () => {
   const onSubmit = vi.fn();
   render(<EntrySheet kind="runs" record="yes" onSubmit={onSubmit} onSkip={() => {}} />);
   fireEvent.input(screen.getByLabelText('Layouts attempted'), { target: { value: '3' } });
   fireEvent.input(screen.getByLabelText('Successful runs'), { target: { value: '1' } });
-  const p = screen.getByRole('button', { name: /^P Potting/ });
-  fireEvent.click(p);
-  fireEvent.click(screen.getByRole('button', { name: /^C Cue-ball/ }));
-  expect(p).toBeDisabled();
-  fireEvent.click(p);
-  expect(screen.queryAllByRole('button', { name: /^Remove/ })).toHaveLength(2);
-  fireEvent.click(screen.getByRole('button', { name: 'Remove P' }));
-  expect(p).not.toBeDisabled();
+  expect(screen.queryByRole('button', { name: /Potting/ })).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: /save/i }));
-  expect(onSubmit).toHaveBeenCalledWith({ runs: { success: 1, attempts: 3, failTags: ['C'] } });
-});
-
-test('runs: lowering attempts below the tagged failures is rejected on save', () => {
-  const onSubmit = vi.fn();
-  render(<EntrySheet kind="runs" record="yes" onSubmit={onSubmit} onSkip={() => {}} />);
-  fireEvent.input(screen.getByLabelText('Layouts attempted'), { target: { value: '2' } });
-  fireEvent.click(screen.getByRole('button', { name: /^P Potting/ }));
-  fireEvent.click(screen.getByRole('button', { name: /^S Spin/ }));
-  fireEvent.click(screen.getByRole('button', { name: 'Decrease Layouts attempted' }));
-  fireEvent.click(screen.getByRole('button', { name: /save/i }));
-  expect(screen.getByRole('alert')).toHaveTextContent(/tags/i);
-  expect(onSubmit).not.toHaveBeenCalled();
+  expect(onSubmit).toHaveBeenCalledWith({ runs: { success: 1, attempts: 3, failTags: [] } });
 });

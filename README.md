@@ -15,10 +15,10 @@ A phone and iPad app that guides a daily 2-hour pool (billiards) training routin
 ## Features
 
 - **30-day plan, 2 hours a day.** A 60-minute morning session (straight balls, stop/draw/follow ladders, precision pocket) and a 60-minute afternoon session (cut shots, one-rail position, 3-ball and 5-ball patterns, review).
-- **Guided sessions.** Each drill has a countdown timer, a table diagram, setup, how to train, and the success standard. A chime sounds when time is up.
-- **Voice instructions.** Each drill is read aloud when it starts, in a natural neural voice (English: Jenny, Chinese: Xiaoxiao). The clips are built in and play offline.
-- **Standard test.** Straight pot ×10, cut shots ×20 (left/right), stop shot ×10, draw distance ×5, 5-ball clearance ×5. Every miss can be tagged with a reason.
-- **Progress.** Charts for each test, a weekly table, error totals by reason, a suggested focus, a training streak, and training records.
+- **Guided sessions.** Each drill has a countdown timer, a table diagram, setup, how to train, the success standard, and a short list of common mistakes. A chime sounds when time is up.
+- **Voice instructions.** Each drill is explained aloud when it starts, the way a coach would talk you through it, in a natural neural voice (English: Jenny, Chinese: Xiaoxiao). A **Tips** button talks through the common mistakes. The clips are built in and play offline.
+- **Standard test.** Straight pot ×10, cut shots ×20 (left/right), stop shot ×10, draw distance ×5, 5-ball clearance ×5. Tap Make or Miss; nothing else to fill in.
+- **Progress.** Charts for each test, a weekly table, a training streak, and training records.
 - **English and Chinese.** The whole app switches language, including drills, diagrams and voice. The Chinese version uses centimetres plus hand-width references (e.g. "about one palm").
 - **Phone and iPad.** On an iPad in landscape, the diagram sits on the left and the instructions on the right.
 - **Offline and private.** Once installed, it works without internet. All data is stored in the browser on your device; nothing is uploaded.
@@ -43,7 +43,7 @@ On Android, open the link in Chrome and choose **Install app** (or **Add to Home
 
 The home screen shows which day of the 30-day plan you are on, the morning and afternoon sessions, and when you last took the standard test (it is due every 3 days).
 
-The line at the bottom is today's summary: latest test scores and error counts.
+The line at the bottom is today's summary: the latest test scores.
 
 Set the plan's start date in **Settings** if you did not start today; otherwise Day 1 is the day of your first record.
 
@@ -58,6 +58,7 @@ Tap **Morning Session** or **Afternoon Session**, then **Start**.
 - The top shows the drill's table diagram. Tap it to open it full-size.
 - The big clock counts down the drill's time. **Pause**, **+2 min** and **Back** are at the bottom.
 - The drill's instructions are read aloud when it starts. Tap **↻ Repeat** next to the title to hear them again from the start, or ■ to stop.
+- Under the instructions, **Common mistakes** lists what usually goes wrong in this drill. Tap **💡 Tips** to hear them explained.
 - Tap **Next** to move on to the next drill.
 
 The screen stays on while a session runs. If you leave the app, the session is kept: the Today screen shows it as *In progress* and you can continue.
@@ -68,7 +69,7 @@ The screen stays on while a session runs. If you leave the app, the session is k
 
 <img src="docs/images/en-entry.jpg" width="260" align="right" alt="Recording a result">
 
-Some drills ask for a result when you tap **Next**. For example, the draw ladder asks for your best and typical draw distance, and the 3-ball and 5-ball drills ask how many layouts you ran out, with a reason for each failure.
+Some drills ask for a result when you tap **Next**. For example, the draw ladder asks for your best and typical draw distance, and the 3-ball and 5-ball drills ask how many layouts you ran out.
 
 Tap **Save**, or **Skip** if you did not keep count.
 
@@ -78,16 +79,9 @@ Tap **Save**, or **Skip** if you did not keep count.
 
 <img src="docs/images/en-test.jpg" width="260" align="right" alt="Standard test">
 
-Tap **Standard Test** on the Today screen, then **Start test**. For each shot tap **Make** or **Miss**. After a miss you can tag why:
+Tap **Standard Test** on the Today screen, then **Start test**. For each shot tap **Make** or **Miss**.
 
-| Tag | Meaning |
-|---|---|
-| **P** | Potting – the aim or stroke missed the pocket |
-| **C** | Cue ball – the position was wrong |
-| **S** | Spin / speed – wrong spin or pace |
-| **D** | Decision – wrong shot or plan |
-
-**Undo last** removes the last shot. **Skip test** moves on if you can't do one today. Tap **↻ Repeat** to hear the test setup again. For the draw test, type the five measured distances.
+Each test also lists its **Common mistakes**; tap **💡 Tips** to hear them. **Undo last** removes the last shot. **Skip test** moves on if you can't do one today. Tap **↻ Repeat** to hear the test setup again. For the draw test, type the five measured distances.
 
 Use the same setup each time: normal pockets, the same cue ball, no extra attempts.
 
@@ -97,15 +91,13 @@ Use the same setup each time: normal pockets, the same cue ball, no extra attemp
 
 <p>
   <img src="docs/images/en-progress.jpg" width="240" alt="Test score charts">
-  <img src="docs/images/en-table.jpg" width="240" alt="Weekly table and errors">
+  <img src="docs/images/en-table.jpg" width="240" alt="Weekly table and training calendar">
 </p>
 
 The **Progress** tab shows:
 
 - a chart for each test (straight, cut left/right, stop, draw average, 5-ball);
 - a weekly table with week 1–4 averages, plus the 30-day best and average;
-- error totals by tag, and errors per week;
-- **Focus**: once you have tagged 10 misses in the last 7 days, the most common reason;
 - your training streak, minutes per day, and training records (draw distance and pattern success rate).
 
 Switch between **30-day plan** and **All time** at the top.

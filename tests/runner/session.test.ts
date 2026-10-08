@@ -141,14 +141,6 @@ test('endSession keeps an entry already recorded for the current block', () => {
 });
 
 describe('validateEntry', () => {
-  test('runs: tags trimmed, not deduped', () => {
-    expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'C, D' })).toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: ['C', 'D'] } } });
-    expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'C,C' })).toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: ['C', 'C'] } } });
-  });
-  test('runs: more fail tags than failed runs rejected', () => {
-    expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'P,C,S' }).ok).toBe(false);
-    expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'P,C' }).ok).toBe(true);
-  });
   test('runs: zero attempts rejected', () => expect(validateEntry('runs', { success: '0', attempts: '0' }).ok).toBe(false));
   test('generic: blank field rejected', () => expect(validateEntry('generic', { made: '', attempts: '10' }).ok).toBe(false));
 
@@ -162,8 +154,8 @@ describe('validateEntry', () => {
 });
 test('draw: typical cannot exceed best', () => expect(validateEntry('draw', { bestIn: '8', typicalIn: '12' }).ok).toBe(false));
   test('runs: success > attempts rejected', () => expect(validateEntry('runs', { success: '6', attempts: '5' }).ok).toBe(false));
-  test('runs: valid with tags', () => expect(validateEntry('runs', { success: '3', attempts: '5', failTags: 'C,D' }))
-    .toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: ['C', 'D'] } } }));
+  test('runs: valid, no failure reasons recorded', () => expect(validateEntry('runs', { success: '3', attempts: '5' }))
+    .toEqual({ ok: true, entry: { runs: { success: 3, attempts: 5, failTags: [] } } }));
   test('runs: non-integer rejected', () => expect(validateEntry('runs', { success: '2.5', attempts: '5' }).ok).toBe(false));
   test('generic: made > attempts rejected', () => expect(validateEntry('generic', { made: '11', attempts: '10' }).ok).toBe(false));
   test('notes: trimmed, empty allowed', () => expect(validateEntry('notes', { notes: '  aim drifted  ' })).toEqual({ ok: true, entry: { notes: 'aim drifted' } }));
