@@ -75,17 +75,49 @@ test('different-runner confirm: Resume it goes to the active runner', async () =
   render(<App store={store} now={() => NOW} />);
   fireEvent.click(await screen.findByText(DAY1));
   const dlg = screen.getByRole('dialog');
-  expect(dlg).toHaveTextContent('Another session is in progress. Discard it?');
+  expect(dlg).toHaveTextContent('Another session is in progress. Save the drills done so far and start this one?');
   fireEvent.click(within(dlg).getByText('Resume it'));
   expect(location.hash).toBe('#/day/3');
 });
 
-test('different-runner confirm: Discard & start clears active and navigates', async () => {
+test('different-runner confirm: Save & start clears active and navigates', async () => {
   const store = createStore(`today-${++i}`);
   await store.setActive({ type: 'session', payload: { sessionId: 'day', dayNumber: 3 }, updatedAt: 1 });
   render(<App store={store} now={() => NOW} />);
   fireEvent.click(await screen.findByText(DAY1));
-  fireEvent.click(within(screen.getByRole('dialog')).getByText('Discard & start'));
+  fireEvent.click(within(screen.getByRole('dialog')).getByText('Save & start'));
+  await waitFor(() => expect(location.hash).toBe('#/day/1'));
+  expect(await store.getActive()).toBeUndefined();
+  expect(await store.listSessions()).toEqual([]); // no drill done: nothing to save
+});
+
+test('different-runner confirm: Save & start keeps the drills already done', async () => {
+  const store = createStore(`today-${++i}`);
+  const start = NOW - DAY;
+  const done = { blockId: 'basic-dry-stroke', startedAt: start, endedAt: start + 300000 };
+  await store.setActive({
+    type: 'session', updatedAt: start + 600000,
+    payload: {
+      kind: 'session', sessionId: 'day', dayNumber: 3, startedAt: start, blockIndex: 1, blockStartedAt: start + 300000,
+      pausedAt: null, pausedTotalMs: 0, sessionPausedMs: 0, extraMs: 0, results: { [done.blockId]: done }, finished: false,
+    },
+  });
+  render(<App store={store} now={() => NOW} />);
+  fireEvent.click(await screen.findByText(DAY1));
+  fireEvent.click(within(screen.getByRole('dialog')).getByText('Save & start'));
+  await waitFor(() => expect(location.hash).toBe('#/day/1'));
+  const [r] = await store.listSessions();
+  expect(r).toMatchObject({ sessionId: 'day', dayNumber: 3, startedAt: start, endedAt: start + 600000, activeMinutes: 10, blocks: [done] });
+});
+
+test('different-runner confirm: an in-progress test is discarded', async () => {
+  const store = createStore(`today-${++i}`);
+  await store.setActive({ type: 'test', payload: { kind: 'test', index: 1 }, updatedAt: 1 });
+  render(<App store={store} now={() => NOW} />);
+  fireEvent.click(await screen.findByText(DAY1));
+  const dlg = screen.getByRole('dialog');
+  expect(dlg).toHaveTextContent('Another session is in progress. Discard it?');
+  fireEvent.click(within(dlg).getByText('Discard & start'));
   await waitFor(() => expect(location.hash).toBe('#/day/1'));
   expect(await store.getActive()).toBeUndefined();
 });
@@ -102,12 +134,12 @@ test('finished-but-unsaved session: sheet offers Save it (goes to its summary) i
   expect(location.hash).toBe('#/day/3');
 });
 
-test('finished-but-unsaved session: Discard clears it and starts the chosen session', async () => {
+test('finished-but-unsaved session: Save & start clears it and starts the chosen session', async () => {
   const store = createStore(`today-${++i}`);
   await store.setActive({ type: 'session', payload: { sessionId: 'day', dayNumber: 3, finished: true }, updatedAt: 1 });
   render(<App store={store} now={() => NOW} />);
   fireEvent.click(await screen.findByText(DAY1));
-  fireEvent.click(within(screen.getByRole('dialog')).getByText('Discard'));
+  fireEvent.click(within(screen.getByRole('dialog')).getByText('Save & start'));
   await waitFor(() => expect(location.hash).toBe('#/day/1'));
   expect(await store.getActive()).toBeUndefined();
 });
@@ -120,14 +152,14 @@ test('finished-but-unsaved test: sheet says the test is not saved', async () => 
   expect(screen.getByRole('dialog')).toHaveTextContent('Your test is complete but not saved.');
 });
 
-test('discard failure shows an error and stays on Today', async () => {
+test('save failure shows an error and stays on Today', async () => {
   const base = createStore(`today-${++i}`);
   await base.setActive({ type: 'session', payload: { sessionId: 'day', dayNumber: 3 }, updatedAt: 1 });
   const store = { ...base, setActive: vi.fn(() => Promise.reject(new Error('locked'))) };
   render(<App store={store} now={() => NOW} />);
   fireEvent.click(await screen.findByText(DAY1));
-  fireEvent.click(within(screen.getByRole('dialog')).getByText('Discard & start'));
-  expect(await screen.findByRole('alert')).toHaveTextContent("Couldn't discard it");
+  fireEvent.click(within(screen.getByRole('dialog')).getByText('Save & start'));
+  expect(await screen.findByRole('alert')).toHaveTextContent("Couldn't save it");
   expect(location.hash).toBe('#/');
   expect((await base.getActive())?.type).toBe('session');
 });

@@ -63,7 +63,7 @@ Tap the day's card, then **Start**.
 - Under the instructions, **Key points** lists the technique that matters most in this drill (stance, stroke rhythm, ghost-ball aim, the 90° tangent line, the two-halves rule, and so on). Tap **💡 Listen** to open an illustrated walkthrough: each point has its own picture and is read aloud, and the page turns by itself when one finishes. Tap a single point to read it without sound.
 - Tap **Next** to move on to the next drill.
 
-The screen stays on while a session runs. If you leave the app, the session is kept: the Today screen shows it as *In progress* and you can continue.
+The screen stays on while a session runs. If you leave the app, the session is kept: the Today screen shows it as *In progress* and you can continue. If you open another day instead, the drills already done are saved first. Each time you repeat a day is kept as its own record.
 
 <br clear="right">
 

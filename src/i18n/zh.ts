@@ -43,6 +43,9 @@ export const zh: Record<keyof typeof en, string> = {
   'today.saveIt': '去保存',
   'today.resumeIt': '继续它',
   'today.discardStart': '放弃并开始',
+  'today.saveItText': '另一项训练正在进行。保存已经练过的环节，再开始这一项吗？',
+  'today.saveStart': '保存并开始',
+  'today.saveError': '无法保存，请重试。',
   'summary.line': '直线球 {straight} | 切球 {cut} | 定杆 {stop} | 低杆 {draw} | 五球 {fiveBall}',
 
   // Session runner

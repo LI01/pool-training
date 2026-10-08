@@ -41,6 +41,9 @@ export const en = {
   'today.saveIt': 'Save it',
   'today.resumeIt': 'Resume it',
   'today.discardStart': 'Discard & start',
+  'today.saveItText': 'Another session is in progress. Save the drills done so far and start this one?',
+  'today.saveStart': 'Save & start',
+  'today.saveError': "Couldn't save it. Try again.",
   'summary.line': 'Straight {straight} | Cut {cut} | Stop {stop} | Draw {draw} | 5-ball {fiveBall}',
 
   // Session runner
