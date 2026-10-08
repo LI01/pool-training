@@ -17,12 +17,26 @@
           "howToTrain": "Do sets of 5. After every miss, identify: aim, stroke, or contact point. Do not rush to the next ball.",
           "successStandard": "Clean center-pocket hit; CB stays close to the original line.",
           "speech": "Let's warm up with straight balls. You've got ten minutes. Put an object ball in line with a corner pocket, and start with the cue ball about a foot behind it. As you get comfortable, move the cue ball back to two feet, then three, then four. Shoot in sets of five, and take your time. Whenever you miss, stop and ask yourself why. Was it your aim, your stroke, or where you hit the cue ball? You're looking for the ball to drop right in the middle of the pocket, with the cue ball staying on the line.",
-          "pitfalls": [
-            "Head comes up before the ball drops",
-            "Steering the cue at the last moment",
-            "Rushing to the next ball after a miss"
+          "lesson": [
+            {
+              "title": "Read the line standing, then step in",
+              "text": "Stand behind the shot line and see it clearly. Step in so your back foot and cue hand land on the line together. When you get down, the cue is already on the line.",
+              "speech": "Before every shot, stand behind the line and see it clearly. Then step in, with your back foot and your cue hand landing on the line together. When you get down, the cue should already be lined up, with nothing left to adjust.",
+              "figure": "stance"
+            },
+            {
+              "title": "Rhythm: three long, one short, confirm",
+              "text": "Three long practice strokes for speed and a loose wrist, one short one to confirm the tip spot. Draw back slowly, pause, then accelerate smoothly through.",
+              "speech": "Your practice strokes have a job. Three long ones to find the speed and relax your wrist. One short one to check the tip is on the spot you want. Then draw back slowly, pause at the back, and accelerate smoothly through the ball.",
+              "figure": "rhythm"
+            },
+            {
+              "title": "Freeze for two seconds",
+              "text": "Stay down after the shot and check: is the tip still on the line? Did your head come up? Did your body move? Did the stroke finish? After a miss, work out why before the next ball.",
+              "speech": "After the shot, stay down for two seconds. Use that time to check yourself. Is the cue tip still pointing down the line? Did your head come up early? Did your body move? Did the stroke really finish? Most people simply get up too soon. And after a miss, work out why before you set up the next ball.",
+              "figure": "freeze"
+            }
           ],
-          "tipsSpeech": "A few things to watch. Keep your head still until the ball is in the pocket. Let the cue go straight through, and don't steer it at the end. And after a miss, take a breath and work out why before you set up again.",
           "purpose": "Stroke alignment and delivery",
           "record": "no",
           "recordKind": null,
@@ -39,12 +53,26 @@
           "howToTrain": "Use center-ball contact first. Adjust speed, not just tip position. Hold finish and watch CB.",
           "successStandard": "CB stops within about 3\" of contact point.",
           "speech": "Next up, the stop shot ladder. Twelve minutes. Set up a straight shot with the cue ball a foot from the object ball. Later you'll move it back to two feet, and then three. That's ten shots at each distance. Start by hitting the cue ball right in the center. When the distance changes, change your speed, not just where the tip hits. Hold your finish and watch what the cue ball does. A good stop is when it stays within about three inches of where it hit the object ball.",
-          "pitfalls": [
-            "Using draw instead of a true stop shot",
-            "Changing tip position instead of speed",
-            "Standing up to watch the cue ball"
+          "lesson": [
+            {
+              "title": "Stop shot = center ball",
+              "text": "Hit the exact center. The cue ball slides into the object ball with no spin and stops dead. Don't fake it with draw.",
+              "speech": "A stop shot is hit dead center. The cue ball slides into the object ball without spin, so it stops right there. Don't fake it with draw. That's a different shot.",
+              "figure": "tip-center"
+            },
+            {
+              "title": "Farther away: more speed, then lower",
+              "text": "At longer range the cloth turns the slide into roll before contact. Add a little speed first; if it still follows, aim half to one tip lower.",
+              "speech": "The farther away you are, the more the cloth turns the cue ball's slide into forward roll before it gets there. So first add a little speed. If it still follows, aim half a tip to one tip lower. At long range, use both.",
+              "figure": "stop-distance"
+            },
+            {
+              "title": "The stop shot is your reference",
+              "text": "Hit a cut with center ball at medium speed and the cue ball leaves at 90°. A reliable stop shot gives you that reference line for all position play.",
+              "speech": "Why practise the stop shot so much? Because on a cut shot, center ball at medium speed sends the cue ball off at ninety degrees. Once your stop is reliable, you have a reference line, and all your position play starts from it.",
+              "figure": "tangent-stun"
+            }
           ],
-          "tipsSpeech": "Quick reminders. A real stop shot is hit at center, not with draw. When the distance gets longer, add a little speed rather than hitting lower. And stay down after the shot, so you can see exactly what the cue ball did.",
           "purpose": "Center-ball control and speed",
           "record": "optional",
           "recordKind": "generic",
@@ -61,12 +89,26 @@
           "howToTrain": "At each distance, first draw back 6\", then 12\", then farther. Favor a level cue and smooth acceleration over extra force.",
           "successStandard": "Pocket OB and pull CB back along the shot line with controlled distance.",
           "speech": "Now the draw ladder. This one's sixteen minutes. Straight shot again, with the cue ball eight inches from the object ball to start. Then sixteen inches, then two feet. If you have a cue ball with dots on it, use that one. At each distance, first try to draw the cue ball back about six inches. Then about a foot, and then farther. Keep your cue level and speed up smoothly through the ball. You don't need to hit harder. The goal is to pot the ball and pull the cue ball straight back, stopping where you meant it to.",
-          "pitfalls": [
-            "Hitting harder instead of lower and cleaner",
-            "Raising the back of the cue",
-            "Slowing down at contact"
+          "lesson": [
+            {
+              "title": "Line the balls up exactly",
+              "text": "Picture the cue ball covering the object ball completely. The cue goes straight through both centers.",
+              "speech": "On a straight draw, picture the cue ball covering the object ball completely, the two balls lined up exactly. Your cue should travel straight through both centers, with no drift at all.",
+              "figure": "draw-axis"
+            },
+            {
+              "title": "Keep the cue level",
+              "text": "Draw comes from a low, clean hit, not power. Keep the back of the cue down so the cue stays level, and keep accelerating through the ball.",
+              "speech": "Draw doesn't come from hitting hard. It comes from a low, clean hit. Keep the back of the cue down so the cue stays as level as you can, and keep accelerating right through the cue ball. Don't ease off at contact.",
+              "figure": "cue-level"
+            },
+            {
+              "title": "Straight back down the line",
+              "text": "A good straight draw comes back along the same line. If it drifts sideways, you added side by accident or the stroke wasn't straight.",
+              "speech": "Watch how the cue ball comes back. A good straight draw returns along exactly the same line it went out on. If it drifts to one side, you put side on it by accident, or your stroke wasn't straight.",
+              "figure": "draw-back-line"
+            }
           ],
-          "tipsSpeech": "Here's what usually goes wrong with draw. People hit harder, when they should hit lower and cleaner. Keep the back of your cue down, so the cue stays level. And keep accelerating through the cue ball. Don't slow down at contact.",
           "purpose": "Backspin production and retention",
           "record": "yes",
           "recordKind": "draw",
@@ -83,12 +125,26 @@
           "howToTrain": "Choose a target follow distance before each shot (6\", 12\", 24\"). Avoid simply rolling the ball harder.",
           "successStandard": "CB follows on the intended line and finishes near the chosen distance.",
           "speech": "Time for the follow ladder. Twelve minutes. Same straight setup, with the cue ball one, two, then three feet from the object ball. Before every shot, decide how far you want the cue ball to roll on: six inches, a foot, or two feet. Then get it there with a smooth follow stroke, not just by hitting harder. You want the cue ball to roll straight through and stop close to the distance you picked.",
-          "pitfalls": [
-            "Pushing too hard and losing distance control",
-            "Not choosing a distance before the shot",
-            "Cue ball drifting off line from accidental side"
+          "lesson": [
+            {
+              "title": "Follow on the vertical axis",
+              "text": "Hit above center, exactly on the vertical line. A little off to one side adds spin and the cue ball drifts off the line.",
+              "speech": "For follow, hit above center, right on the vertical line through the middle of the cue ball. Even a little to one side adds spin, and the cue ball won't follow straight.",
+              "figure": "tip-high"
+            },
+            {
+              "title": "Pick the distance first",
+              "text": "Decide how far to follow before you get down. Mix soft, medium and firm strokes; control distance with a smooth stroke, not by pushing harder.",
+              "speech": "Before every shot, decide how far you want the cue ball to follow. Mix soft, medium and firm strokes so you learn what each one does. Control the distance with a smooth stroke, not by pushing harder.",
+              "figure": "diagram:am-follow-ladder"
+            },
+            {
+              "title": "Forearm drives, tip stays down",
+              "text": "Keep the upper arm still and let the forearm accelerate. After the hit, keep the tip down on the line for two seconds.",
+              "speech": "Keep your upper arm steady and let the forearm do the accelerating. After contact, keep the cue tip down, don't let it flick up, and hold it on the line for two seconds.",
+              "figure": "freeze"
+            }
           ],
-          "tipsSpeech": "Watch out for a few things. Don't just push harder; control the distance with a smooth stroke. Pick your distance before you get down on the shot. And hit straight above center, so the cue ball doesn't drift off the line.",
           "purpose": "Topspin and speed control",
           "record": "optional",
           "recordKind": "generic",
@@ -105,12 +161,26 @@
           "howToTrain": "Alternate left/right corner pockets. Count a rattled or jawed ball as a miss even if it falls on the normal pocket.",
           "successStandard": "Center-pocket contact and stable mechanics.",
           "speech": "Last one this morning: the precision pocket drill. Ten minutes. Shoot long straight shots and slight cuts, switching between the left and right corner pockets. If you have a pocket reducer, you can use it here. Be strict with yourself. If a ball rattles in the jaws, count it as a miss, even if it drops. Aim for the center of the pocket every time, with a calm, steady stroke.",
-          "pitfalls": [
-            "Counting rattled balls as makes",
-            "Aiming at the pocket, not its center",
-            "Speeding up when tired"
+          "lesson": [
+            {
+              "title": "Aim for the very center",
+              "text": "Aim at the center of the pocket, not just \"in\". A ball that rattles in the jaws is a miss, even if it drops.",
+              "speech": "In this drill you aim for the very center of the pocket, not just somewhere in it. If the ball rattles in the jaws, it's a miss, even if it drops. Be strict in practice, and in a match the pockets will feel huge.",
+              "figure": "pocket-center"
+            },
+            {
+              "title": "Practise the awkward positions",
+              "text": "Don't always place the cue ball where the bridge is easy. Put it where the rail cramps your bridge. That's the pressure you'll meet in a match.",
+              "speech": "Don't always put the cue ball where it's comfortable to bridge. You already make those. Put it somewhere awkward, like where the rail cramps your bridge hand. A little discomfort in practice is exactly the pressure you'll feel in a match.",
+              "figure": "hard-bridge"
+            },
+            {
+              "title": "Respect the almost-straight shot",
+              "text": "The cue ball is half to three-quarters of a ball off the line. It looks straight but it's a cut. Play it straight and you hit the jaw.",
+              "speech": "One shot people underestimate: the cue ball is just half to three-quarters of a ball off the line. It looks straight, but it's still a cut. Play it as a straight shot and the object ball hits the jaw. Practise these on purpose.",
+              "figure": "micro-angle"
+            }
           ],
-          "tipsSpeech": "A couple of reminders. Be honest: a ball that rattles in the jaws is a miss. Aim for the very center of the pocket, not just somewhere in it. And if you notice you're speeding up, pause and go through your routine again.",
           "purpose": "Accuracy; keeps some Chinese-8-ball style discipline",
           "record": "no",
           "recordKind": null,
@@ -133,12 +203,26 @@
           "howToTrain": "Keep OB and pocket fixed for each mini-set. First establish pocketing line, then add CB finish awareness.",
           "successStandard": "Consistent pocketing on both left and right cuts.",
           "speech": "Let's start the afternoon with cut shots. You've got twelve minutes. Pick three cut angles you can set up the same way every time, roughly thirty, forty-five and sixty degrees. Practise each one cutting left and cutting right, six shots each. Keep the object ball and the pocket in the same place for each little set. Get the potting line right first. Once that feels solid, start paying attention to where the cue ball ends up. You want to make these consistently, both to the left and to the right.",
-          "pitfalls": [
-            "Changing angle and speed at the same time",
-            "Missing the same way every time (too thin or too thick)",
-            "Thinking about the cue ball before the pot is solid"
+          "lesson": [
+            {
+              "title": "Aim with the ghost ball",
+              "text": "Picture a ball touching the object ball, on the line to the pocket. Send the cue ball's center to that ghost ball, not at the object ball.",
+              "speech": "On cuts, aim with the ghost ball. Picture a ball touching the object ball, right on the line to the pocket. Your job isn't to hit the object ball. It's to send the cue ball exactly to where that ghost ball sits.",
+              "figure": "ghost-ball"
+            },
+            {
+              "title": "Half a ball further back",
+              "text": "The contact point on the object ball isn't where the cue ball's center goes. The aim point is half a ball further back, on the pocket line.",
+              "speech": "Many players aim at the contact point on the object ball. But balls have size. The point the cue ball's center has to reach is half a ball further back, along the pocket line. Use your cue tip to check it before you get down.",
+              "figure": "contact-half-ball"
+            },
+            {
+              "title": "Notice which way you miss",
+              "text": "After a miss, was it thin or thick? If it's always the same side, adjust for it. Change one thing at a time, and pot first, position later.",
+              "speech": "When you miss, notice whether you hit it too thin or too thick. If it's always the same way, adjust for it. Change only one thing at a time, never the angle and the speed together. Once the pot is solid, then start thinking about the cue ball.",
+              "figure": "cut-miss"
+            }
           ],
-          "tipsSpeech": "Common mistakes on cuts. Changing the angle and the speed at the same time, so you can't tell what went wrong. Missing the same way again and again, always too thin or always too thick. Notice which way you miss, and adjust. And thinking about the cue ball too early, before the pot itself feels solid.",
           "purpose": "Build visual library for common cuts",
           "record": "no",
           "recordKind": null,
@@ -155,12 +239,26 @@
           "howToTrain": "Change only one variable at a time: speed, follow/draw, or a touch of side. Predict the route before shooting.",
           "successStandard": "CB enters the target zone, not merely 'somewhere usable'.",
           "speech": "Next, one-rail position. Fifteen minutes. Mark a small target area, about a foot to a foot and a half across, where you want the cue ball for your next shot. Pot the object ball and send the cue ball off one rail into that area. Change only one thing at a time: your speed, follow or draw, or a touch of side. And before each shot, picture the path the cue ball will take. It only counts if the cue ball lands in your target, not just somewhere you could still shoot from.",
-          "pitfalls": [
-            "Calling 'close enough' a success",
-            "Changing several things at once",
-            "Not picturing the path before shooting"
+          "lesson": [
+            {
+              "title": "The 90° line: follow bends forward, draw bends back",
+              "text": "Find the pocket line, then the 90° tangent line. Follow bends the cue ball forward of it; draw bends it back.",
+              "speech": "To predict the cue ball, start with the pocket line, then find the ninety-degree tangent line. That's your reference. Follow bends the cue ball forward of that line, and draw bends it back behind it.",
+              "figure": "tangent-high-low"
+            },
+            {
+              "title": "The path is straight, then curved",
+              "text": "The cue ball first runs a short way along the 90° line (longer with more speed), then curves (sharper with more spin), then runs straight again.",
+              "speech": "The cue ball's path isn't one straight line. It first runs a short way along the ninety-degree line, farther if you hit harder. Then it curves, more sharply with more spin. Then it straightens out again. So the same spin at a different speed ends up somewhere different.",
+              "figure": "separation-path"
+            },
+            {
+              "title": "Play to a line, not a spot",
+              "text": "Rather than one exact spot, send the cue ball off the rail along the extension of the next ball's pocket line. Anywhere on that line works.",
+              "speech": "Instead of aiming for one exact spot, play to a line. Send the cue ball off the rail so it travels along the extension of the next ball's pocket line. Anywhere on that line leaves you a shot, so a bit too much or too little speed doesn't hurt.",
+              "figure": "track-line"
+            }
           ],
-          "tipsSpeech": "Be strict here. If the cue ball isn't in the target area, it doesn't count, even if you still have a shot. Change just one thing at a time, so you learn what each change does. And always picture the cue ball's path before you shoot.",
           "purpose": "APA cue-ball control",
           "record": "optional",
           "recordKind": "generic",
@@ -176,12 +274,26 @@
           "howToTrain": "Before shooting, name all 3 shots and the intended CB zones. Restart a layout after a major positional error.",
           "successStandard": "Run all 3 without a positional rescue shot.",
           "speech": "Now the three-ball pattern drill. Fifteen minutes. Throw out three balls in a layout you can run, and take ball in hand for the first shot. Before you shoot, say your plan out loud: which ball you'll play in what order, and where the cue ball should go each time. If you make a big position mistake, set the layout up again and start over. You're aiming to run all three without needing a rescue shot.",
-          "pitfalls": [
-            "Not planning all three shots first",
-            "Chasing perfect position on every ball",
-            "Carrying on after a big position error"
+          "lesson": [
+            {
+              "title": "Shoot one, look at two, think of three",
+              "text": "While you shoot this ball, look at the next and plan the third. Every cue-ball move should set up the next two shots.",
+              "speech": "Always think three balls ahead. Shoot this one, look at the next, and plan the third. Before the first shot, say the order out loud and where the cue ball should stop each time.",
+              "figure": "diagram:pm-3ball"
+            },
+            {
+              "title": "Two halves: stop on the opposite side",
+              "text": "Extend the next ball's pocket line to split the table in two. Leave the cue ball on the side opposite the third ball, so it naturally travels toward it.",
+              "speech": "Use the two-halves rule. Extend the next ball's pocket line, and it splits the table in two. If the third ball is on one side, leave the cue ball on the other side. Then when you pot the next ball, the cue ball naturally heads toward the third.",
+              "figure": "two-halves"
+            },
+            {
+              "title": "Leave 15–30°, not straight",
+              "text": "A slight angle, 15–30°, is ideal: easy to pot and the cue ball can still move. Leaving a straight shot mid-run is a position error.",
+              "speech": "Position doesn't have to be perfect, but leave an angle. Fifteen to thirty degrees is ideal. It's easy to pot and the cue ball can still go places. A dead straight shot in the middle of a run is actually a position mistake. And if it goes badly wrong, set the layout up again rather than rescuing it.",
+              "figure": "angle-leave"
+            }
           ],
-          "tipsSpeech": "A few reminders. Plan all three shots before you hit the first one. You don't need perfect position, just a good angle for the next shot. And if the position goes badly wrong, set the layout up again instead of trying to rescue it.",
           "purpose": "Pattern recognition and planning",
           "record": "yes",
           "recordKind": "runs",
@@ -198,12 +310,26 @@
           "howToTrain": "Pick the easiest route, minimize CB travel, and avoid unnecessary side spin. Log why a failed run ended.",
           "successStandard": "Clear all 5 without a miss or positional breakdown.",
           "speech": "Time for the five-ball clearance. Thirteen minutes. Spread five balls around the table with nothing blocking them, and start with ball in hand. Choose the easiest route, move the cue ball as little as you can, and skip side spin unless you really need it. When a run fails, make a note of why it ended. The goal is to clear all five without a miss and without losing position.",
-          "pitfalls": [
-            "Picking a hard route",
-            "Sending the cue ball too far",
-            "Using side spin you don't need"
+          "lesson": [
+            {
+              "title": "Plan it backwards",
+              "text": "Choose the last ball first, then the key ball that leads to it, then the transition balls, then the first ball. Save the key ball.",
+              "speech": "Plan the run backwards. Choose which ball you'll finish on, then the key ball that leads to it most easily, then the balls in between, and only then the first ball. While you play, save that key ball. Don't pot it early.",
+              "figure": "backward-plan"
+            },
+            {
+              "title": "Deal with trouble early",
+              "text": "Handle the awkward ball, such as one on the rail, as early as you can. If it goes wrong early you can still recover; left to the end, one miss ends the run.",
+              "speech": "If there's an awkward ball, like one frozen on the rail, deal with it early. If it goes wrong early, you still have chances to fix it. Leave it to the end, and one miss ends the run.",
+              "figure": "trouble-first"
+            },
+            {
+              "title": "Short moves, little side",
+              "text": "Clear one area before moving to the next; don't send the cue ball around the table. Keep its path away from pockets, and skip side unless you need it.",
+              "speech": "Keep the cue ball moves short. Clear one area, then move on to the next, instead of sending the cue ball around the table. Keep its path away from the pockets, so it doesn't scratch. And skip side spin unless you really need it. Simple is steady.",
+              "figure": "small-moves"
+            }
           ],
-          "tipsSpeech": "Here's what usually ends a run. Picking a route that's harder than it needs to be. Sending the cue ball a long way when a short move would do. And using side spin when you don't need it. Keep it simple.",
           "purpose": "Bridges drills to real APA run-outs",
           "record": "yes",
           "recordKind": "runs",
@@ -220,12 +346,26 @@
           "howToTrain": "Do not finish on random free play. Re-shoot the exact problem until you understand the correction.",
           "successStandard": "Know what caused the miss and what changes fix it.",
           "speech": "Let's finish with a short review, about five minutes. Think back over today, and set up the two or three worst shots or decisions you had. Don't end the day just knocking balls around. Shoot that exact problem again and again until you understand what went wrong. You're done when you know what caused the miss, and what you'll change to fix it.",
-          "pitfalls": [
-            "Finishing with random practice",
-            "Re-shooting without finding the cause",
-            "Picking only easy shots to review"
+          "lesson": [
+            {
+              "title": "Leave the cue to check your aim",
+              "text": "Get down as normal, leave the cue resting on the table, step away and look from behind: is it still pointing at the center of the cue ball?",
+              "speech": "Here's a way to check your stance. Get down on the shot as usual, then leave the cue resting on the table and step away carefully. Look from behind. Is the cue still pointing at the center of the cue ball, or has it drifted?",
+              "figure": "cue-left"
+            },
+            {
+              "title": "Straight into the rail and back",
+              "text": "Shoot the cue ball straight into a rail with no side. It should come straight back to your cue. Drifting left means left spin; right means right spin.",
+              "speech": "One more stroke check. Shoot the cue ball straight into the rail with no side. If your stroke is straight, it comes straight back and hits your cue. If it drifts left, you added left spin without knowing; right means right spin.",
+              "figure": "rail-check"
+            },
+            {
+              "title": "Find the cause before moving on",
+              "text": "Set up today's two or three worst shots exactly and repeat them. Freeze after each and check. You're done when you can name the cause and the fix.",
+              "speech": "Finally, set up today's two or three worst shots exactly as they were, and shoot them again and again. Freeze after each one and check your tip, head, body and finish. You're done when you can say what caused the miss and what you'll change.",
+              "figure": "freeze"
+            }
           ],
-          "tipsSpeech": "For the review, don't just knock balls around. Pick the shots that really cost you, set them up exactly, and don't move on until you can say what caused the miss and what you'll do differently.",
           "purpose": "Turns mistakes into learning",
           "record": "notes",
           "recordKind": "notes",
@@ -245,12 +385,20 @@
       "frequency": "2–3×/week",
       "notes": "Keep the same pocket and distances.",
       "speech": "First test: the long straight pot. Place the object ball about a foot, or a foot and a half, from a corner pocket. Put the cue ball four feet behind it, in a perfectly straight line. You get ten shots. Use the same pocket and the same distances every time you take this test.",
-      "pitfalls": [
-        "Changing the setup between tests",
-        "Rushing the last few shots",
-        "Lifting your head on a long shot"
+      "lesson": [
+        {
+          "title": "Step in, keep the head still",
+          "text": "Read the line standing, then step in. The head often shifts when the front foot moves; keep your head and eyes on the line throughout.",
+          "speech": "On a long shot, the stance has to be right. Read the line standing up, then step in. Watch your head when your front foot moves. That's when it tends to drift. Keep your head and eyes on the line the whole time.",
+          "figure": "stance"
+        },
+        {
+          "title": "Same routine every shot",
+          "text": "Same setup every test so scores compare. Don't rush the last few; stay down until the ball drops.",
+          "speech": "Keep the setup identical every time, so your scores can be compared. The last few shots are where people rush. Use the same routine on every shot, and stay down until the ball drops.",
+          "figure": "freeze"
+        }
       ],
-      "tipsSpeech": "For this test, keep the setup exactly the same every time, so your scores can be compared. Take your time on every shot, including the last few. And on a long shot, stay down until the ball drops.",
       "kind": "makeMiss",
       "diagramId": "test-straight"
     },
@@ -264,12 +412,20 @@
       "frequency": "2×/week",
       "notes": "Do not change angle after misses.",
       "speech": "Next, cut shots. Pick one medium cut angle and stick with it. Shoot ten cutting to the left, then ten cutting to the right. Don't change the angle after a miss.",
-      "pitfalls": [
-        "Changing the angle after a miss",
-        "Rushing your weaker side",
-        "Moving the object ball between shots"
+      "lesson": [
+        {
+          "title": "Aim with the ghost ball",
+          "text": "Picture the ghost ball touching the object ball on the pocket line, and send the cue ball's center there.",
+          "speech": "Aim with the ghost ball. Picture a ball touching the object ball, on the line to the pocket, and send the cue ball's center exactly there.",
+          "figure": "ghost-ball"
+        },
+        {
+          "title": "Keep the angle, note the miss",
+          "text": "Same angle for the whole test, even after a miss. Put the object ball back on the same spot, and note whether you miss thin or thick.",
+          "speech": "Keep the same angle all the way through, even after a miss, and put the object ball back on exactly the same spot. When you miss, note whether it was thin or thick, and practise that afterwards.",
+          "figure": "cut-miss"
+        }
       ],
-      "tipsSpeech": "Keep the same angle all the way through, even after a miss. Don't rush the side you find harder. And put the object ball back in exactly the same spot each time.",
       "kind": "makeMissLR",
       "diagramId": "test-cut"
     },
@@ -283,12 +439,20 @@
       "frequency": "2×/week",
       "notes": "Use same speed target each test.",
       "speech": "Now the stop shot test. Set up a straight shot with the cue ball two feet from the object ball. You get ten shots. A shot counts when the ball goes in and the cue ball stops within about three inches of where it made contact. Try to use the same speed every time.",
-      "pitfalls": [
-        "Using draw to stop the ball",
-        "A different speed on every shot",
-        "Counting stops that roll too far"
+      "lesson": [
+        {
+          "title": "Center ball, a true stop",
+          "text": "Hit the exact center; don't fake it with draw. Same speed on every shot.",
+          "speech": "Hit center ball for a true stop. Don't use draw to fake it. Use the same speed on every shot, so the result really means something.",
+          "figure": "tip-center"
+        },
+        {
+          "title": "If it follows",
+          "text": "If the cue ball rolls on, it was already rolling at contact: in practice add speed or aim half a tip lower. More than about three inches is not a success.",
+          "speech": "If the cue ball rolls forward, it had already started rolling before contact. In practice, add a little speed or aim half a tip lower. And in the test, be honest: more than about three inches is not a success.",
+          "figure": "stop-distance"
+        }
       ],
-      "tipsSpeech": "Hit center ball for a true stop. Don't use draw to fake it. Use the same speed on every shot. And be honest: if the cue ball rolls more than about three inches, it's not a success.",
       "kind": "makeMiss",
       "diagramId": "test-stop"
     },
@@ -302,12 +466,20 @@
       "frequency": "2×/week",
       "notes": "Use the same cue ball every test.",
       "speech": "Next, the draw test. Straight shot, with the cue ball two feet from the object ball. Put the object ball close enough to the pocket that you'll make it every time. Shoot five, and measure how far the cue ball comes back on each one. Use the same cue ball every time you test.",
-      "pitfalls": [
-        "Guessing the distance by eye",
-        "Hitting harder on later shots",
-        "Object ball too far from the pocket"
+      "lesson": [
+        {
+          "title": "Level cue, same stroke",
+          "text": "Keep the back of the cue down. Use the same stroke on all five; don't start hitting harder.",
+          "speech": "Keep the back of the cue down and the cue level. Use the same stroke on all five shots. Don't start hitting harder because the first ones came up short.",
+          "figure": "cue-level"
+        },
+        {
+          "title": "Measure, and watch the line",
+          "text": "Measure every draw instead of guessing, and check it comes straight back. Keep the object ball close enough to the pocket that you never miss it.",
+          "speech": "Measure every draw properly instead of guessing, and check that the cue ball comes straight back down the line. Put the object ball close enough to the pocket that you never miss it.",
+          "figure": "draw-back-line"
+        }
       ],
-      "tipsSpeech": "Measure each draw properly; don't just guess. Keep the same stroke for all five, and don't start hitting harder. And put the object ball close enough to the pocket that you never miss it.",
       "kind": "distances",
       "diagramId": "test-draw"
     },
@@ -321,12 +493,20 @@
       "frequency": "2×/week",
       "notes": "A fixed layout improves comparability.",
       "speech": "Last test: five-ball clearance. If you can, use the same five-ball layout as last time, and start with ball in hand. You get five tries. Count how many times you clear the table, and for any run that fails, note the main reason.",
-      "pitfalls": [
-        "Using a different layout each time",
-        "Rushing the first shot",
-        "Not noticing why a run ended"
+      "lesson": [
+        {
+          "title": "Plan the route before you start",
+          "text": "Plan backwards: last ball, key ball, transition balls, first ball. Take your time on the first shot; it sets up the whole run.",
+          "speech": "Before you start, plan the route backwards: the last ball, the key ball, the balls in between, and then the first ball. Take your time on the first shot. It sets up the whole run.",
+          "figure": "backward-plan"
+        },
+        {
+          "title": "Use the two halves",
+          "text": "Each shot: the next ball's pocket line splits the table; leave the cue ball on the side opposite the ball after. When a run ends, note where it broke.",
+          "speech": "On every shot, use the two-halves rule. The next ball's pocket line splits the table in two; leave the cue ball on the side opposite the ball after that. And when a run ends, notice which step it broke on.",
+          "figure": "two-halves"
+        }
       ],
-      "tipsSpeech": "Use the same layout if you can, so the results mean something. Take your time on the first shot; it sets up the whole run. And when a run fails, notice why it ended.",
       "kind": "runs",
       "diagramId": "test-5ball"
     }

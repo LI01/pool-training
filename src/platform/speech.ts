@@ -2,7 +2,7 @@ import { getLang } from '../i18n';
 import manifest from '../voice/manifest.json';
 import { forSpeech, type Script } from './scripts';
 
-export { blockScript, forSpeech, testScript, tipsScript, type Script } from './scripts';
+export { blockScript, forSpeech, lessonScript, testScript, type Script } from './scripts';
 
 /** Pre-recorded neural-voice clips (scripts/make_voice.py), keyed by `<lang>:<script key>`. */
 const MANIFEST: Record<string, { file: string; text: string }> = manifest;
@@ -44,7 +44,7 @@ export function clipUrl(script: Script): string | undefined {
   return CLIP_URLS[`../voice/${clip.file}`];
 }
 
-function speakSynth(text: string): void {
+function speakSynth(text: string, onDone?: () => void): void {
   const s = synth();
   if (!s) { setSpeaking(false); return; }
   try {
@@ -57,7 +57,14 @@ function speakSynth(text: string): void {
     const voice = voices.find((v) => v.localService) ?? voices[0];
     if (voice) u.voice = voice;
     // A cancelled utterance reports end/error later; only the current one may change the state.
-    u.onend = u.onerror = () => { if (current === u) { current = null; setSpeaking(false); } };
+    const done = (finished: boolean) => {
+      if (current !== u) return;
+      current = null;
+      setSpeaking(false);
+      if (finished) onDone?.();
+    };
+    u.onend = () => done(true);
+    u.onerror = () => done(false);
     current = u;
     setSpeaking(true);
     s.speak(u);
@@ -75,16 +82,17 @@ function player(): HTMLAudioElement | null {
 /**
  * Reads `script` aloud in the app language, replacing anything already being read: the recorded clip when one
  * matches the text, otherwise the device's speech synthesis. Call from a tap so iOS allows playback.
+ * `onDone` runs when it finishes by itself, not when stopped or replaced.
  */
-export function speak(script: Script): void {
+export function speak(script: Script, onDone?: () => void): void {
   stopSpeaking();
   const url = clipUrl(script);
   const a = url ? player() : null;
-  if (!url || !a) { speakSynth(script.text); return; }
+  if (!url || !a) { speakSynth(script.text, onDone); return; }
   const g = gen;
-  a.onended = () => { if (g === gen) setSpeaking(false); };
+  a.onended = () => { if (g === gen) { setSpeaking(false); onDone?.(); } };
   // Clip failed (load error or playback refused): fall back to the device voice, once.
-  const fallback = () => { if (g === gen) { gen++; speakSynth(script.text); } };
+  const fallback = () => { if (g === gen) { gen++; speakSynth(script.text, onDone); } };
   a.onerror = fallback;
   setSpeaking(true);
   try {

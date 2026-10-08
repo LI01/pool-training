@@ -15,8 +15,8 @@ A phone and iPad app that guides a daily 2-hour pool (billiards) training routin
 ## Features
 
 - **30-day plan, 2 hours a day.** A 60-minute morning session (straight balls, stop/draw/follow ladders, precision pocket) and a 60-minute afternoon session (cut shots, one-rail position, 3-ball and 5-ball patterns, review).
-- **Guided sessions.** Each drill has a countdown timer, a table diagram, setup, how to train, the success standard, and a short list of common mistakes. A chime sounds when time is up.
-- **Voice instructions.** Each drill is explained aloud when it starts, the way a coach would talk you through it, in a natural neural voice (English: Jenny, Chinese: Xiaoxiao). A **Tips** button talks through the common mistakes. The clips are built in and play offline.
+- **Guided sessions.** Each drill has a countdown timer, a table diagram, setup, how to train, the success standard, and illustrated key points. A chime sounds when time is up.
+- **Voice instructions.** Each drill is explained aloud when it starts, the way a coach would talk you through it, in a natural neural voice (English: Jenny, Chinese: Xiaoxiao). **💡 Listen** walks through the key points, one picture at a time. The clips are built in and play offline.
 - **Standard test.** Straight pot ×10, cut shots ×20 (left/right), stop shot ×10, draw distance ×5, 5-ball clearance ×5. Tap Make or Miss; nothing else to fill in.
 - **Progress.** Charts for each test, a weekly table, a training streak, and training records.
 - **English and Chinese.** The whole app switches language, including drills, diagrams and voice. The Chinese version uses centimetres plus hand-width references (e.g. "about one palm").
@@ -52,13 +52,14 @@ Set the plan's start date in **Settings** if you did not start today; otherwise 
 ### 2. Run a training session
 
 <img src="docs/images/en-session.jpg" width="260" align="right" alt="Training session">
+<img src="docs/images/en-lesson.jpg" width="260" align="right" alt="Illustrated key points">
 
 Tap **Morning Session** or **Afternoon Session**, then **Start**.
 
 - The top shows the drill's table diagram. Tap it to open it full-size.
 - The big clock counts down the drill's time. **Pause**, **+2 min** and **Back** are at the bottom.
 - The drill's instructions are read aloud when it starts. Tap **↻ Repeat** next to the title to hear them again from the start, or ■ to stop.
-- Under the instructions, **Common mistakes** lists what usually goes wrong in this drill. Tap **💡 Tips** to hear them explained.
+- Under the instructions, **Key points** lists the technique that matters most in this drill (stance, stroke rhythm, ghost-ball aim, the 90° tangent line, the two-halves rule, and so on). Tap **💡 Listen** to open an illustrated walkthrough: each point has its own picture and is read aloud, and the page turns by itself when one finishes. Tap a single point to read it without sound.
 - Tap **Next** to move on to the next drill.
 
 The screen stays on while a session runs. If you leave the app, the session is kept: the Today screen shows it as *In progress* and you can continue.
@@ -81,7 +82,7 @@ Tap **Save**, or **Skip** if you did not keep count.
 
 Tap **Standard Test** on the Today screen, then **Start test**. For each shot tap **Make** or **Miss**.
 
-Each test also lists its **Common mistakes**; tap **💡 Tips** to hear them. **Undo last** removes the last shot. **Skip test** moves on if you can't do one today. Tap **↻ Repeat** to hear the test setup again. For the draw test, type the five measured distances.
+Each test also has its own **Key points**; tap **💡 Listen** to hear them. **Undo last** removes the last shot. **Skip test** moves on if you can't do one today. Tap **↻ Repeat** to hear the test setup again. For the draw test, type the five measured distances.
 
 Use the same setup each time: normal pockets, the same cue ball, no extra attempts.
 

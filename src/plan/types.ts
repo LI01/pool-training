@@ -4,6 +4,15 @@ export type TestId = 'straight' | 'cut' | 'stop' | 'draw' | 'fiveBall';
 export type ErrorCodeId = 'P' | 'C' | 'S' | 'D';
 export type SessionId = 'am' | 'pm';
 
+/** One illustrated key point: a figure, a short title and text, and what the voice says. */
+export interface LessonStep {
+  title: string;
+  text: string;
+  speech: string;
+  /** A lesson figure id (src/lesson/figures), or `diagram:<id>` for a drill diagram. */
+  figure: string;
+}
+
 export interface Block {
   id: string;
   timeLabel: string;
@@ -15,10 +24,8 @@ export interface Block {
   successStandard: string;
   /** The spoken introduction: the drill explained the way a coach would say it. */
   speech: string;
-  /** What commonly goes wrong in this drill, shown as a short list. */
-  pitfalls: string[];
-  /** The spoken version of the pitfalls (the "Tips" button). */
-  tipsSpeech: string;
+  /** Illustrated key points (the "Key points" walkthrough), each read aloud. */
+  lesson: LessonStep[];
   purpose: string;
   record: RecordMode;
   recordKind: RecordKind;
@@ -53,10 +60,8 @@ export interface TestDef {
   notes: string;
   /** The spoken introduction: the test setup explained the way a coach would say it. */
   speech: string;
-  /** What commonly goes wrong in this test, shown as a short list. */
-  pitfalls: string[];
-  /** The spoken version of the pitfalls (the "Tips" button). */
-  tipsSpeech: string;
+  /** Illustrated key points (the "Key points" walkthrough), each read aloud. */
+  lesson: LessonStep[];
   kind: 'makeMiss' | 'makeMissLR' | 'distances' | 'runs';
   diagramId: string;
 }

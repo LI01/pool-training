@@ -335,7 +335,8 @@ function Panel({ diagram, els, rotate, measure, k }: { diagram: Diagram; els: Di
   return (
     <svg
       data-testid="table-diagram" xmlns="http://www.w3.org/2000/svg" role="img" aria-label={diagram.title}
-      viewBox={rotate ? `${-R} ${-R} ${vh} ${vw}` : `${-R} ${-R} ${vw} ${vh}`}
+      viewBox={rotate ? `${-R} ${-R} ${vh} ${vw}`
+        : diagram.view ? `${diagram.view.x} ${diagram.view.y} ${diagram.view.w} ${diagram.view.h}` : `${-R} ${-R} ${vw} ${vh}`}
     >
       {rotate ? <g transform={`rotate(90) translate(0,${-H})`}>{body}</g> : body}
     </svg>

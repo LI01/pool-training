@@ -5,14 +5,14 @@ import type { Shot } from '../../db/types';
 import { fromLen, t, toLen, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
 import { unlockAudio } from '../../platform/chime';
-import { speakAuto, stopSpeaking, testScript, tipsScript } from '../../platform/speech';
+import { speakAuto, stopSpeaking, testScript } from '../../platform/speech';
 import {
   advance, currentTest, isComplete, LIMITS, nextCutSide, recordShot, setDraw, skip, startTest,
   toTestRecord, undo, type TestRunState,
 } from '../../runner/test';
 import { testScores } from '../../stats';
 import { BigButton } from '../components/BigButton';
-import { Pitfalls } from '../components/Pitfalls';
+import { LessonCard } from '../components/Lesson';
 import { ReadAloud } from '../components/ReadAloud';
 import { Sheet } from '../components/Sheet';
 import { navigate, type NowFn } from '../nav';
@@ -315,7 +315,7 @@ export function TestRunner({ now }: { now: NowFn }) {
           <p class="test-chip">{t('test.chip')}</p>
           <p class="test-progress" aria-live="polite">{t('test.progress', { done, limit })}</p>
           {id === 'draw' && <DrawInputs draw={state.draw} onChange={(i, v) => apply((s) => setDraw(s, i, v))} />}
-          <Pitfalls items={def.pitfalls} script={tipsScript(def)} />
+          <LessonCard item={def} />
         </div>
         {id !== 'draw' && (
           <div class="score-pad">

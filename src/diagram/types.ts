@@ -16,4 +16,5 @@ export interface Diagram {
   caption: string; // 1–2 short lines under the table
   panels: DiagramEl[][]; // 1 panel normally; 2 for left/right cut setups
   showMeasurements?: boolean; // full-screen inch offsets from rails (5-ball test)
+  view?: { x: number; y: number; w: number; h: number }; // crop to this part of the table (inches; landscape only)
 }

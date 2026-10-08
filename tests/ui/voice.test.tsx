@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, cleanup } from '@testing-library/preact';
+import { render, screen, fireEvent, cleanup, act } from '@testing-library/preact';
 import { App } from '../../src/ui/App';
 import { createStore } from '../../src/db/store';
 
@@ -12,7 +12,12 @@ const synth = { speaking: false, pending: false, speak: vi.fn(), cancel: vi.fn()
 // Every drill has a recorded clip; record what each play() was asked to play.
 const played: string[] = [];
 const pause = vi.fn();
-class FakeAudio { src = ''; onended = null; onerror = null; pause = pause; play() { played.push(this.src); return Promise.resolve(); } }
+let audio: FakeAudio;
+class FakeAudio {
+  src = ''; onended: (() => void) | null = null; onerror = null; pause = pause;
+  constructor() { audio = this; }
+  play() { played.push(this.src); return Promise.resolve(); }
+}
 beforeEach(() => {
   vi.stubGlobal('SpeechSynthesisUtterance', Utterance);
   vi.stubGlobal('speechSynthesis', synth);
@@ -51,17 +56,40 @@ test('reads each block when Start/Next enter it; Pause stops; Repeat rereads fro
   expect(pause.mock.calls.length).toBeGreaterThan(pauses);
 });
 
-test('the Tips button talks through the common mistakes, in training and in tests', async () => {
+test('Listen plays the illustrated key points one after another; each finished step turns the page', async () => {
   await open('#/session/am', { voiceOn: false });
   fireEvent.click(await screen.findByRole('button', { name: /^start$/i }));
-  expect(screen.getByRole('heading', { name: 'Common mistakes' })).toBeInTheDocument();
-  fireEvent.click(screen.getByRole('button', { name: /^tips$/i }));
-  expect(said()).toEqual([expect.stringMatching(/en-tips-am-straight-warmup/)]);
-  cleanup();
+  expect(screen.getByRole('heading', { name: 'Key points' })).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: /^listen$/i }));
+  const dialog = screen.getByRole('dialog');
+  expect(dialog).toHaveTextContent('Step 1 of 3');
+  expect(said()).toEqual([expect.stringMatching(/en-lesson-am-straight-warmup-1/)]);
+  act(() => audio.onended!());
+  expect(dialog).toHaveTextContent('Step 2 of 3');
+  expect(said()[1]).toMatch(/en-lesson-am-straight-warmup-2/);
+  act(() => audio.onended!());
+  act(() => audio.onended!());
+  expect(said()).toHaveLength(3);
+  expect(dialog).toHaveTextContent('Step 3 of 3');
+  expect(screen.getByRole('button', { name: /^next point$/i })).toBeDisabled();
+  fireEvent.click(screen.getByRole('button', { name: /^close$/i }));
+  expect(screen.queryByRole('dialog')).toBeNull();
+});
+
+test('a step title opens the walkthrough there without playing; Play reads that step; closing stops it', async () => {
   await open('#/test', { voiceOn: false });
   fireEvent.click(await screen.findByRole('button', { name: /start test/i }));
-  fireEvent.click(screen.getByRole('button', { name: /^tips$/i }));
-  expect(said()[1]).toMatch(/en-tips-straight/);
+  const [, second] = screen.getAllByRole('button', { name: /./ }).filter((b) => b.classList.contains('lesson-card__step'));
+  fireEvent.click(second);
+  expect(screen.getByRole('dialog')).toHaveTextContent('Step 2 of 2');
+  expect(said()).toHaveLength(0);
+  fireEvent.click(screen.getByRole('button', { name: /^previous point$/i }));
+  expect(screen.getByRole('dialog')).toHaveTextContent('Step 1 of 2');
+  fireEvent.click(screen.getByRole('button', { name: /play/i }));
+  expect(said()).toEqual([expect.stringMatching(/en-lesson-straight-1/)]);
+  const pauses = pause.mock.calls.length;
+  fireEvent.click(screen.getByRole('button', { name: /^close$/i }));
+  expect(pause.mock.calls.length).toBeGreaterThan(pauses);
 });
 
 test('voice guidance off: nothing is read automatically, the button still works', async () => {

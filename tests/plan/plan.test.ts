@@ -1,3 +1,5 @@
+import { DIAGRAMS } from '../../src/diagram/diagrams';
+import { FIGURE_IDS } from '../../src/lesson/figures';
 import { plan, getDrillRef, TEST_ORDER } from '../../src/plan';
 
 const blocks = plan.sessions.flatMap((s) => s.blocks);
@@ -26,10 +28,15 @@ test('record kind consistent with record mode', () => {
   }
 });
 
-test('every block and test lists three common mistakes and has spoken tips', () => {
+test('every block has three illustrated key points and every test two, each with a known figure and its own speech', () => {
   for (const x of [...plan.sessions.flatMap((s) => s.blocks), ...plan.tests]) {
-    expect(x.pitfalls, x.id).toHaveLength(3);
-    expect(x.tipsSpeech.length, x.id).toBeGreaterThan(40);
+    expect(x.lesson, x.id).toHaveLength('kind' in x ? 2 : 3);
+    for (const s of x.lesson) {
+      expect(s.title.length && s.text.length, x.id).toBeGreaterThan(0);
+      expect(s.speech.length, x.id).toBeGreaterThan(s.text.length * 0.8);
+      if (s.figure.startsWith('diagram:')) expect(DIAGRAMS[s.figure.slice(8)], s.figure).toBeDefined();
+      else expect(FIGURE_IDS, s.figure).toContain(s.figure);
+    }
   }
 });
 
