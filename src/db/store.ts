@@ -57,7 +57,8 @@ export function validateBackup(data: unknown): Backup {
     if (!isObj(s)) return fail(`${w}: not an object`);
     if (typeof s.id !== 'string') fail(`${w}: id must be a string`);
     if (typeof s.date !== 'string' || !DATE_RE.test(s.date)) fail(`${w}: invalid date`);
-    if (s.sessionId !== 'am' && s.sessionId !== 'pm') fail(`${w}: invalid sessionId`);
+    if (s.sessionId !== 'am' && s.sessionId !== 'pm' && s.sessionId !== 'day') fail(`${w}: invalid sessionId`);
+    if (s.dayNumber !== undefined && !(Number.isInteger(s.dayNumber) && (s.dayNumber as number) >= 1)) fail(`${w}: invalid dayNumber`);
     if (!isNum(s.startedAt) || !isNum(s.endedAt) || !isNum(s.activeMinutes)) fail(`${w}: invalid numbers`);
     if (!Array.isArray(s.blocks)) fail(`${w}: blocks must be an array`);
     (s.blocks as unknown[]).forEach((b, j) => checkBlock(`${w}.blocks[${j}]`, b));
@@ -78,6 +79,9 @@ export function validateBackup(data: unknown): Backup {
   if (lang !== undefined && lang !== 'en' && lang !== 'zh') fail('invalid settings.lang');
   const voiceOn = (data.settings as Record<string, unknown>).voiceOn;
   if (voiceOn !== undefined && typeof voiceOn !== 'boolean') fail('invalid settings.voiceOn');
+  const { planDay, planDaySetAt } = data.settings as Record<string, unknown>;
+  if (planDay !== undefined && !(Number.isInteger(planDay) && (planDay as number) >= 1)) fail('invalid settings.planDay');
+  if (planDaySetAt !== undefined && !isNum(planDaySetAt)) fail('invalid settings.planDaySetAt');
   return data as unknown as Backup;
 }
 

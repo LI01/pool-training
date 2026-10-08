@@ -37,36 +37,36 @@ async function open(hash: string, settings?: object) {
 }
 
 test('reads each block when Start/Next enter it; Pause stops; Repeat rereads from the start', async () => {
-  await open('#/session/am');
+  await open('#/day/1');
   fireEvent.click(await screen.findByRole('button', { name: /^start$/i }));
   expect(said()).toHaveLength(1);
-  expect(said()[0]).toMatch(/en-block-am-straight-warmup/);
+  expect(said()[0]).toMatch(/en-block-basic-dry-stroke/);
   fireEvent.click(screen.getByRole('button', { name: /^next/i }));
-  expect(said()[1]).toMatch(/en-block-am-stop-ladder/);
+  expect(said()[1]).toMatch(/en-block-basic-spot-shot/);
   // Repeat restarts the clip even while it is still being read.
   fireEvent.click(screen.getByRole('button', { name: /^repeat$/i }));
-  expect(said()[2]).toMatch(/en-block-am-stop-ladder/);
+  expect(said()[2]).toMatch(/en-block-basic-spot-shot/);
   fireEvent.click(screen.getByRole('button', { name: /stop reading/i }));
   expect(pause).toHaveBeenCalled();
   expect(screen.queryByRole('button', { name: /stop reading/i })).toBeNull();
   fireEvent.click(screen.getByRole('button', { name: /^repeat$/i }));
-  expect(said()[3]).toMatch(/en-block-am-stop-ladder/);
+  expect(said()[3]).toMatch(/en-block-basic-spot-shot/);
   const pauses = pause.mock.calls.length;
   fireEvent.click(screen.getByRole('button', { name: /^pause$/i }));
   expect(pause.mock.calls.length).toBeGreaterThan(pauses);
 });
 
 test('Listen plays the illustrated key points one after another; each finished step turns the page', async () => {
-  await open('#/session/am', { voiceOn: false });
+  await open('#/day/1', { voiceOn: false });
   fireEvent.click(await screen.findByRole('button', { name: /^start$/i }));
   expect(screen.getByRole('heading', { name: 'Key points' })).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: /^listen$/i }));
   const dialog = screen.getByRole('dialog');
   expect(dialog).toHaveTextContent('Step 1 of 3');
-  expect(said()).toEqual([expect.stringMatching(/en-lesson-am-straight-warmup-1/)]);
+  expect(said()).toEqual([expect.stringMatching(/en-lesson-basic-dry-stroke-1/)]);
   act(() => audio.onended!());
   expect(dialog).toHaveTextContent('Step 2 of 3');
-  expect(said()[1]).toMatch(/en-lesson-am-straight-warmup-2/);
+  expect(said()[1]).toMatch(/en-lesson-basic-dry-stroke-2/);
   act(() => audio.onended!());
   act(() => audio.onended!());
   expect(said()).toHaveLength(3);
@@ -93,7 +93,7 @@ test('a step title opens the walkthrough there without playing; Play reads that 
 });
 
 test('voice guidance off: nothing is read automatically, the button still works', async () => {
-  await open('#/session/am', { voiceOn: false });
+  await open('#/day/1', { voiceOn: false });
   fireEvent.click(await screen.findByRole('button', { name: /^start$/i }));
   expect(said()).toHaveLength(0);
   fireEvent.click(screen.getByRole('button', { name: /^repeat$/i }));

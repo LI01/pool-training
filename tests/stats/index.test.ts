@@ -1,5 +1,5 @@
 import {
-  resolveStartDate, dayNumber, weekOfPlan, testScores, weeklySummary,
+  nextPlanDay, planWeekAt, testScores, weeklySummary,
   streak, minutesByDay, testDue, dailySummaryLine, trainingRecords,
 } from '../../src/stats';
 import type { SessionRecord, TestRecord, Shot } from '../../src/db/types';
@@ -17,16 +17,29 @@ const sess = (date: string, o: Partial<SessionRecord> = {}): SessionRecord => ({
   id: date + Math.random(), date, sessionId: 'am', planVersion: 1, startedAt: 0, endedAt: 0, activeMinutes: 60, blocks: [], ...o,
 });
 
-test('resolveStartDate prefers settings, else earliest record', () => {
-  expect(resolveStartDate({ soundOn: true, startDate: '2026-10-01' }, [], [])).toBe('2026-10-01');
-  expect(resolveStartDate({ soundOn: true }, [sess('2026-10-05')], [test_('2026-10-03')])).toBe('2026-10-03');
-  expect(resolveStartDate({ soundOn: true }, [], [])).toBeUndefined();
+const day = (date: string, n: number, endedAt = 0) => sess(date, { sessionId: 'day', dayNumber: n, endedAt });
+
+test('nextPlanDay follows finished days, not the calendar; repeats do not move it back', () => {
+  const S = { soundOn: true };
+  expect(nextPlanDay([], S)).toBe(1);
+  expect(nextPlanDay([day('2026-10-01', 1), day('2026-10-05', 2)], S)).toBe(3); // days missed in between are not skipped
+  expect(nextPlanDay([day('2026-10-01', 1), day('2026-10-02', 2), day('2026-10-03', 1)], S)).toBe(3);
+  expect(nextPlanDay([sess('2026-10-01')], S)).toBe(1); // old AM/PM records do not count
+  expect(nextPlanDay([day('2026-10-01', 48)], S)).toBe(49); // complete
 });
 
-test('dayNumber and weekOfPlan match spreadsheet buckets', () => {
-  expect(dayNumber('2026-10-07', '2026-10-07')).toBe(1);
-  expect(dayNumber('2026-11-05', '2026-10-07')).toBe(30);
-  expect([1, 7, 8, 14, 15, 21, 22, 30, 31, 0].map(weekOfPlan)).toEqual([1, 1, 2, 2, 3, 3, 4, 4, null, null]);
+test('progress set in Settings wins over days finished before it', () => {
+  const sessions = [day('2026-10-01', 10, 100), day('2026-10-02', 11, 200)];
+  expect(nextPlanDay(sessions, { soundOn: true, planDay: 1, planDaySetAt: 300 })).toBe(1);
+  expect(nextPlanDay([...sessions, day('2026-10-03', 1, 400)], { soundOn: true, planDay: 1, planDaySetAt: 300 })).toBe(2);
+  expect(nextPlanDay(sessions, { soundOn: true, planDay: 20, planDaySetAt: 300 })).toBe(20);
+});
+
+test('planWeekAt is the week of the furthest day trained by that date', () => {
+  const sessions = [day('2026-10-01', 1), day('2026-10-08', 6), day('2026-10-09', 7)];
+  expect(planWeekAt('2026-09-30', sessions)).toBe(1);
+  expect(planWeekAt('2026-10-08', sessions)).toBe(1);
+  expect(planWeekAt('2026-10-09', sessions)).toBe(2);
 });
 
 test('testScores derives all metrics; skipped tests undefined', () => {
@@ -34,14 +47,15 @@ test('testScores derives all metrics; skipped tests undefined', () => {
   expect(s).toEqual({ straight: 7, cutL: 6, cutR: 8, cut: 14, stop: undefined, drawAvg: 12, fiveBall: undefined });
 });
 
-test('weeklySummary averages per week, ignores missing, best and avg over days 1–30', () => {
+test('weeklySummary averages per plan week, ignores missing and tests before the plan started', () => {
+  const sessions = [day('2026-10-07', 1), day('2026-10-14', 7)];
   const tests = [
+    test_('2026-10-01', { straight: shots(10, 10) }), // before the plan started
     test_('2026-10-07', { straight: shots(6, 10) }),
     test_('2026-10-09', { straight: shots(8, 10), draw: [10, 10, 10, 10, 10] }),
     test_('2026-10-15', { straight: shots(9, 10) }),
-    test_('2026-11-10', { straight: shots(10, 10) }), // day 35 — outside 30-day plan
   ];
-  const w = weeklySummary(tests, '2026-10-07');
+  const w = weeklySummary(tests, sessions, 4);
   expect(w.straight.weeks).toEqual([7, 9, null, null]);
   expect(w.straight.best).toBe(9);
   expect(w.straight.avg).toBeCloseTo(23 / 3);
@@ -60,10 +74,10 @@ test('minutesByDay sums sessions on the same day', () => {
   expect(minutesByDay([sess('2026-10-07', { activeMinutes: 55 }), sess('2026-10-07', { activeMinutes: 62 })])).toEqual({ '2026-10-07': 117 });
 });
 
-test('testDue after 3 days or when never tested', () => {
+test('testDue once a week or when never tested', () => {
   expect(testDue([], '2026-10-07')).toEqual({ daysSinceLast: null, due: true });
-  expect(testDue([test_('2026-10-05')], '2026-10-07')).toEqual({ daysSinceLast: 2, due: false });
-  expect(testDue([test_('2026-10-04')], '2026-10-07')).toEqual({ daysSinceLast: 3, due: true });
+  expect(testDue([test_('2026-10-01')], '2026-10-07')).toEqual({ daysSinceLast: 6, due: false });
+  expect(testDue([test_('2026-09-30')], '2026-10-07')).toEqual({ daysSinceLast: 7, due: true });
 });
 
 test('dailySummaryLine uses the latest test of the day', () => {

@@ -10,9 +10,9 @@ const out: { id: string; lang: Lang; key: string; text: string }[] = [];
 for (const lang of ['en', 'zh'] as Lang[]) {
   setLang(lang);
   const scripts: Script[] = [
-    ...plan.sessions.flatMap((s) => s.blocks.map(blockScript)),
+    ...plan.blocks.map(blockScript),
     ...TEST_ORDER.map((id) => testScript(getTestDef(id))),
-    ...[...plan.sessions.flatMap((s) => s.blocks), ...TEST_ORDER.map(getTestDef)]
+    ...[...plan.blocks, ...TEST_ORDER.map(getTestDef)]
       .flatMap((x) => x.lesson.map((_, i) => lessonScript(x, i))),
   ];
   for (const s of scripts) out.push({ id: `${lang}:${s.key}`, lang, key: s.key, text: forSpeech(s.text, lang) });

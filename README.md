@@ -2,7 +2,7 @@
 
 **English** | [简体中文](README.zh-CN.md)
 
-A phone and iPad app that guides a daily 2-hour pool (billiards) training routine for 30 days: a timed session guide with table diagrams and voice instructions, a standard skill test, and a progress log with charts. It works offline, and your records stay on your own device.
+A phone and iPad app that guides an eight-week pool (billiards) training plan, one 60–90 minute session a day: a timed session guide with table diagrams and voice instructions, a standard skill test, and a progress log with charts. It works offline, and your records stay on your own device.
 
 **Open the app:** https://li01.github.io/pool-training/
 
@@ -14,7 +14,7 @@ A phone and iPad app that guides a daily 2-hour pool (billiards) training routin
 
 ## Features
 
-- **30-day plan, 2 hours a day.** A 60-minute morning session (straight balls, stop/draw/follow ladders, precision pocket) and a 60-minute afternoon session (cut shots, one-rail position, 3-ball and 5-ball patterns, review).
+- **Eight-week progressive plan.** 48 training days, six a week, with the seventh for rest or the standard test. The content follows the three-day course by Pan Xiaoting: accuracy and the basics (weeks 1–2), cue-ball control (weeks 3–4), position play (weeks 5–6), then run-outs and the break (weeks 7–8). Every session starts with the same basics (dry strokes and rhythm, the spot shot, the stop shot) and ends with a short review.
 - **Guided sessions.** Each drill has a countdown timer, a table diagram, setup, how to train, the success standard, and illustrated key points. A chime sounds when time is up.
 - **Voice instructions.** Each drill is explained aloud when it starts, the way a coach would talk you through it, in a natural neural voice (English: Jenny, Chinese: Xiaoxiao). **💡 Listen** walks through the key points, one picture at a time. The clips are built in and play offline.
 - **Standard test.** Straight pot ×10, cut shots ×20 (left/right), stop shot ×10, draw distance ×5, 5-ball clearance ×5. Tap Make or Miss; nothing else to fill in.
@@ -40,12 +40,13 @@ On Android, open the link in Chrome and choose **Install app** (or **Add to Home
 ### 1. Today
 
 <img src="docs/images/en-today.jpg" width="260" align="right" alt="Today screen">
+<img src="docs/images/en-plan.jpg" width="260" align="right" alt="Eight-week plan">
 
-The home screen shows which day of the 30-day plan you are on, the morning and afternoon sessions, and when you last took the standard test (it is due every 3 days).
+The home screen shows the next plan day (for example *Day 9 · Week 2 · Accuracy · harder shots*) and when you last took the standard test (it is due once a week). After the sixth day of a week it suggests a rest day or the test.
 
 The line at the bottom is today's summary: the latest test scores.
 
-Set the plan's start date in **Settings** if you did not start today; otherwise Day 1 is the day of your first record.
+The plan follows your progress, not the calendar: if you miss a day, you simply continue where you left off. The **Plan** tab lists all eight weeks and what each day trains; tap any day to repeat it or look ahead.
 
 <br clear="right">
 
@@ -54,7 +55,7 @@ Set the plan's start date in **Settings** if you did not start today; otherwise 
 <img src="docs/images/en-session.jpg" width="260" align="right" alt="Training session">
 <img src="docs/images/en-lesson.jpg" width="260" align="right" alt="Illustrated key points">
 
-Tap **Morning Session** or **Afternoon Session**, then **Start**.
+Tap the day's card, then **Start**.
 
 - The top shows the drill's table diagram. Tap it to open it full-size.
 - The big clock counts down the drill's time. **Pause**, **+2 min** and **Back** are at the bottom.
@@ -98,16 +99,16 @@ Use the same setup each time: normal pockets, the same cue ball, no extra attemp
 The **Progress** tab shows:
 
 - a chart for each test (straight, cut left/right, stop, draw average, 5-ball);
-- a weekly table with week 1–4 averages, plus the 30-day best and average;
+- a weekly table with averages for plan weeks 1–8, plus the best and average;
 - your training streak, minutes per day, and training records (draw distance and pattern success rate).
 
-Switch between **30-day plan** and **All time** at the top.
+Switch between **This plan** and **All time** at the top.
 
 ### 6. Settings
 
 <img src="docs/images/en-settings.jpg" width="260" align="right" alt="Settings">
 
-- **Start date (Day 1)** of the plan.
+- **Plan progress**: the next day to train. Change it to repeat a week or skip ahead.
 - **Sound**: the chime at the end of each drill.
 - **Read each drill aloud when it starts**: automatic voice instructions on or off. **↻ Repeat** still works when it is off.
 - **Language / 语言**: English or 中文.

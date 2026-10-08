@@ -60,6 +60,14 @@ export const DIAGRAMS_ZH: Record<string, { title: string; caption: string }> = {
     title: '测试：五球清台（固定球型）',
     caption: '每次测试都用这个球型。自由球开始。打 5 次。',
   },
+  'spot-shot': { title: '五分点直线球', caption: '目标球放在置球点，主球在它正后方对准底袋。一步入位，每杆打完停两秒。' },
+  'cut-small': { title: '小角度切球', caption: '用假想球瞄 10°、20°、30° 的切球，左右都练。目标球和袋口固定。' },
+  'rail-balls': { title: '贴库球', caption: '贴库：大角度先打库，加一点袋口方向的塞；小角度瞄缝隙。半贴库：目标球边缘瞄袋角，打实。' },
+  'level-stops': { title: '五档击球点', caption: '同一个直线球，五种击球高度。每杆之前先说出主球会停在哪里。' },
+  'separation-positions': { title: '90° 线和 1–4 号位', caption: '高杆让主球走到 90° 线前面（1、2 号位），低杆让它往回走（3、4 号位）。中杆沿着 90° 线走。' },
+  'homework-route': { title: '打进 1 号，走位 2 号', caption: '自由球。1 号打进底袋，主球走到能打 2 号的位置。找出几条线路，选最稳的一条。' },
+  'break-square': { title: '开得正', caption: '主球放在开球线上，打中杆或略低，不加塞。整颗正撞头球，主球停在台面中间。' },
+  'break-tech': { title: '技术冲', caption: '主球放在开球线上、离边库 10–15 厘米。冲球堆第二颗，中心偏下半个皮头，带一点塞，七八成力。' },
 };
 
 /** Chinese for every on-table text (label/marker `text`, zone/pocket `label`), keyed by the exact English string. */
@@ -88,4 +96,17 @@ export const LABELS_ZH: Record<string, string> = {
   '24"': '60cm',
   '36"': '90cm',
   BIH: '自由球',
+  'Foot spot': '置球点',
+  'big angle': '大角度',
+  'small angle': '小角度',
+  'Frozen on the rail': '贴库球',
+  'Half-frozen: edge to the jaw': '半贴库：边缘瞄袋角',
+  follow: '高杆',
+  'slight follow': '中高杆',
+  stop: '中杆定住',
+  'slight draw': '中低杆',
+  draw: '低杆',
+  'CB stops here': '主球停这里',
+  'second ball': '第二颗',
+  'CB ends mid-table': '主球回到台面中间',
 };

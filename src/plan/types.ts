@@ -2,7 +2,8 @@ export type RecordMode = 'yes' | 'optional' | 'no' | 'notes';
 export type RecordKind = 'draw' | 'runs' | 'generic' | 'notes' | null;
 export type TestId = 'straight' | 'cut' | 'stop' | 'draw' | 'fiveBall';
 export type ErrorCodeId = 'P' | 'C' | 'S' | 'D';
-export type SessionId = 'am' | 'pm';
+/** 'day' for plan-day sessions; 'am' / 'pm' only in records from the earlier fixed daily plan. */
+export type SessionId = 'am' | 'pm' | 'day';
 
 /** One illustrated key point: a figure, a short title and text, and what the voice says. */
 export interface LessonStep {
@@ -15,7 +16,6 @@ export interface LessonStep {
 
 export interface Block {
   id: string;
-  timeLabel: string;
   minutes: number;
   name: string;
   setup: string;
@@ -30,13 +30,16 @@ export interface Block {
   record: RecordMode;
   recordKind: RecordKind;
   drillRefId?: string;
+  /** A table diagram id, or `figure:<id>` for a lesson figure when the setup is not a table layout. */
   diagramId: string;
 }
 
-export interface Session {
-  id: SessionId;
+/** One week of the plan: days 1/3/5 run the A blocks, days 2/4/6 the B blocks (between the daily basics). */
+export interface Week {
   title: string;
-  blocks: Block[];
+  focus: string;
+  a: string[];
+  b: string[];
 }
 
 export interface DrillRef {
@@ -70,7 +73,10 @@ export interface Plan {
   version: number;
   title: string;
   intro: string;
-  sessions: Session[];
+  /** Block ids done every day: before the week's focus and after it. */
+  daily: { start: string[]; end: string[] };
+  weeks: Week[];
+  blocks: Block[];
   tests: TestDef[];
   drillRefs: DrillRef[];
 }

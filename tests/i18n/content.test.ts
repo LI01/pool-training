@@ -33,7 +33,7 @@ test('plan getters follow the language', () => {
   setLang('zh');
   expect(plan.title).toBe(planZh.title);
   expect(plan.title).not.toBe(en);
-  expect(getBlock('pm-3ball')?.name).toBe(planZh.sessions[1].blocks.find((b) => b.id === 'pm-3ball')?.name);
+  expect(getBlock('pm-3ball')?.name).toBe(planZh.blocks.find((b) => b.id === 'pm-3ball')?.name);
   setLang('en');
   expect(plan.title).toBe(en);
 });

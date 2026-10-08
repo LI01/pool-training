@@ -1,3 +1,4 @@
+import { FIGURE_IDS } from '../../src/lesson/figures';
 import { DIAGRAMS } from '../../src/diagram/diagrams';
 import { TABLE } from '../../src/diagram/table';
 import { dist } from '../../src/diagram/geometry';
@@ -9,7 +10,10 @@ const inside = (p: Pt) => p.x >= R && p.x <= TABLE.width - R && p.y >= R && p.y 
 const insideLoose = (p: Pt) => p.x >= 0 && p.x <= TABLE.width && p.y >= 0 && p.y <= TABLE.height;
 
 test('every block and test has a diagram', () => {
-  for (const b of plan.sessions.flatMap((s) => s.blocks)) expect(DIAGRAMS[b.diagramId], b.id).toBeDefined();
+  for (const b of plan.blocks) {
+    if (b.diagramId.startsWith('figure:')) expect(FIGURE_IDS, b.id).toContain(b.diagramId.slice(7));
+    else expect(DIAGRAMS[b.diagramId], b.id).toBeDefined();
+  }
   for (const t of plan.tests) expect(DIAGRAMS[t.diagramId], t.id).toBeDefined();
 });
 

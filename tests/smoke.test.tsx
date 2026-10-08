@@ -5,5 +5,5 @@ import { createStore } from '../src/db/store';
 test('app renders Today', async () => {
   location.hash = '#/';
   render(<App store={createStore('smoke')} />);
-  await waitFor(() => expect(screen.getByText('Day 1 of 30')).toBeInTheDocument());
+  await waitFor(() => expect(screen.getByText('Day 1 of 48')).toBeInTheDocument());
 });

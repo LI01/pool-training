@@ -1,5 +1,5 @@
 import { t, toLen } from '../i18n';
-import { BLOCK_IDS } from '../plan';
+import { BLOCK_IDS, DAYS_PER_WEEK } from '../plan';
 import type { SessionRecord, Settings, Shot, TestRecord } from '../db/types';
 import { addDays, daysBetween } from './dates';
 
@@ -12,14 +12,28 @@ const made = (s?: Shot[]) => (s ? s.filter((x) => x.ok).length : undefined);
 const mean = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : null);
 const r1 = (n: number) => Math.round(n * 10) / 10;
 
-export function resolveStartDate(settings: Settings, sessions: SessionRecord[], tests: TestRecord[]): string | undefined {
-  if (settings.startDate) return settings.startDate;
-  const dates = [...sessions, ...tests].map((r) => r.date).sort();
-  return dates[0];
+const planSessions = (sessions: SessionRecord[]) => sessions.filter((s) => s.sessionId === 'day' && s.dayNumber !== undefined);
+
+/**
+ * The next plan day to train: one past the furthest day finished since progress was last set in Settings, and never
+ * before that setting. Repeating an earlier day does not move it back. Above PLAN_DAYS means the plan is complete.
+ */
+export function nextPlanDay(sessions: SessionRecord[], settings: Settings): number {
+  const since = settings.planDaySetAt ?? -Infinity;
+  const done = planSessions(sessions).filter((s) => s.endedAt > since).map((s) => s.dayNumber!);
+  return Math.max(settings.planDay ?? 1, done.length ? Math.max(...done) + 1 : 1);
 }
-export const dayNumber = (date: string, startDate: string) => daysBetween(startDate, date) + 1;
-export const weekOfPlan = (day: number): 1 | 2 | 3 | 4 | null =>
-  day < 1 || day > 30 ? null : day <= 7 ? 1 : day <= 14 ? 2 : day <= 21 ? 3 : 4;
+
+/** The furthest plan day trained on or before `date` (0 if none). */
+export const planDayAt = (date: string, sessions: SessionRecord[]): number =>
+  Math.max(0, ...planSessions(sessions).filter((s) => s.date <= date).map((s) => s.dayNumber!));
+
+/** The plan week a date belongs to: the week of the furthest day trained by then (week 1 before any). */
+export const planWeekAt = (date: string, sessions: SessionRecord[]): number =>
+  Math.max(1, Math.ceil(planDayAt(date, sessions) / DAYS_PER_WEEK));
+
+/** Date of the first plan-day session, if any. */
+export const planStartDate = (sessions: SessionRecord[]): string | undefined => planSessions(sessions).map((s) => s.date).sort()[0];
 
 export function testScores(t: TestRecord): TestScores {
   return {
@@ -33,17 +47,19 @@ export function testScores(t: TestRecord): TestScores {
   };
 }
 
-export function weeklySummary(tests: TestRecord[], startDate: string): Record<Metric, MetricSummary> {
+/** Test averages per plan week (1–weeks) plus best and average, for tests taken since the plan started. */
+export function weeklySummary(tests: TestRecord[], sessions: SessionRecord[], weeks: number): Record<Metric, MetricSummary> {
+  const start = planStartDate(sessions);
   const inPlan = tests
-    .map((t) => ({ week: weekOfPlan(dayNumber(t.date, startDate)), s: testScores(t) }))
-    .filter((x) => x.week !== null);
+    .filter((t) => start !== undefined && t.date >= start)
+    .map((t) => ({ week: planWeekAt(t.date, sessions), s: testScores(t) }));
   const out = {} as Record<Metric, MetricSummary>;
   for (const m of METRICS) {
     const vals = (pred: (w: number) => boolean) =>
       inPlan.filter((x) => pred(x.week!) && x.s[m] !== undefined).map((x) => x.s[m] as number);
     const all = vals(() => true);
     out[m] = {
-      weeks: [1, 2, 3, 4].map((w) => mean(vals((x) => x === w))),
+      weeks: Array.from({ length: weeks }, (_, i) => mean(vals((x) => x === i + 1))),
       best: all.length ? Math.max(...all) : null,
       avg: mean(all),
     };
@@ -69,7 +85,7 @@ export function testDue(tests: TestRecord[], today: string): { daysSinceLast: nu
   if (!tests.length) return { daysSinceLast: null, due: true };
   const last = tests.map((t) => t.date).sort().at(-1)!;
   const n = daysBetween(last, today);
-  return { daysSinceLast: n, due: n >= 3 };
+  return { daysSinceLast: n, due: n >= 7 };
 }
 
 export function dailySummaryLine(date: string, tests: TestRecord[]): string {

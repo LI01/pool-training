@@ -54,7 +54,7 @@ test('scripts follow the app language', () => {
 
 test.each(['en', 'zh'] as Lang[])('every block and test has an up-to-date recorded clip (%s) — rerun scripts/make_voice.py if not', (lang) => {
   setLang(lang);
-  const items = [...plan.sessions.flatMap((s) => s.blocks), ...TEST_ORDER.map(getTestDef)];
+  const items = [...plan.blocks, ...TEST_ORDER.map(getTestDef)];
   const scripts = [
     ...items.map((x) => ('kind' in x ? testScript(x) : blockScript(x))),
     ...items.flatMap((x) => x.lesson.map((_, i) => lessonScript(x, i))),

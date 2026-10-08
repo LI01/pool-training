@@ -1,10 +1,11 @@
 import { useState } from 'preact/hooks';
 import {
-  dayNumber, minutesByDay, resolveStartDate, streak, testScores, trainingRecords,
+  minutesByDay, planStartDate, streak, testScores, trainingRecords,
   weeklySummary, type Metric,
 } from '../../stats';
 import { addDays, daysBetween } from '../../stats/dates';
 import { t, toLen, type Key } from '../../i18n';
+import { PLAN_DAYS, DAYS_PER_WEEK } from '../../plan';
 import { BarChart } from '../components/BarChart';
 import { SERIES_COLORS } from '../components/chartSetup';
 import { LineChart } from '../components/LineChart';
@@ -20,13 +21,12 @@ const conv = (m: Metric, n: number | null) => (m === 'drawAvg' && n !== null ? t
 const short = (d: string) => `${Number(d.slice(5, 7))}/${Number(d.slice(8))}`;
 
 export function Progress() {
-  const { sessions, tests, settings, today } = useAppData();
+  const { sessions, tests, today } = useAppData();
   const [range, setRange] = useState<Range>('plan');
-  const start = resolveStartDate(settings, sessions, tests) ?? today;
-  const planEnd = addDays(start, 29);
+  const start = planStartDate(sessions) ?? today;
   const from = range === 'plan' ? start : [start, ...sessions.map((s) => s.date), ...tests.map((t) => t.date)].sort()[0];
   const lastRec = [...sessions, ...tests].map((r) => r.date).sort().at(-1) ?? today;
-  const to = range === 'plan' ? planEnd : [today, lastRec].sort().at(-1)!;
+  const to = [today, lastRec].sort().at(-1)!;
   const inR = (d: string) => d >= from && d <= to;
 
   const rTests = tests.filter((t) => inR(t.date)).sort((a, b) => a.date.localeCompare(b.date) || a.endedAt - b.endedAt);
@@ -34,11 +34,14 @@ export function Progress() {
   const labels = rTests.map((t) => short(t.date));
   const scores = rTests.map(testScores);
   const col = (k: 'straight' | 'cutL' | 'cutR' | 'cut' | 'stop' | 'drawAvg' | 'fiveBall') => scores.map((s) => s[k] ?? null);
-  const summary = weeklySummary(tests, start);
+  const weeks = Array.from({ length: PLAN_DAYS / DAYS_PER_WEEK }, (_, i) => i + 1);
+  const summary = weeklySummary(tests, sessions, weeks.length);
 
   const days = Array.from({ length: daysBetween(from, to) + 1 }, (_, i) => addDays(from, i));
   const mins = minutesByDay(rSessions);
-  const done = (d: string, id: 'am' | 'pm') => rSessions.some((s) => s.date === d && s.sessionId === id);
+  const trained = (d: string) => rSessions.some((s) => s.date === d);
+  /** The plan day(s) trained on a date, for the calendar label. */
+  const planDays = (d: string) => [...new Set(rSessions.filter((s) => s.date === d && s.dayNumber !== undefined).map((s) => s.dayNumber!))].sort((a, b) => a - b);
   const n = streak(sessions, today);
 
   const recs = trainingRecords(rSessions);
@@ -72,7 +75,7 @@ export function Progress() {
         <div class="table-wrap">
           <table class="summary">
             <thead>
-              <tr><th>{t('progress.metric')}</th>{[1, 2, 3, 4].map((w) => <th key={w}>{t('progress.week', { n: w })}</th>)}<th>{t('progress.best30')}</th><th>{t('progress.avg30')}</th></tr>
+              <tr><th>{t('progress.metric')}</th>{weeks.map((w) => <th key={w}>{t('progress.week', { n: w })}</th>)}<th>{t('progress.best30')}</th><th>{t('progress.avg30')}</th></tr>
             </thead>
             <tbody>
               {ROWS.map(([m, name]) => (
@@ -96,10 +99,9 @@ export function Progress() {
             <div class="cal" aria-label={t('progress.calendar')}>
               {days.map((d) => (
                 <div class="cal__cell" key={d}>
-                  <span class="cal__day">{dayNumber(d, start) >= 1 ? dayNumber(d, start) : short(d)}</span>
+                  <span class="cal__day">{planDays(d).length ? planDays(d).join(',') : short(d)}</span>
                   <span class="cal__marks">
-                    <i class={done(d, 'am') ? 'on' : ''} title={t('progress.am')}>{t('progress.amShort')}</i>
-                    <i class={done(d, 'pm') ? 'on' : ''} title={t('progress.pm')}>{t('progress.pmShort')}</i>
+                    <i class={trained(d) ? 'on' : ''} title={t('progress.train')}>{t('progress.trainShort')}</i>
                     <i class={tests.some((t) => t.date === d) ? 'on' : ''} title={t('progress.test')}>{t('progress.testShort')}</i>
                   </span>
                 </div>

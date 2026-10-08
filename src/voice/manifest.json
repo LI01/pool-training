@@ -9,7 +9,7 @@
  },
  "en:block:am-precision-pocket": {
   "file": "en-block-am-precision-pocket.mp3",
-  "text": "Last one this morning: the precision pocket drill. Ten minutes. Shoot long straight shots and slight cuts, switching between the left and right corner pockets. If you have a pocket reducer, you can use it here. Be strict with yourself. If a ball rattles in the jaws, count it as a miss, even if it drops. Aim for the center of the pocket every time, with a calm, steady stroke."
+  "text": "Now the precision pocket drill. Ten minutes. Shoot long straight shots and slight cuts, switching between the left and right corner pockets. If you have a pocket reducer, you can use it here. Be strict with yourself. If a ball rattles in the jaws, count it as a miss, even if it drops. Aim for the center of the pocket every time, with a calm, steady stroke."
  },
  "en:block:am-stop-ladder": {
   "file": "en-block-am-stop-ladder.mp3",
@@ -17,7 +17,75 @@
  },
  "en:block:am-straight-warmup": {
   "file": "en-block-am-straight-warmup.mp3",
-  "text": "Let's warm up with straight balls. You've got ten minutes. Put an object ball in line with a corner pocket, and start with the cue ball about a foot behind it. As you get comfortable, move the cue ball back to two feet, then three, then four. Shoot in sets of five, and take your time. Whenever you miss, stop and ask yourself why. Was it your aim, your stroke, or where you hit the cue ball? You're looking for the ball to drop right in the middle of the pocket, with the cue ball staying on the line."
+  "text": "Now some straight balls, ten minutes. Put an object ball in line with a corner pocket, and start with the cue ball about a foot behind it. As you get comfortable, move the cue ball back to two feet, then three, then four. Shoot in sets of five, and take your time. Whenever you miss, stop and ask yourself why. Was it your aim, your stroke, or where you hit the cue ball? You're looking for the ball to drop right in the middle of the pocket, with the cue ball staying on the line."
+ },
+ "en:block:awkward-bridge": {
+  "file": "en-block-awkward-bridge.mp3",
+  "text": "Fifteen minutes of deliberate practice. Take the shots you'll really need, like cuts and long balls, but put the cue ball where it's awkward, close to the rail, where your bridge is cramped and it doesn't feel right. Shots from the comfortable spot you already make. These are the ones that cost you in a match. Go through your full routine, don't rush, and play every shot like it counts."
+ },
+ "en:block:basic-dry-stroke": {
+  "file": "en-block-basic-dry-stroke.mp3",
+  "text": "Every day we start with five minutes of dry strokes. No cue ball yet. Put an object ball on the foot spot and aim at it, as if you were really about to hit. Do three long practice strokes to find a relaxed wrist, then one short one to check your tip spot. Bring the tip back close to where the cue ball would be, pause at the back, and stroke through smoothly. Then hold still for three to five seconds before you stand up."
+ },
+ "en:block:basic-spot-shot": {
+  "file": "en-block-basic-spot-shot.mp3",
+  "text": "Next, ten minutes on the spot shot. Put the object ball on the foot spot and the cue ball about two feet behind it, straight in line with a corner pocket. This shot isn't about making lots of balls. It tells you how your stroke is today. Read the line standing up, step in, and go through your full routine. After every shot, stay down for two seconds and check yourself."
+ },
+ "en:block:basic-stop": {
+  "file": "en-block-basic-stop.mp3",
+  "text": "Five minutes of stop shots, every day. Set up a straight shot with the cue ball a foot from the object ball, and later two feet. Hit dead center, and the cue ball should stop within about three inches. If it creeps forward at two feet, add a little speed first. If it still follows, aim half a tip lower. A stop shot you can trust is the starting point for all your position play."
+ },
+ "en:block:break-dry": {
+  "file": "en-block-break-dry.mp3",
+  "text": "Ten minutes on the break motion, with no balls to hit yet. Set up on the head string and adjust your stance. Grip about a fist further forward than usual, and put your bridge further back, so you have room for a long stroke. Front foot a small step forward, back foot back and turned out, weight low. Then practise in three stages. First just the arm, keeping the cue on the line. Then add a turn of the body. Then add the leg drive. Start slow, and only speed up when the cue stays on the line."
+ },
+ "en:block:break-square": {
+  "file": "en-block-break-square.mp3",
+  "text": "Ten minutes on breaking square. Rack the balls and put the cue ball on the head string, straight behind the head ball. Hit the cue ball at center or just below, with no side at all, and hit the head ball full in the face. A slightly downward stroke helps the cue ball skim into the rack instead of rolling. If the hit is square, the cue ball stops near the middle of the table. If you hit the rack off center, the cue ball flies around. Count the breaks where the cue ball stays in the middle."
+ },
+ "en:block:break-tech": {
+  "file": "en-block-break-tech.mp3",
+  "text": "Ten minutes on the controlled break, your backup when the power break isn't working. Put the cue ball on the head string, four to six inches from a side rail. Aim at the second ball of the rack, not the head ball. Hit half a tip below center with a touch of right side, at about seventy to eighty percent power. Use your normal stance and add a little waist, with a loose grip. The cue ball should come off the rail about a diamond and stop in the middle of the table. Count the breaks that do that."
+ },
+ "en:block:cue-left-check": {
+  "file": "en-block-cue-left-check.mp3",
+  "text": "Next, ten minutes checking your alignment with no coach around. Set up a straight shot. Step in and get down exactly as usual, then leave the cue resting on the table and step away carefully. Look from behind. Is the cue pointing at the center of the cue ball, or has it drifted to one side? Also notice your head. It often shifts when your front foot steps in, and you don't feel it."
+ },
+ "en:block:cut-small": {
+  "file": "en-block-cut-small.mp3",
+  "text": "Now fifteen minutes on small cuts. Put the object ball about fifteen inches from a corner pocket, and the cue ball a foot and a half back, at about ten, twenty and thirty degrees. Do both sides. On every shot, picture the ghost ball touching the object ball on the line to the pocket, and send the center of the cue ball right there. When you miss, notice whether it was too thin or too thick."
+ },
+ "en:block:draw-angle": {
+  "file": "en-block-draw-angle.mp3",
+  "text": "Now draw on cut shots, fifteen minutes. Start with an almost straight shot, the object ball about a foot from the corner and the cue ball a foot and a half away. Every few shots, move the cue ball a little to one side so the angle grows. The big thing here: after contact, your cue should still point along the line you aimed. Don't let the angle drag your stroke sideways. Then watch the cue ball. With draw, it bends back behind the ninety-degree line."
+ },
+ "en:block:draw-straight": {
+  "file": "en-block-draw-straight.mp3",
+  "text": "Now straight draw, twenty minutes. Put the object ball about a foot from a corner pocket, with the cue ball a foot behind it, all on one line. Later move the cue ball back to two feet. Picture the cue ball covering the object ball completely, and send your cue straight through both centers. Hit low, keep the cue level, and keep accelerating through the ball. The test is simple: the cue ball should come straight back down the line it went out on."
+ },
+ "en:block:five-levels": {
+  "file": "en-block-five-levels.mp3",
+  "text": "Now the five levels of spin, twenty minutes. Set up a straight shot, the object ball about a foot from the pocket and the cue ball two feet behind it. There are five steps from top to bottom: follow, slight follow, center, slight draw, and draw. Before every shot, say which level you're using and where the cue ball will stop. Then shoot and check. Go through all five in order first, then mix them up."
+ },
+ "en:block:follow-angle": {
+  "file": "en-block-follow-angle.mp3",
+  "text": "Now follow on cut shots, fifteen minutes. Same setup as before: start almost straight, then add a little angle every few shots. Hit above center, right on the vertical line, so you don't add side. Mix soft, medium and firm strokes. Keep your upper arm steady and let the forearm do the accelerating, and keep the tip down after contact. Watch the cue ball: with follow, it bends forward of the ninety-degree line, toward the object ball's direction."
+ },
+ "en:block:homework-route": {
+  "file": "en-block-homework-route.mp3",
+  "text": "Fifteen minutes on a classic position problem. Put ball one and ball two near the seventh diamond on opposite sides of the table, and take ball in hand. Pot one into a corner and get to two. Try every route you can think of: one rail, two rails, follow, draw, with or without side. Then compare them. The best route usually crosses ball two's pocket line, so the cue ball can stop anywhere along it. Keep the cue ball away from the pockets, and don't put ball in hand dead straight."
+ },
+ "en:block:leave-angle": {
+  "file": "en-block-leave-angle.mp3",
+  "text": "Fifteen minutes on leaving an angle. Set up a ball to pot and a next ball, and change the layout every time. Before each shot, decide which side of the next ball you want, and aim to leave fifteen to thirty degrees of cut. That's the easiest angle to pot, and the cue ball can still go somewhere afterwards. A straight shot in the middle of a run is a position mistake, because it's hard to move the cue ball from there. Count the shots that leave you a good angle."
+ },
+ "en:block:match-sim": {
+  "file": "en-block-match-sim.mp3",
+  "text": "Now thirty-five minutes of match simulation. Rack, break, and play it out as if it counts. After the break, don't shoot straight away. First look: which group gives you a first shot, how many trouble balls, any balls on the rails. Then plan backwards from the eight: the key ball that leads to it, the transition balls, and the first ball. Then play. When position goes wrong, find the best correction instead of forcing it. At the end of each rack, note what ended it."
+ },
+ "en:block:micro-angle": {
+  "file": "en-block-micro-angle.mp3",
+  "text": "Fifteen minutes on a shot almost nobody practises. Put the object ball about three feet from a corner pocket, and the cue ball close behind it, but half to three-quarters of a ball off the line. It looks straight. It isn't. Play it as a straight shot and the object ball hits the jaw. So treat it as a cut, find the ghost ball every time, and switch sides every five shots."
  },
  "en:block:pm-3ball": {
   "file": "en-block-pm-3ball.mp3",
@@ -29,7 +97,7 @@
  },
  "en:block:pm-cut-blocks": {
   "file": "en-block-pm-cut-blocks.mp3",
-  "text": "Let's start the afternoon with cut shots. You've got twelve minutes. Pick three cut angles you can set up the same way every time, roughly thirty, forty-five and sixty degrees. Practise each one cutting left and cutting right, six shots each. Keep the object ball and the pocket in the same place for each little set. Get the potting line right first. Once that feels solid, start paying attention to where the cue ball ends up. You want to make these consistently, both to the left and to the right."
+  "text": "Now some cut shots. You've got twelve minutes. Pick three cut angles you can set up the same way every time, roughly thirty, forty-five and sixty degrees. Practise each one cutting left and cutting right, six shots each. Keep the object ball and the pocket in the same place for each little set. Get the potting line right first. Once that feels solid, start paying attention to where the cue ball ends up. You want to make these consistently, both to the left and to the right."
  },
  "en:block:pm-one-rail": {
   "file": "en-block-pm-one-rail.mp3",
@@ -38,6 +106,42 @@
  "en:block:pm-review": {
   "file": "en-block-pm-review.mp3",
   "text": "Let's finish with a short review, about five minutes. Think back over today, and set up the two or three worst shots or decisions you had. Don't end the day just knocking balls around. Shoot that exact problem again and again until you understand what went wrong. You're done when you know what caused the miss, and what you'll change to fix it."
+ },
+ "en:block:rail-balls": {
+  "file": "en-block-rail-balls.mp3",
+  "text": "Twenty minutes on rail shots, the ones that make people nervous. There are simple rules for each. Object ball frozen on the rail at a big angle: hit the rail first, add a touch of side toward the pocket, and play it soft. Frozen at a small angle: aim at the gap, soft follow, no side. And when the ball is just off the rail, aim its edge at the jaw of the pocket, hit low center and firm, and don't push it."
+ },
+ "en:block:rail-spin": {
+  "file": "en-block-rail-spin.mp3",
+  "text": "Now side spin basics, fifteen minutes. Put the cue ball about two feet from a long rail, between the diamonds. First, shoot straight into the rail with no side. It should come straight back to your cue. If it drifts, you're adding side without knowing. Then add a little side, never more than one tip, and watch the rebound change. Last, try some cuts into a rail and work out whether your side is running or reverse."
+ },
+ "en:block:separation-line": {
+  "file": "en-block-separation-line.mp3",
+  "text": "Next, the ninety-degree line, fifteen minutes. Set up cuts of about thirty and forty-five degrees, the object ball a foot and a half from the corner and the cue ball a foot and a half from it. Use center ball at medium speed. Before each shot, do three things: find the pocket line, find the ninety-degree line, and pick where the cue ball should travel along it. Then shoot, and check whether it went where you said."
+ },
+ "en:block:separation-targets": {
+  "file": "en-block-separation-targets.mp3",
+  "text": "Now send the cue ball to targets, twenty minutes. Set up a thirty to forty-five degree cut and mark four spots around the ninety-degree line. Number one is well forward of it, two slightly forward, three slightly behind, four well behind. Call a target, then pick the spin: follow for one, slight follow for two, slight draw for three, strong draw for four. Start with the same speed every time. Later, change the speed and see how the path changes."
+ },
+ "en:block:stroke-straight": {
+  "file": "en-block-stroke-straight.mp3",
+  "text": "Now fifteen minutes on a straight, smooth stroke. Get down with your chin lightly touching the cue, and make practice strokes back and forth. Your body and head stay still. The upper arm stays steady, and the forearm swings like a pendulum. Watch whether the cue stays right under your chin, with no drift left or right. If it starts to wander when you hit harder, slow both the backswing and the stroke down until it's straight again."
+ },
+ "en:block:tip-accuracy": {
+  "file": "en-block-tip-accuracy.mp3",
+  "text": "Next, tip accuracy, ten minutes. You can use the cue ball on its own, or a short straight shot. Before each stroke, choose one spot on the vertical line through the cue ball: high, center or low. Use your practice strokes to check that the tip is pointing exactly at that spot. Then hit, and look at the chalk mark or what the cue ball does. Keep going until your natural stroke hits the spot you picked, without fiddling."
+ },
+ "en:block:track-line": {
+  "file": "en-block-track-line.mp3",
+  "text": "Fifteen minutes on playing to a line instead of a spot. Set up a ball to pot and a next ball across the table, so the cue ball has to come off a rail. First extend the next ball's pocket line back toward the rail. Then pick the rail contact that sends the cue ball out along that same line. If it travels down that line, it doesn't matter much where it stops. A bit too firm or too soft still leaves you the same shot. Count the shots that finish on the line."
+ },
+ "en:block:trouble-first": {
+  "file": "en-block-trouble-first.mp3",
+  "text": "Fifteen minutes on dealing with the trouble ball first. Set up four or five balls with one awkward ball: frozen on a rail, partly blocked, or sitting near a cluster. Take ball in hand. Before you shoot, name the trouble ball and plan to solve it early. Pot it early if you can, or open it up with a natural angle while you pot something else. If the first attempt doesn't work, you still have balls left to fix it. Count the layouts where the trouble ball was solved early."
+ },
+ "en:block:two-halves": {
+  "file": "en-block-two-halves.mp3",
+  "text": "Now fifteen minutes on the two-halves rule. Throw out three balls you can run, and take ball in hand. Before every shot, look at the next ball and extend its pocket line right across the table. That line splits the table into two halves. Check which half the ball after it is in, and leave the cue ball in the other half. Say it out loud before you shoot. When the cue ball is on the right side, the next shot sends it toward the third ball almost by itself."
  },
  "en:lesson:am-draw-ladder:1": {
   "file": "en-lesson-am-draw-ladder-1.mp3",
@@ -99,6 +203,114 @@
   "file": "en-lesson-am-straight-warmup-3.mp3",
   "text": "After the shot, stay down for two seconds. Use that time to check yourself. Is the cue tip still pointing down the line? Did your head come up early? Did your body move? Did the stroke really finish? Most people simply get up too soon. And after a miss, work out why before you set up the next ball."
  },
+ "en:lesson:awkward-bridge:1": {
+  "file": "en-lesson-awkward-bridge-1.mp3",
+  "text": "Take a shot you already make, and move the cue ball somewhere awkward, close to the rail, where the rail cramps your bridge hand and it just doesn't feel right. That discomfort is exactly what you're practising."
+ },
+ "en:lesson:awkward-bridge:2": {
+  "file": "en-lesson-awkward-bridge-2.mp3",
+  "text": "With less room, make the bridge as solid as you can. Grip the cue a little further forward, keep the stroke shorter, and still hit through firmly. Then stay down after the shot."
+ },
+ "en:lesson:awkward-bridge:3": {
+  "file": "en-lesson-awkward-bridge-3.mp3",
+  "text": "People say they can't feel pressure in practice. This is how you create it. Play each of these as if the match depended on it. Then, when you get the easy version in a real game, it feels simple."
+ },
+ "en:lesson:basic-dry-stroke:1": {
+  "file": "en-lesson-basic-dry-stroke-1.mp3",
+  "text": "The routine is the same every time. Three long strokes to find the speed and loosen the wrist. One short stroke to confirm where the tip is going to hit. Then a slow backswing, a small pause at the back, and a smooth stroke through."
+ },
+ "en:lesson:basic-dry-stroke:2": {
+  "file": "en-lesson-basic-dry-stroke-2.mp3",
+  "text": "Even though there's no cue ball, treat every stroke as a real shot. Aim at the object ball and picture the hit. Before your final backswing, bring the tip back to the spot right next to where the cue ball would be. That's the point you'll actually strike."
+ },
+ "en:lesson:basic-dry-stroke:3": {
+  "file": "en-lesson-basic-dry-stroke-3.mp3",
+  "text": "After each stroke, don't move. Hold for three to five seconds and check: is the tip still pointing down the line, did your head stay down, did your body stay still? This is the habit you're building for every real shot."
+ },
+ "en:lesson:basic-spot-shot:1": {
+  "file": "en-lesson-basic-spot-shot-1.mp3",
+  "text": "Stand behind the line and read it first. Then step in, with your back foot and your cue hand landing on the line together. When you get down, the cue should already be pointing where you want, with nothing to adjust."
+ },
+ "en:lesson:basic-spot-shot:2": {
+  "file": "en-lesson-basic-spot-shot-2.mp3",
+  "text": "Think of the spot shot as a check, not a target. It's a straight shot you know well, so if you miss it, the cause is usually the stroke: the cue drifting, or the head coming up. Notice what's happening today."
+ },
+ "en:lesson:basic-spot-shot:3": {
+  "file": "en-lesson-basic-spot-shot-3.mp3",
+  "text": "After each shot, stay down for two seconds. Is the tip still on the line? Did your head stay down? Did your body stay still? Did the stroke finish? Getting up too early is the most common mistake there is."
+ },
+ "en:lesson:basic-stop:1": {
+  "file": "en-lesson-basic-stop-1.mp3",
+  "text": "A stop shot is center ball. The cue ball slides into the object ball with no spin, and stops right there. Don't fake it with draw. That's a different shot."
+ },
+ "en:lesson:basic-stop:2": {
+  "file": "en-lesson-basic-stop-2.mp3",
+  "text": "At two feet the cloth starts turning the slide into roll before contact. So first add a little speed. If the cue ball still follows, aim half a tip lower."
+ },
+ "en:lesson:basic-stop:3": {
+  "file": "en-lesson-basic-stop-3.mp3",
+  "text": "Why every day? Because on a cut, center ball at medium speed sends the cue ball off at ninety degrees. Once your stop is reliable, you have that reference line, and all your position play is built on it."
+ },
+ "en:lesson:break-dry:1": {
+  "file": "en-lesson-break-dry-1.mp3",
+  "text": "The break needs its own stance. Move your grip hand about a fist forward, so the cue can travel further. Put your bridge further back from the cue ball, so you can draw the cue all the way back. Front foot a small step forward, back foot back and turned out, weight low, body turned a little to the side. Your weight moves from the back leg to the front leg as you hit."
+ },
+ "en:lesson:break-dry:2": {
+  "file": "en-lesson-break-dry-2.mp3",
+  "text": "Build the power one layer at a time. First the arm alone: the cue just has to stay on the line and hit its spot. Then add the body: press the shoulder down and drive the waist forward, with a longer follow-through. Then the legs: push off to drive the hips forward, so the whole body wraps the cue and sends it through."
+ },
+ "en:lesson:break-dry:3": {
+  "file": "en-lesson-break-dry-3.mp3",
+  "text": "Start in slow motion. Watch from the front, or film yourself: the cue tip should stay on the line through the whole stroke, not left, not right, not up. If the line wanders when there's no ball, it will miscue when there is one. Only speed up once the slow version is clean."
+ },
+ "en:lesson:break-square:1": {
+  "file": "en-lesson-break-square-1.mp3",
+  "text": "Your tip goes at the center of the cue ball, or just a little below. No side. Center passes the most energy into the rack, and slightly low makes the contact easier to hit precisely. Any side spin and the cue ball goes flying."
+ },
+ "en:lesson:break-square:2": {
+  "file": "en-lesson-break-square-2.mp3",
+  "text": "Hit the head ball full and square. When the contact is square, the energy goes into the rack and the cue ball stops near the middle of the table. When it's off center, the energy stays in the cue ball and it flies off, sometimes into a pocket. Square matters more than hard."
+ },
+ "en:lesson:break-square:3": {
+  "file": "en-lesson-break-square-3.mp3",
+  "text": "Judge the break by how fast the balls spread, not by how loud it was. Keep the cue as level as you can, keep your head down instead of jumping up, and drive through the cue ball. If nothing drops from the same spot, move the cue ball along the head string, but still hit the head ball full."
+ },
+ "en:lesson:break-tech:1": {
+  "file": "en-lesson-break-tech-1.mp3",
+  "text": "Set the cue ball on the head string, four to six inches from a side rail. You're not hitting the head ball this time, you're hitting the second ball of the rack. From that angle you can't hit it fully, so you'll catch it a little to the side. Make sure your aim doesn't brush another ball first."
+ },
+ "en:lesson:break-tech:2": {
+  "file": "en-lesson-break-tech-2.mp3",
+  "text": "Hit half a tip below center with just a touch of right side. Power is about seventy to eighty percent. The limit is simple: hit as hard as you can without the cue ball jumping off the table. Use your normal stance and add a little waist, with a loose grip so the forearm and wrist can whip through."
+ },
+ "en:lesson:break-tech:3": {
+  "file": "en-lesson-break-tech-3.mp3",
+  "text": "Your default is still the full break. Switch to this one when the power break keeps failing to drop a ball, when the cloth is damp and the balls won't run, when your arm is sore, or on a key rack when you can't afford the cue ball flying. Good players don't have one break, they choose."
+ },
+ "en:lesson:cue-left-check:1": {
+  "file": "en-lesson-cue-left-check-1.mp3",
+  "text": "Get down exactly as you normally would. Then leave the cue resting on the table and step away carefully. Look from behind. Is it still pointing at the center of the cue ball? If not, your aim was off before you ever stroked."
+ },
+ "en:lesson:cue-left-check:2": {
+  "file": "en-lesson-cue-left-check-2.mp3",
+  "text": "Here's what usually moves it. The back foot and cue land on the line fine, then the front foot steps in and the head shifts with it. Keep your head and eyes on the line the whole way down."
+ },
+ "en:lesson:cue-left-check:3": {
+  "file": "en-lesson-cue-left-check-3.mp3",
+  "text": "If the cue is off, don't wriggle it into place once you're down. That's guessing. Stand up, read the line again from behind, and step in fresh. The aim is decided at the moment you step in."
+ },
+ "en:lesson:cut-small:1": {
+  "file": "en-lesson-cut-small-1.mp3",
+  "text": "On every cut, picture a ghost ball touching the object ball, right on the line to the pocket. Your job isn't to hit the object ball. It's to send the cue ball's center exactly to where that ghost ball sits."
+ },
+ "en:lesson:cut-small:2": {
+  "file": "en-lesson-cut-small-2.mp3",
+  "text": "Don't aim the cue ball's center at the contact point on the object ball. Balls have size. The point the center has to reach is half a ball further back, along the pocket line."
+ },
+ "en:lesson:cut-small:3": {
+  "file": "en-lesson-cut-small-3.mp3",
+  "text": "When you miss, ask whether it was thin or thick. If it's always the same way, that's a pattern you can fix. Adjust a little, and keep the angle and speed the same while you do."
+ },
  "en:lesson:cut:1": {
   "file": "en-lesson-cut-1.mp3",
   "text": "Aim with the ghost ball. Picture a ball touching the object ball, on the line to the pocket, and send the cue ball's center exactly there."
@@ -106,6 +318,30 @@
  "en:lesson:cut:2": {
   "file": "en-lesson-cut-2.mp3",
   "text": "Keep the same angle all the way through, even after a miss, and put the object ball back on exactly the same spot. When you miss, note whether it was thin or thick, and practise that afterwards."
+ },
+ "en:lesson:draw-angle:1": {
+  "file": "en-lesson-draw-angle-1.mp3",
+  "text": "Build the angle slowly. Start nearly straight, and only move the cue ball further to the side when the current angle feels solid. Jumping straight to a big cut just teaches you to miss."
+ },
+ "en:lesson:draw-angle:2": {
+  "file": "en-lesson-draw-angle-2.mp3",
+  "text": "On a cut, it's tempting to steer the cue toward where the cue ball is going. Don't. After contact, your cue should still point exactly where you aimed, just like on a straight shot. Freeze and check it."
+ },
+ "en:lesson:draw-angle:3": {
+  "file": "en-lesson-draw-angle-3.mp3",
+  "text": "Watch the path. The cue ball first heads off near the ninety-degree line, then curves back behind it. More spin, more bend. Knowing that is what lets you use draw for position later."
+ },
+ "en:lesson:draw-straight:1": {
+  "file": "en-lesson-draw-straight-1.mp3",
+  "text": "Line it up so the cue ball would cover the object ball exactly, the two balls sitting on one line. Your cue travels straight through both centers. If the line is right before you hit, half the job is done."
+ },
+ "en:lesson:draw-straight:2": {
+  "file": "en-lesson-draw-straight-2.mp3",
+  "text": "Hit below center, and keep the back of the cue down so the cue stays level. Then keep accelerating right through the cue ball. Slowing down at contact is the most common reason draw dies."
+ },
+ "en:lesson:draw-straight:3": {
+  "file": "en-lesson-draw-straight-3.mp3",
+  "text": "Watch the cue ball on the way back. It should return along exactly the line it went out on. If it drifts to one side, you put side on it without meaning to, or your stroke wasn't straight. Fix that before you add more distance."
  },
  "en:lesson:draw:1": {
   "file": "en-lesson-draw-1.mp3",
@@ -115,6 +351,18 @@
   "file": "en-lesson-draw-2.mp3",
   "text": "Measure every draw properly instead of guessing, and check that the cue ball comes straight back down the line. Put the object ball close enough to the pocket that you never miss it."
  },
+ "en:lesson:five-levels:1": {
+  "file": "en-lesson-five-levels-1.mp3",
+  "text": "Follow and draw aren't the only choices. From top to bottom there are five levels: follow, slight follow, center, slight draw, and draw. Each one sends the cue ball to a different place."
+ },
+ "en:lesson:five-levels:2": {
+  "file": "en-lesson-five-levels-2.mp3",
+  "text": "Before each shot, say the level out loud, and point to where the cue ball should finish. Then shoot and compare. Calling it first is what turns hitting balls into real practice."
+ },
+ "en:lesson:five-levels:3": {
+  "file": "en-lesson-five-levels-3.mp3",
+  "text": "The middle level is the anchor. If your center ball doesn't stop the cue ball dead at this distance, the other four won't be reliable either. Add a little speed, or go half a tip lower, until the stop is solid."
+ },
  "en:lesson:fiveBall:1": {
   "file": "en-lesson-fiveBall-1.mp3",
   "text": "Before you start, plan the route backwards: the last ball, the key ball, the balls in between, and then the first ball. Take your time on the first shot. It sets up the whole run."
@@ -122,6 +370,66 @@
  "en:lesson:fiveBall:2": {
   "file": "en-lesson-fiveBall-2.mp3",
   "text": "On every shot, use the two-halves rule. The next ball's pocket line splits the table in two; leave the cue ball on the side opposite the ball after that. And when a run ends, notice which step it broke on."
+ },
+ "en:lesson:follow-angle:1": {
+  "file": "en-lesson-follow-angle-1.mp3",
+  "text": "Hit above center, right on the vertical line through the cue ball. Even a little to one side adds spin, and on a cut that changes both the pot and the path."
+ },
+ "en:lesson:follow-angle:2": {
+  "file": "en-lesson-follow-angle-2.mp3",
+  "text": "Keep your upper arm steady as the anchor, and let the forearm accelerate the cue. After contact, don't let the tip flick up. Hold it down on the line for a couple of seconds."
+ },
+ "en:lesson:follow-angle:3": {
+  "file": "en-lesson-follow-angle-3.mp3",
+  "text": "Watch the path. With follow, the cue ball curves forward of the ninety-degree line, toward where the object ball went. Soft, medium and firm strokes change how far it travels, so alternate them and learn each one."
+ },
+ "en:lesson:homework-route:1": {
+  "file": "en-lesson-homework-route-1.mp3",
+  "text": "Ball in hand is a gift, so use it for the simplest shot. Place the cue ball with a slight angle on ball one, on the correct side, so the cue ball can travel. A dead straight shot makes it harder, because then you need a strong draw to get anywhere."
+ },
+ "en:lesson:homework-route:2": {
+  "file": "en-lesson-homework-route-2.mp3",
+  "text": "Of all the routes, the steadiest one sends the cue ball along ball two's pocket line, so wherever it stops, the angle stays the same. Slight follow with a touch of side, one rail and about two diamonds, usually does it. A route that only grazes past ball two is a gamble on one exact spot."
+ },
+ "en:lesson:homework-route:3": {
+  "file": "en-lesson-homework-route-3.mp3",
+  "text": "Before you commit to a route, check where the cue ball will hit the rail and what it passes on the way. If the rail contact is near a side pocket or the path runs close to a corner, the cue ball can drop. A beautiful route that scratches is no route at all."
+ },
+ "en:lesson:leave-angle:1": {
+  "file": "en-lesson-leave-angle-1.mp3",
+  "text": "When you plan position, aim for fifteen to thirty degrees on the next ball. It's easy to see and easy to pot, and the cue ball still has somewhere to go. That's the angle that keeps a run alive."
+ },
+ "en:lesson:leave-angle:2": {
+  "file": "en-lesson-leave-angle-2.mp3",
+  "text": "A straight shot looks easy, but from there you can only stop the cue ball, follow it, or draw it back along one line. Getting to the next ball becomes hard. In the middle of a run, leaving straight counts as a position mistake. Only the last ball should be straight."
+ },
+ "en:lesson:leave-angle:3": {
+  "file": "en-lesson-leave-angle-3.mp3",
+  "text": "Before you shoot, decide which side of the next ball you need, depending on where the ball after it sits. Then play for that side. Ending up close to the ball on the wrong side is worse than being a little farther away on the right side."
+ },
+ "en:lesson:match-sim:1": {
+  "file": "en-lesson-match-sim-1.mp3",
+  "text": "After the break, look before you choose. Which group gives you a first shot? How many trouble balls does each group have? Any balls on the rails, which are easy to miss under pressure? Don't just grab the group with the easiest first ball."
+ },
+ "en:lesson:match-sim:2": {
+  "file": "en-lesson-match-sim-2.mp3",
+  "text": "Plan the rack backwards. Start with the eight, then the key ball that gets you to it most easily. Then the transition balls that lead to the key ball, and finally your first ball. Play it forwards, and never pot the key ball early."
+ },
+ "en:lesson:match-sim:3": {
+  "file": "en-lesson-match-sim-3.mp3",
+  "text": "Position will go wrong sometimes. When it does, stop and find a correction: a different order, a different pocket, a touch of side to change the angle. And when a rack ends, write down why. That note is what you'll practise next."
+ },
+ "en:lesson:micro-angle:1": {
+  "file": "en-lesson-micro-angle-1.mp3",
+  "text": "When the cue ball is just half to three-quarters of a ball off the line, it looks like a straight shot. It isn't. If you hit it full, the object ball goes off at a small angle, and from three feet away that's enough to hit the jaw."
+ },
+ "en:lesson:micro-angle:2": {
+  "file": "en-lesson-micro-angle-2.mp3",
+  "text": "So aim it like any other cut. Picture the ghost ball on the pocket line and send the cue ball's center there. On a tiny angle the ghost ball is only a little off the object ball's center, but that little is everything."
+ },
+ "en:lesson:micro-angle:3": {
+  "file": "en-lesson-micro-angle-3.mp3",
+  "text": "You'll probably find one side feels worse than the other. Shoot more from that side. When the angles that bother you start to disappear, that's real progress."
  },
  "en:lesson:pm-3ball:1": {
   "file": "en-lesson-pm-3ball-1.mp3",
@@ -183,6 +491,54 @@
   "file": "en-lesson-pm-review-3.mp3",
   "text": "Finally, set up today's two or three worst shots exactly as they were, and shoot them again and again. Freeze after each one and check your tip, head, body and finish. You're done when you can say what caused the miss and what you'll change."
  },
+ "en:lesson:rail-balls:1": {
+  "file": "en-lesson-rail-balls-1.mp3",
+  "text": "When the object ball is frozen to the rail and the angle is big, hit the rail first, just before the ball. The rail sweeps it in. Add only a touch of side toward the pocket, play center ball and keep the speed down."
+ },
+ "en:lesson:rail-balls:2": {
+  "file": "en-lesson-rail-balls-2.mp3",
+  "text": "When the angle is small, aim right at the gap between the ball and the rail. Use a soft follow, a short backswing and a long, straight follow-through. No side at all. Keep the speed low."
+ },
+ "en:lesson:rail-balls:3": {
+  "file": "en-lesson-rail-balls-3.mp3",
+  "text": "When the ball is an inch off the rail, think of a pipe. The object ball's edge has to run along the edge of the pocket jaw. Hit low center with a short, firm stroke. Don't push the cue at it. Commit to the hit, then stay down."
+ },
+ "en:lesson:rail-spin:1": {
+  "file": "en-lesson-rail-spin-1.mp3",
+  "text": "Start with the check. Shoot the cue ball straight into the rail with no side. It should come straight back and hit your cue. If it drifts left, you added left side; right means right side. Fix that before adding any on purpose."
+ },
+ "en:lesson:rail-spin:2": {
+  "file": "en-lesson-rail-spin-2.mp3",
+  "text": "Don't rely on a rule like 'follow is running, draw is reverse'. Instead, picture the line straight out from the rail, and see which way the cue ball is heading as it arrives. Side on that same side is running side: faster and wider. The other side is reverse: slower and narrower."
+ },
+ "en:lesson:rail-spin:3": {
+  "file": "en-lesson-rail-spin-3.mp3",
+  "text": "Keep side small, one tip at most for now. On soft shots, move your bridge and cue across together, parallel. On firm shots, keep the bridge where it is and pivot only the tip. Side pushes the cue ball off line first, and this is how you correct for it."
+ },
+ "en:lesson:separation-line:1": {
+  "file": "en-lesson-separation-line-1.mp3",
+  "text": "With center ball at medium speed, the cue ball leaves at ninety degrees to the object ball's path. That's your reference line. Every other shot, with follow or draw, is judged against it."
+ },
+ "en:lesson:separation-line:2": {
+  "file": "en-lesson-separation-line-2.mp3",
+  "text": "Here's a common mistake: drawing the ninety-degree line from the object ball. The cue ball is half a ball further back at contact, at the ghost ball. That's where the line starts."
+ },
+ "en:lesson:separation-line:3": {
+  "file": "en-lesson-separation-line-3.mp3",
+  "text": "Make it a habit before every shot. First the pocket line. Then the ninety-degree line. Then ask where the next ball is compared with that line. With those lines drawn, position stops being a guess."
+ },
+ "en:lesson:separation-targets:1": {
+  "file": "en-lesson-separation-targets-1.mp3",
+  "text": "With the ninety-degree line as your reference, spin picks the target. Pure follow reaches position one, slight follow two, slight draw three, and strong draw four. Call it, then shoot."
+ },
+ "en:lesson:separation-targets:2": {
+  "file": "en-lesson-separation-targets-2.mp3",
+  "text": "The cue ball doesn't go straight to the target. It runs a short way along the ninety-degree line, then curves with the spin, then straightens out again. Picture that whole path before you shoot."
+ },
+ "en:lesson:separation-targets:3": {
+  "file": "en-lesson-separation-targets-3.mp3",
+  "text": "Speed changes the first straight part. Hit harder and the cue ball runs further along the ninety-degree line before it bends. So the same spin at a different speed lands somewhere else. Keep speed fixed first, then vary it."
+ },
  "en:lesson:stop:1": {
   "file": "en-lesson-stop-1.mp3",
   "text": "Hit center ball for a true stop. Don't use draw to fake it. Use the same speed on every shot, so the result really means something."
@@ -198,6 +554,66 @@
  "en:lesson:straight:2": {
   "file": "en-lesson-straight-2.mp3",
   "text": "Keep the setup identical every time, so your scores can be compared. The last few shots are where people rush. Use the same routine on every shot, and stay down until the ball drops."
+ },
+ "en:lesson:stroke-straight:1": {
+  "file": "en-lesson-stroke-straight-1.mp3",
+  "text": "Get down with your chin lightly touching the cue. Now you can feel the line. On every stroke, back and forward, the cue should stay right under the middle of your chin, with no drift to either side."
+ },
+ "en:lesson:stroke-straight:2": {
+  "file": "en-lesson-stroke-straight-2.mp3",
+  "text": "The upper arm is your pivot. Keep it still, and don't let it pull left or right. The forearm does the swinging, and speeds up naturally through the ball. If the upper arm moves, the cue moves off line."
+ },
+ "en:lesson:stroke-straight:3": {
+  "file": "en-lesson-stroke-straight-3.mp3",
+  "text": "Most strokes are straight when they're slow, and drift when you try to hit harder. If that happens, don't fight it. Slow the backswing and the stroke down until the cue is straight again, then build the speed back up gradually."
+ },
+ "en:lesson:tip-accuracy:1": {
+  "file": "en-lesson-tip-accuracy-1.mp3",
+  "text": "Choose your spot before you get down: high, center or low, always on the vertical line through the middle of the cue ball. If you decide while you're already down, you'll end up somewhere in between."
+ },
+ "en:lesson:tip-accuracy:2": {
+  "file": "en-lesson-tip-accuracy-2.mp3",
+  "text": "Use your practice strokes as a check. On each one, look at where the tip stops near the ball. Is it still on the spot you chose? If you aim at six o'clock but the tip arrives at five, you'll get side spin and lose the draw."
+ },
+ "en:lesson:tip-accuracy:3": {
+  "file": "en-lesson-tip-accuracy-3.mp3",
+  "text": "After the hit, check the chalk mark on the cue ball, or simply watch what it does. A center hit stops, a low hit comes back, a high hit rolls on. Keep training until a relaxed, natural stroke lands on the spot you picked."
+ },
+ "en:lesson:track-line:1": {
+  "file": "en-lesson-track-line-1.mp3",
+  "text": "Start from the next ball. Draw its pocket line, then keep going past the ball, back toward the rail. That extension is your target. You're not aiming at a spot anymore, you're aiming at a whole line."
+ },
+ "en:lesson:track-line:2": {
+  "file": "en-lesson-track-line-2.mp3",
+  "text": "Now choose where the cue ball should hit the rail, so that coming off it, it runs right along that extension. Once the two lines overlap, the cue ball can stop anywhere along it and you still have the same shot. Speed stops being the problem."
+ },
+ "en:lesson:track-line:3": {
+  "file": "en-lesson-track-line-3.mp3",
+  "text": "Finally, work out how to get there. Start from the ninety-degree tangent line. Follow bends the cue ball forward of it, draw bends it back, and a little side changes the angle off the rail. Pick the simplest one that puts the cue ball on the line."
+ },
+ "en:lesson:trouble-first:1": {
+  "file": "en-lesson-trouble-first-1.mp3",
+  "text": "The trouble ball has to be part of the plan from the start. Deal with it early. If the first attempt doesn't work, there are still other balls to help you try again. Leave it to the end, and one miss ends the run."
+ },
+ "en:lesson:trouble-first:2": {
+  "file": "en-lesson-trouble-first-2.mp3",
+  "text": "If a ball is stuck in a cluster, don't smash into it. Find a nearby ball you can pot, and leave an angle so that the cue ball's natural tangent line runs into the trouble ball with modest speed. That opens it without scattering everything else."
+ },
+ "en:lesson:trouble-first:3": {
+  "file": "en-lesson-trouble-first-3.mp3",
+  "text": "Apart from the trouble ball, keep the table calm. No random bumping and colliding with your own balls. Work in a small area, clear it, then move on. An open layout is easier to run, even when something goes wrong."
+ },
+ "en:lesson:two-halves:1": {
+  "file": "en-lesson-two-halves-1.mp3",
+  "text": "Start with the next ball, not the one you're shooting. Picture its pocket line and keep extending it across the whole table. That one line splits the table into two halves, and it tells you where the cue ball should go."
+ },
+ "en:lesson:two-halves:2": {
+  "file": "en-lesson-two-halves-2.mp3",
+  "text": "Now look at the third ball. Whichever half it's in, leave the cue ball in the other half. When you pot the next ball from that side, the cue ball comes off toward the third ball naturally, with no forcing."
+ },
+ "en:lesson:two-halves:3": {
+  "file": "en-lesson-two-halves-3.mp3",
+  "text": "If you end up in the wrong half, you'll be sending the cue ball around the table with side spin to rescue it, and every shot gets harder. Choosing the right half is worth more than a perfect stroke. Plan it first, then play it."
  },
  "en:test:cut": {
   "file": "en-test-cut.mp3",
@@ -229,7 +645,7 @@
  },
  "zh:block:am-precision-pocket": {
   "file": "zh-block-am-precision-pocket.mp3",
-  "text": "上午最后一项，精准进袋，十分钟。打长直线球和小角度的切球，左右两个底袋轮流打。手边有缩袋器的话，这个环节可以用上。对自己严格一点：球在袋口晃了一下、磕了袋角，就算最后掉进去了，也记作没进。每一杆都瞄袋口正中间，动作保持稳定。"
+  "text": "下面练精准进袋，十分钟。打长直线球和小角度的切球，左右两个底袋轮流打。手边有缩袋器的话，这个环节可以用上。对自己严格一点：球在袋口晃了一下、磕了袋角，就算最后掉进去了，也记作没进。每一杆都瞄袋口正中间，动作保持稳定。"
  },
  "zh:block:am-stop-ladder": {
   "file": "zh-block-am-stop-ladder.mp3",
@@ -237,7 +653,75 @@
  },
  "zh:block:am-straight-warmup": {
   "file": "zh-block-am-straight-warmup.mp3",
-  "text": "我们先用直线球热身，一共十分钟。把目标球和底袋摆成一条直线，主球先放在目标球后面大约三十厘米，差不多一个半手掌。打顺了以后，再把主球往后挪，六十、九十，最后到一百二十厘米。每五杆一组，别着急。每次没进，先停下来想一想：是瞄准的问题、出杆的问题，还是击球点的问题？目标是球从袋口正中间进去，主球也基本留在原来的线上。"
+  "text": "下面练直线球，一共十分钟。把目标球和底袋摆成一条直线，主球先放在目标球后面大约三十厘米，差不多一个半手掌。打顺了以后，再把主球往后挪，六十、九十，最后到一百二十厘米。每五杆一组，别着急。每次没进，先停下来想一想：是瞄准的问题、出杆的问题，还是击球点的问题？目标是球从袋口正中间进去，主球也基本留在原来的线上。"
+ },
+ "zh:block:awkward-bridge": {
+  "file": "zh-block-awkward-bridge.mp3",
+  "text": "接下来十五分钟，刻意训练。练你真正用得上的球，比如角度球、长台，但是把主球放在别扭的地方：靠近库边，手架被台边卡住，怎么架都不舒服。舒服位置的球你已经会了，比赛里丢分的恰恰是这种。每一杆都把准备动作做完整，别着急，当成比赛的关键球来打。"
+ },
+ "zh:block:basic-dry-stroke": {
+  "file": "zh-block-basic-dry-stroke.mp3",
+  "text": "每天的训练，都先用五分钟练空杆。先不放主球，在五分点放一颗目标球，对着它瞄，就像真的要打一样。前面三下长运杆，把手腕放松；再来一下短的，确认击球点。杆头先回到离主球最近的地方，后面停一下，再顺顺地送出去。打完别急着起来，定住三到五秒。"
+ },
+ "zh:block:basic-spot-shot": {
+  "file": "zh-block-basic-spot-shot.mp3",
+  "text": "接下来，十分钟五分点。目标球放在置球点，主球放在它后面大约六十厘米，和底袋成一条直线。这个球不是为了多进几颗，而是看看你今天的出杆状态。先站着把线看清楚，一步入位，每一杆都把准备动作做完整。打完趴住两秒，自己检查一下。"
+ },
+ "zh:block:basic-stop": {
+  "file": "zh-block-basic-stop.mp3",
+  "text": "每天五分钟定杆。摆一个直线球，主球先离目标球三十厘米，再拉到六十厘米。打主球正中心，主球应该停在撞击点附近，大约四根手指并拢那么宽的范围内。六十厘米的时候如果往前跟，先加一点力；还是跟，就把击球点往下移半个皮头。定杆靠得住，走位才有基础。"
+ },
+ "zh:block:break-dry": {
+  "file": "zh-block-break-dry.mp3",
+  "text": "这十分钟练开球动作，先不打球。在开球线上站好，把姿势调整一下。后手比平时往前握一拳，手架离主球远一点，这样才有空间拉满、送远。左脚往前迈一小步，右脚往后撤并且外旋，重心压低。然后分三步练：先只用手臂，让球杆一直在线上；再加上转体；最后加上蹬腿。从慢动作开始，球杆能稳稳走在线上，再慢慢加速。"
+ },
+ "zh:block:break-square": {
+  "file": "zh-block-break-square.mp3",
+  "text": "这十分钟练开得正。摆好全架球，主球放在开球线上，正对头球。皮头打主球中心，或者略低一点，完全不加塞，整颗正撞头球。出杆带一点从上往下的感觉，让主球贴着台面飞过去，砸在球堆上。撞得正，主球会停在台面中间；撞偏了，主球就会满台飞。数一数有几次主球停在了中间。"
+ },
+ "zh:block:break-tech": {
+  "file": "zh-block-break-tech.mp3",
+  "text": "这十分钟练技术冲，这是大力开球不下球时的保底办法。主球放在开球线上，离边库十到十五厘米。不冲头球，冲球堆的第二颗。打主球中心偏下半个皮头，加一点点右塞，力量用七八成。站姿和平时打球差不多，带上一点腰力，手别握太紧。理想的结果是主球吃库弹起一颗星左右，往回走，停在台面中间。数一数有几次做到了。"
+ },
+ "zh:block:cue-left-check": {
+  "file": "zh-block-cue-left-check.mp3",
+  "text": "接下来十分钟，自己检查入位。摆一个直线球，像平常一样入位、趴好。然后把球杆留在台面上，人轻轻走开，站到后面看：杆头是对着主球中心，还是已经偏到一边了？再留意一下头。左脚迈出去的时候，头很容易跟着偏，自己却感觉不到。"
+ },
+ "zh:block:cut-small": {
+  "file": "zh-block-cut-small.mp3",
+  "text": "接下来十五分钟，练小角度切球。目标球放在离底袋大约三十八厘米的地方，主球放在后面大约四十五厘米，角度大概十度、二十度、三十度，左右两边都要练。每一杆，先在脑子里想好紧贴目标球的那颗假想球，再让主球中心正好走到它的位置。没进的时候，留意是偏薄还是偏厚。"
+ },
+ "zh:block:draw-angle": {
+  "file": "zh-block-draw-angle.mp3",
+  "text": "现在练角度球低杆，十五分钟。先摆一个接近直线的球，目标球离底袋三十厘米左右，主球离目标球四十五厘米左右。每打几杆，把主球往旁边挪一点，角度慢慢加大。最关键的一点：出杆以后，球杆还要指着你瞄准的方向，别让角度把出杆带偏。然后看主球，低杆会让它从九十度线往回弯。"
+ },
+ "zh:block:draw-straight": {
+  "file": "zh-block-draw-straight.mp3",
+  "text": "现在练直球低杆，二十分钟。目标球放在离底袋三十厘米左右，主球放在它后面三十厘米，三点成一条直线。打顺了再把主球拉到六十厘米。瞄的时候，想象主球整颗盖在目标球上，球杆从两颗球的中心穿过去。打主球下部，球杆放平，一直加速穿过主球。检验很简单：主球要顺着出去的那条线，原路退回来。"
+ },
+ "zh:block:five-levels": {
+  "file": "zh-block-five-levels.mp3",
+  "text": "现在练纵向五档杆法，二十分钟。摆一个直线球，目标球离底袋三十厘米左右，主球在它后面六十厘米。从上到下一共五档：高杆、中高杆、中杆、中低杆、低杆。每一杆之前，先说出这杆用哪一档，主球会停在哪里。然后打，打完对照。先按顺序把五档都练一遍，再打乱了练。"
+ },
+ "zh:block:follow-angle": {
+  "file": "zh-block-follow-angle.mp3",
+  "text": "现在练角度球高杆，十五分钟。摆法和刚才一样：先从接近直线开始，每打几杆加一点角度。击球点在中心偏上，一定在竖着的中线上，不要带塞。小力、中力、大力换着打。大臂稳住，主要靠小臂加速，打完杆头压住，别往上翘。看主球：高杆会让它从九十度线往前弯，朝目标球走的方向靠过去。"
+ },
+ "zh:block:homework-route": {
+  "file": "zh-block-homework-route.mp3",
+  "text": "这十五分钟练一道经典的走位题。把 1 号和 2 号分别放在台面两侧，大约第七颗星的位置，第一杆自由球。把 1 号打进底袋，然后走位到 2 号。能想到的线路都试一试：一库、两库，高杆、低杆，加塞不加塞。然后比一比。最好的线路，通常是让主球顺着 2 号的进球线走，停在线上哪儿都能打。主球路线要离袋口远一点，自由球也别摆成直球。"
+ },
+ "zh:block:leave-angle": {
+  "file": "zh-block-leave-angle.mp3",
+  "text": "这十五分钟练留角度。摆一颗要打的球和一颗下一颗，每次都换球型。每一杆之前，先定好主球要停在下一颗的哪一边，目标是给它留十五到三十度的角度。这个角度最好打，打完主球还有地方走。清台中途留成直球，其实是走位失误，因为从直球很难把主球带走。数一数有几杆留下了好角度。"
+ },
+ "zh:block:match-sim": {
+  "file": "zh-block-match-sim.mp3",
+  "text": "接下来三十五分钟，模拟比赛。摆球、开球，然后当作比赛把这一盘打完。开完球别急着出杆，先看：哪一组有上手球，难点球多不多，有没有贴库的球。然后从黑八倒着排：最好衔接黑八的关键球，往前的过渡球，最后是上手球。排好了再打。走位出了问题，就想办法纠错，别硬打。每一盘结束，记下是因为什么断的。"
+ },
+ "zh:block:micro-angle": {
+  "file": "zh-block-micro-angle.mp3",
+  "text": "接下来十五分钟，练一种几乎没人专门练的球。目标球放在离底袋大约九十厘米的地方，主球就在它后面不远，但偏出进球线半颗到四分之三颗球。看着像直球，其实不是。当直球打，目标球就会撞到袋角。所以要当角度球打，每一杆都找假想球，每五杆换一边。"
  },
  "zh:block:pm-3ball": {
   "file": "zh-block-pm-3ball.mp3",
@@ -249,7 +733,7 @@
  },
  "zh:block:pm-cut-blocks": {
   "file": "zh-block-pm-cut-blocks.mp3",
-  "text": "下午我们从切球开始，十二分钟。选三个你每次都能摆出来的角度，大概三十度、四十五度和六十度。向左切、向右切都要练，每种打六杆。每一小组里，目标球和袋口的位置都不要动。先把进球的线路找准，有把握了，再开始注意主球停在哪里。目标是不管向左还是向右，都能稳定地打进。"
+  "text": "下面练切球，十二分钟。选三个你每次都能摆出来的角度，大概三十度、四十五度和六十度。向左切、向右切都要练，每种打六杆。每一小组里，目标球和袋口的位置都不要动。先把进球的线路找准，有把握了，再开始注意主球停在哪里。目标是不管向左还是向右，都能稳定地打进。"
  },
  "zh:block:pm-one-rail": {
   "file": "zh-block-pm-one-rail.mp3",
@@ -258,6 +742,42 @@
  "zh:block:pm-review": {
   "file": "zh-block-pm-review.mp3",
   "text": "最后做个简短复盘，大概五分钟。回想一下今天打得最差的两三杆球，或者判断错的地方，把它们再摆出来。别用随便打打来收尾。就盯着那一杆反复打，直到想明白问题出在哪儿。知道了为什么没进，也知道要改什么，今天就算练好了。"
+ },
+ "zh:block:rail-balls": {
+  "file": "zh-block-rail-balls.mp3",
+  "text": "接下来二十分钟，练贴库球，就是一看到就心慌的那种。每一种都有口诀。目标球贴库、角度大：先打库，往袋口方向加一点点塞，力量小。贴库、角度小：瞄那个缝隙，高杆轻轻推，不加塞。目标球离库只有一点点，叫半贴库：用目标球边缘去瞄袋角，中低杆，打实，千万别推虚。"
+ },
+ "zh:block:rail-spin": {
+  "file": "zh-block-rail-spin.mp3",
+  "text": "现在练加塞入门，十五分钟。主球放在离长库六十厘米左右，两颗星点之间。先不加塞，把主球垂直打向库边，它应该原路弹回来，撞到你的球杆。如果偏了，说明你不知不觉带了塞。然后加一点塞，不超过一个皮头，看反弹怎么变。最后打几个上库的切球，判断你加的是顺塞还是反塞。"
+ },
+ "zh:block:separation-line": {
+  "file": "zh-block-separation-line.mp3",
+  "text": "接下来练九十度分离线，十五分钟。摆三十度和四十五度左右的切球，目标球离底袋四十五厘米，主球离目标球也是四十五厘米左右。用中杆中力。每一杆之前做三件事：先找进球线，再找出九十度分离线，然后想好主球沿这条线走到哪里。打完看看，主球是不是走到了你说的地方。"
+ },
+ "zh:block:separation-targets": {
+  "file": "zh-block-separation-targets.mp3",
+  "text": "现在练用分离角把主球送到目标点，二十分钟。摆一个三十到四十五度的切球，在九十度线周围标出四个点：一号在线的前面较远，二号稍微靠前，三号稍微靠后，四号在后面较远。先说要去几号位，再选杆法：一号用高杆，二号中高杆，三号中低杆，四号低杆。开始时每杆力度一样，打熟了再改变力度，看路线怎么变。"
+ },
+ "zh:block:stroke-straight": {
+  "file": "zh-block-stroke-straight.mp3",
+  "text": "接下来十五分钟，练出杆的直和顺。趴下来，下巴轻轻贴住球杆，前后运杆。身体和头不动；大臂稳住，小臂像钟摆一样摆动。注意看球杆是不是一直在下巴正中间，没有往左或往右偏。一用力就偏的话，把回杆和出杆都放慢，直到又直了为止。"
+ },
+ "zh:block:tip-accuracy": {
+  "file": "zh-block-tip-accuracy.mp3",
+  "text": "下面练击球点位，十分钟。可以只用主球，也可以摆一个很近的直线球。每一杆之前，先在主球竖着的中线上选一个点，高、中、低都行。运杆的时候，检查杆头是不是正对着这个点。然后出杆，看看主球上的巧粉印，或者主球怎么走。一直练到你自然地出杆，就能打到自己选的那个点，不用再左右调整。"
+ },
+ "zh:block:track-line": {
+  "file": "zh-block-track-line.mp3",
+  "text": "这十五分钟练走线，不走点。摆一颗要打的球，再在台面另一边放一颗下一颗，让主球必须吃一库才能过去。先把下一颗球的进球线往库边方向延长。再选一个落库点，让主球出库以后正好顺着这条线走。只要主球走在这条线上，停在哪儿都差不多，力量大一点小一点，留下的还是同一杆球。数一数有几杆停在了线上。"
+ },
+ "zh:block:trouble-first": {
+  "file": "zh-block-trouble-first.mp3",
+  "text": "这十五分钟练难点球优先。摆四五颗球，其中放一颗难点球：贴库的、被挡住一部分的，或者靠着球堆的。自由球开始。出杆之前，先指出哪颗是难点球，计划尽早把它解决。能早打就早打，或者在打别的球的时候，用自然的角度把它撞开。第一次没成功，后面还有球可以帮你补救。数一数有几组在前面就解决了难点球。"
+ },
+ "zh:block:two-halves": {
+  "file": "zh-block-two-halves.mp3",
+  "text": "接下来十五分钟，练二分法。随手摆三颗能打的球，第一杆自由球。每一杆之前，先看下一颗球，把它的进球线一直延长，穿过整张台面。这条线把台面分成两半。看看第三颗球在哪一半，就让主球停到另一半。出杆之前，先把这一半说出来。主球停对了边，打下一颗的时候，它几乎会自己朝第三颗走过去。"
  },
  "zh:lesson:am-draw-ladder:1": {
   "file": "zh-lesson-am-draw-ladder-1.mp3",
@@ -319,6 +839,114 @@
   "file": "zh-lesson-am-straight-warmup-3.mp3",
   "text": "打完先别起来，趴住两秒。这两秒用来检查自己：杆头是不是还指着那条线，头有没有提前抬，身体有没有晃，后手有没有送到位。大部分人的问题，就是起身太早。没进的话，先想明白原因，再摆下一颗。"
  },
+ "zh:lesson:awkward-bridge:1": {
+  "file": "zh-lesson-awkward-bridge-1.mp3",
+  "text": "拿一个你已经很有把握的球，把主球挪到别扭的地方，比如靠近库边，手架被台边卡住，怎么看都不顺。这种不舒服，正是你要练的东西。"
+ },
+ "zh:lesson:awkward-bridge:2": {
+  "file": "zh-lesson-awkward-bridge-2.mp3",
+  "text": "空间不够的时候，手架要尽量架牢。握杆的手稍微往前挪一点，出杆短一点，但还是要把力打实。打完照样趴住，别急着起来。"
+ },
+ "zh:lesson:awkward-bridge:3": {
+  "file": "zh-lesson-awkward-bridge-3.mp3",
+  "text": "很多人说练球的时候找不到紧张感。这就是制造压力的方法：每一杆都当成决定比赛的球来打。等比赛里碰到简单版的同一个球，你心里就有底了。"
+ },
+ "zh:lesson:basic-dry-stroke:1": {
+  "file": "zh-lesson-basic-dry-stroke-1.mp3",
+  "text": "每一杆的节奏都一样。前面三下长一点，把力度和手腕的放松感找出来；一下短的，确认杆头要打的点。然后慢慢往后拉，在后面停一下，再顺顺地送出去。"
+ },
+ "zh:lesson:basic-dry-stroke:2": {
+  "file": "zh-lesson-basic-dry-stroke-2.mp3",
+  "text": "虽然没有主球，每一下都要当成真打。对准目标球，在脑子里想着击打的感觉。最后一次往后拉之前，杆头先回到离主球最近的那个位置，那就是你真正要打的点。"
+ },
+ "zh:lesson:basic-dry-stroke:3": {
+  "file": "zh-lesson-basic-dry-stroke-3.mp3",
+  "text": "每一杆送出去以后，人不要动，定住三到五秒。检查一下：杆头是不是还指着那条线，头有没有抬，身体有没有晃。这就是你以后每一杆都要有的习惯。"
+ },
+ "zh:lesson:basic-spot-shot:1": {
+  "file": "zh-lesson-basic-spot-shot-1.mp3",
+  "text": "先站在进球线后面，把线看清楚。然后一步上去，右脚和握杆的手一起落在这条线上。趴下来的时候，球杆已经对好了，不需要再左右调。"
+ },
+ "zh:lesson:basic-spot-shot:2": {
+  "file": "zh-lesson-basic-spot-shot-2.mp3",
+  "text": "五分点是用来检查出杆的，不是为了打多少颗。这是你最熟的直线球，如果没进，原因多半在出杆：杆走歪了，或者头抬早了。留意一下今天的状态。"
+ },
+ "zh:lesson:basic-spot-shot:3": {
+  "file": "zh-lesson-basic-spot-shot-3.mp3",
+  "text": "每一杆打完都趴住两秒。杆头还指着线吗？头有没有抬？身体有没有动？后手送到位了吗？起身太早，是最常见的毛病。"
+ },
+ "zh:lesson:basic-stop:1": {
+  "file": "zh-lesson-basic-stop-1.mp3",
+  "text": "定杆打的是主球正中心。主球是滑着撞上目标球的，没有旋转，所以撞完就停住。别用低杆去凑，那是另一种杆法。"
+ },
+ "zh:lesson:basic-stop:2": {
+  "file": "zh-lesson-basic-stop-2.mp3",
+  "text": "距离到了六十厘米，台呢的摩擦会让主球在撞球之前就开始往前滚。先加一点力；如果还是往前跟，就把击球点往下移半个皮头。"
+ },
+ "zh:lesson:basic-stop:3": {
+  "file": "zh-lesson-basic-stop-3.mp3",
+  "text": "为什么每天都练？因为用中杆中力打角度球，主球会沿着九十度的方向分开。定杆稳了，你就有了这条基准线，所有的走位都从它出发。"
+ },
+ "zh:lesson:break-dry:1": {
+  "file": "zh-lesson-break-dry-1.mp3",
+  "text": "开球的姿势和平时打球不一样。后手往前握一拳，球杆才能送得更远。手架离主球远一点，拉杆的时候才有空间拉满。左脚往前迈一小步，右脚往后撤、脚尖往外转，重心压低，身体稍微侧过来。击球那一下，重心从右腿转到左腿。"
+ },
+ "zh:lesson:break-dry:2": {
+  "file": "zh-lesson-break-dry-2.mp3",
+  "text": "力量要一层一层加。先只用手臂，只管杆头打准、球杆走直。再带上腰：肩膀往下压，腰往前顶，出杆更长。最后加蹬腿：蹬腿是为了把胯往前推，让整个身体裹着球杆一起送出去。"
+ },
+ "zh:lesson:break-dry:3": {
+  "file": "zh-lesson-break-dry-3.mp3",
+  "text": "先用慢动作练。从正面看，或者拍下来看：杆头从头到尾都要在这条线上，不往左、不往右，也不往上翘。空出杆的时候线都走不直，打到主球就会呲杆。慢的做干净了，再慢慢加快。"
+ },
+ "zh:lesson:break-square:1": {
+  "file": "zh-lesson-break-square-1.mp3",
+  "text": "皮头打主球正中心，或者稍微往下一点，千万不要带左右塞。中杆，力量传得最完整；中低杆，打点更容易打准。一带塞，主球就会飞。"
+ },
+ "zh:lesson:break-square:2": {
+  "file": "zh-lesson-break-square-2.mp3",
+  "text": "主球要整颗、正正地撞上头球。撞正了，力量都传进球堆，主球停在台面中间。撞偏了，力量全留在主球身上，主球就飞出去，有时候还会掉袋。开得正，比开得猛更重要。"
+ },
+ "zh:lesson:break-square:3": {
+  "file": "zh-lesson-break-square-3.mp3",
+  "text": "判断开得好不好，看球散开的速度，不看声音大不大。球杆尽量放平，肩膀下压，头别跟着抬，闷头把主球打穿。在原位一直不下球，就把主球沿着开球线挪一挪，但还是整颗冲头球。"
+ },
+ "zh:lesson:break-tech:1": {
+  "file": "zh-lesson-break-tech-1.mp3",
+  "text": "主球放在开球线上，离边库十到十五厘米。这次不冲头球，冲的是球堆的第二颗。因为角度的关系，没法整颗撞上去，大概打在第二颗偏侧的位置。瞄的时候注意，别先蹭到旁边的球。"
+ },
+ "zh:lesson:break-tech:2": {
+  "file": "zh-lesson-break-tech-2.mp3",
+  "text": "打主球中心偏下半个皮头，再加一点点右塞。力量七八成，上限很简单：用到最大，但主球不能飞出台面。站姿接近平时打球，带上腰力，手握松一点，让小臂带着手腕甩出去。"
+ },
+ "zh:lesson:break-tech:3": {
+  "file": "zh-lesson-break-tech-3.mp3",
+  "text": "平时还是默认用大力开球。大力开球一直不下球，台呢潮湿球跑不动，当天手臂不舒服，或者到了关键局、最怕主球失控的时候，就换成技术冲。高手不是只会一种开法，而是会选。"
+ },
+ "zh:lesson:cue-left-check:1": {
+  "file": "zh-lesson-cue-left-check-1.mp3",
+  "text": "像平常一样趴好，然后把球杆留在台面上，人轻轻走开，站到后面看。杆头还对着主球中心吗？如果偏了，说明还没出杆，瞄准就已经错了。"
+ },
+ "zh:lesson:cue-left-check:2": {
+  "file": "zh-lesson-cue-left-check-2.mp3",
+  "text": "最常见的情况是：右脚和球杆都落在线上了，没问题；左脚一迈出去，头就跟着偏了，然后又回来，那个点其实已经跑掉了。下去的整个过程，头和视线都要留在这条线上。"
+ },
+ "zh:lesson:cue-left-check:3": {
+  "file": "zh-lesson-cue-left-check-3.mp3",
+  "text": "如果发现偏了，不要趴在那里左右挪，那全是猜的。站起来，回到线后面看清楚，再一步入位。准不准，是在入位那一下决定的。"
+ },
+ "zh:lesson:cut-small:1": {
+  "file": "zh-lesson-cut-small-1.mp3",
+  "text": "每一个角度球，都先想象一颗紧贴目标球的影子球，就在进球线上。你的任务不是去撞目标球，而是让主球中心正好走到影子球的位置。"
+ },
+ "zh:lesson:cut-small:2": {
+  "file": "zh-lesson-cut-small-2.mp3",
+  "text": "别让主球中心对着目标球上的进球点。球是有体积的，主球中心真正要去的点，还要沿着进球线再往后半颗球。"
+ },
+ "zh:lesson:cut-small:3": {
+  "file": "zh-lesson-cut-small-3.mp3",
+  "text": "没进的时候，问自己是打薄了还是打厚了。如果总是同一边，这就是可以改的规律。稍微调整一点，调的时候角度和力度保持不变。"
+ },
  "zh:lesson:cut:1": {
   "file": "zh-lesson-cut-1.mp3",
   "text": "用假想球来瞄：想象一颗紧贴目标球的影子球，让主球中心正好走到它的位置。"
@@ -326,6 +954,30 @@
  "zh:lesson:cut:2": {
   "file": "zh-lesson-cut-2.mp3",
   "text": "整个测试都用同一个角度，没进也别改。每次都把目标球放回完全相同的位置。没进的时候，留意是偏薄还是偏厚，测完再去练。"
+ },
+ "zh:lesson:draw-angle:1": {
+  "file": "zh-lesson-draw-angle-1.mp3",
+  "text": "角度要慢慢加。先从接近直线的球开始，这个角度打稳了，再把主球往旁边挪一点。一上来就打大角度，练出来的只会是失误。"
+ },
+ "zh:lesson:draw-angle:2": {
+  "file": "zh-lesson-draw-angle-2.mp3",
+  "text": "打角度球的时候，很容易不自觉地把杆往主球要去的方向带。不要这样。出杆以后，球杆应该和直线球一样，还指着你瞄准的方向。打完趴住，检查一下。"
+ },
+ "zh:lesson:draw-angle:3": {
+  "file": "zh-lesson-draw-angle-3.mp3",
+  "text": "看主球的路线。它先沿着九十度线附近出去，然后往回弯，跑到这条线的后面。旋转越强，弯得越多。明白了这一点，以后才能用低杆来走位。"
+ },
+ "zh:lesson:draw-straight:1": {
+  "file": "zh-lesson-draw-straight-1.mp3",
+  "text": "摆好以后，想象主球正好整颗盖住目标球，两颗球在一条线上。球杆要从两颗球的中心笔直穿过去。出杆之前线对了，这一杆就成功了一半。"
+ },
+ "zh:lesson:draw-straight:2": {
+  "file": "zh-lesson-draw-straight-2.mp3",
+  "text": "击球点在主球中心偏下，杆尾压低，让球杆尽量放平。然后一直加速，穿过主球。碰到球的那一下收力，是低杆拉不回来最常见的原因。"
+ },
+ "zh:lesson:draw-straight:3": {
+  "file": "zh-lesson-draw-straight-3.mp3",
+  "text": "看主球回来的路线。它应该顺着出去的那条线原路退回来。如果往一边偏，说明你不小心带了塞，或者杆没出直。先把这个改好，再去拉更远的距离。"
  },
  "zh:lesson:draw:1": {
   "file": "zh-lesson-draw-1.mp3",
@@ -335,6 +987,18 @@
   "file": "zh-lesson-draw-2.mp3",
   "text": "每一杆都认真量一下主球拉回了多远，别用眼睛估。顺便看看主球是不是原路回来的。目标球要放得离袋口够近，保证每杆都能打进。"
  },
+ "zh:lesson:five-levels:1": {
+  "file": "zh-lesson-five-levels-1.mp3",
+  "text": "高杆和低杆之间不是只有两个选择。从上到下一共五档：高杆、中高杆、中杆、中低杆、低杆。每一档，主球去的地方都不一样。"
+ },
+ "zh:lesson:five-levels:2": {
+  "file": "zh-lesson-five-levels-2.mp3",
+  "text": "每一杆之前，把用哪一档说出来，再指一下主球应该停在哪里。打完对照一下。先说再打，随便打打就变成了真正的练习。"
+ },
+ "zh:lesson:five-levels:3": {
+  "file": "zh-lesson-five-levels-3.mp3",
+  "text": "中间那一档是基准。如果在这个距离上，中杆不能把主球定住，其他四档也不会稳定。加一点力，或者把点往下移半个皮头，直到定杆稳了为止。"
+ },
  "zh:lesson:fiveBall:1": {
   "file": "zh-lesson-fiveBall-1.mp3",
   "text": "开打之前，先把线路倒着排一遍：最后一颗、关键球、过渡球，最后定第一颗。第一杆别急，它决定了整盘的走位。"
@@ -342,6 +1006,66 @@
  "zh:lesson:fiveBall:2": {
   "file": "zh-lesson-fiveBall-2.mp3",
   "text": "每一杆都用二分法想一想：下一颗球的进球线把台面分成两半，第三颗在哪一半，主球就停到另一半。没清完的时候，留意一下是在哪一步断的。"
+ },
+ "zh:lesson:follow-angle:1": {
+  "file": "zh-lesson-follow-angle-1.mp3",
+  "text": "击球点在中心偏上，正好在主球竖着的中线上。左右偏一点点就会带塞，打角度球的时候，进球和主球路线都会跟着变。"
+ },
+ "zh:lesson:follow-angle:2": {
+  "file": "zh-lesson-follow-angle-2.mp3",
+  "text": "大臂稳住，当作支点，靠小臂把球杆加速送出去。打完以后，杆头别往上翘，压在线上停两秒。"
+ },
+ "zh:lesson:follow-angle:3": {
+  "file": "zh-lesson-follow-angle-3.mp3",
+  "text": "看主球的路线。高杆会让主球往九十度线前面弯，朝目标球走的方向靠过去。小力、中力、大力，主球走的距离都不一样，所以要换着打，把每一种都记住。"
+ },
+ "zh:lesson:homework-route:1": {
+  "file": "zh-lesson-homework-route-1.mp3",
+  "text": "自由球是白送的机会，就给自己摆最简单的一杆。给 1 号留一点角度，摆在对的一边，主球才有路走。摆成直球反而难，后面只能靠低杆硬拉。"
+ },
+ "zh:lesson:homework-route:2": {
+  "file": "zh-lesson-homework-route-2.mp3",
+  "text": "这么多线路里，最稳的那条，是让主球顺着 2 号的进球线过来。不管停在线上哪儿，留下的角度都一样。小高杆加一点塞，吃一库，走两颗星左右，通常就能做到。只是从 2 号旁边擦过去的线路，就是在赌一个点。"
+ },
+ "zh:lesson:homework-route:3": {
+  "file": "zh-lesson-homework-route-3.mp3",
+  "text": "定线路之前，先看主球会落在库边哪里，一路上经过什么地方。落库点靠近中袋，或者路线贴着底袋走，主球就可能掉进去。线路再漂亮，洗袋了就等于白打。"
+ },
+ "zh:lesson:leave-angle:1": {
+  "file": "zh-lesson-leave-angle-1.mp3",
+  "text": "走位的时候，给下一颗留十五到三十度。这个角度看得清、打得进，打完主球还有路可走。能把一盘球连下去的，就是这个角度。"
+ },
+ "zh:lesson:leave-angle:2": {
+  "file": "zh-lesson-leave-angle-2.mp3",
+  "text": "直球看着简单，可打直球只能定住、往前跟，或者原路拉回，主球只能在一条线上动。想去下一颗就很难。所以清台中途留直球，算走位失误，只有最后一颗才应该留直。"
+ },
+ "zh:lesson:leave-angle:3": {
+  "file": "zh-lesson-leave-angle-3.mp3",
+  "text": "出杆之前，先看再下一颗在哪儿，决定主球要停在下一颗的哪一边，然后朝那一边去走。停错了边，就算离得很近，也不如停在对的一边、稍微远一点。"
+ },
+ "zh:lesson:match-sim:1": {
+  "file": "zh-lesson-match-sim-1.mp3",
+  "text": "开完球先看，再选花色。哪一组有上手球？每一组的难点球多不多？有没有贴库的球？贴库球一紧张就容易失误。不要光看哪组第一颗好打，就选哪组。"
+ },
+ "zh:lesson:match-sim:2": {
+  "file": "zh-lesson-match-sim-2.mp3",
+  "text": "线路要倒着排。先看黑八，再找最好衔接黑八的关键球，然后往前找能走到关键球的过渡球，最后定上手球。打的时候顺着来，关键球千万别先打掉。"
+ },
+ "zh:lesson:match-sim:3": {
+  "file": "zh-lesson-match-sim-3.mp3",
+  "text": "走位总有不到位的时候。这时候先停一下，找纠错的办法：换个顺序，换个袋口，或者加一点塞改变角度。每一盘结束，把断的原因写下来，那就是你接下来要练的东西。"
+ },
+ "zh:lesson:micro-angle:1": {
+  "file": "zh-lesson-micro-angle-1.mp3",
+  "text": "主球只偏出进球线半颗到四分之三颗球的时候，看起来就是个直球，其实不是。你打整颗，目标球会带着一点小角度出去，离袋口九十厘米，这点角度就足够撞到袋角了。"
+ },
+ "zh:lesson:micro-angle:2": {
+  "file": "zh-lesson-micro-angle-2.mp3",
+  "text": "所以要像别的角度球一样瞄。在进球线上想好假想球，让主球中心走到那里。角度很小的时候，假想球和目标球中心只差一点点，但就是这一点点决定了进不进。"
+ },
+ "zh:lesson:micro-angle:3": {
+  "file": "zh-lesson-micro-angle-3.mp3",
+  "text": "你多半会发现，有一边打起来比另一边别扭。那就多练那一边。等到让你不舒服的角度越来越少，就是真的涨球了。"
  },
  "zh:lesson:pm-3ball:1": {
   "file": "zh-lesson-pm-3ball-1.mp3",
@@ -403,6 +1127,54 @@
   "file": "zh-lesson-pm-review-3.mp3",
   "text": "最后，把今天最差的两三杆球原样摆出来，反复打。每一杆打完都趴住两秒，检查杆头、头、身体和后手。说得出没进的原因，也知道下次怎么改，这一杆才算练完。"
  },
+ "zh:lesson:rail-balls:1": {
+  "file": "zh-lesson-rail-balls-1.mp3",
+  "text": "目标球贴库、角度又大的时候，先打库，比球稍微早一点碰到。库边会把球扫进去。袋口在哪边，就往哪边加一点点塞，中杆，力量不要大。"
+ },
+ "zh:lesson:rail-balls:2": {
+  "file": "zh-lesson-rail-balls-2.mp3",
+  "text": "角度小的时候，就瞄球和库边之间的那条缝隙。高杆轻轻推，后拉短一点，送杆长一点、直一点，完全不加塞。力量要小。"
+ },
+ "zh:lesson:rail-balls:3": {
+  "file": "zh-lesson-rail-balls-3.mp3",
+  "text": "目标球离库只有一点点的时候，想象一条管道：目标球的边缘要贴着袋角的边缘走进去。中低杆，后拉短、出杆短，把力打实，千万别推虚。打完趴住。"
+ },
+ "zh:lesson:rail-spin:1": {
+  "file": "zh-lesson-rail-spin-1.mp3",
+  "text": "先做检查：不加塞，把主球垂直打向库边。它应该原路弹回来，撞到你的球杆。往左偏，就是带了左塞；往右偏，就是带了右塞。先把这个纠正好，再去主动加塞。"
+ },
+ "zh:lesson:rail-spin:2": {
+  "file": "zh-lesson-rail-spin-2.mp3",
+  "text": "不要死记“高杆顺、低杆反”这种口诀。先想象一条和库边垂直的线，再看主球上库的时候朝哪边走。塞加在同一边，就是顺塞，出库会加速、角度变大；加在另一边，就是反塞，会减速、角度变小。"
+ },
+ "zh:lesson:rail-spin:3": {
+  "file": "zh-lesson-rail-spin-3.mp3",
+  "text": "现在塞要加得少，最多一个皮头。小力的时候，手架和球杆一起平行移过去；大力的时候，手架不动，只把杆头移到加塞的位置。加塞会让主球先偏出去，这就是修正偏移的方法。"
+ },
+ "zh:lesson:separation-line:1": {
+  "file": "zh-lesson-separation-line-1.mp3",
+  "text": "用中杆中力打角度球，主球会和目标球的进球线成九十度分开。这就是你的基准线。以后不管高杆还是低杆，都拿这条线来比。"
+ },
+ "zh:lesson:separation-line:2": {
+  "file": "zh-lesson-separation-line-2.mp3",
+  "text": "常见的错误是从目标球上画九十度线。撞击的时候，主球其实在后面半颗球，也就是假想球的位置。分离线要从那里开始画。"
+ },
+ "zh:lesson:separation-line:3": {
+  "file": "zh-lesson-separation-line-3.mp3",
+  "text": "每一杆之前养成习惯：先找进球线，再找九十度线，再看下一颗球在这条线的哪一边。线画出来了，走位就不再是猜。"
+ },
+ "zh:lesson:separation-targets:1": {
+  "file": "zh-lesson-separation-targets-1.mp3",
+  "text": "以九十度线为基准，杆法决定主球去哪一个点。纯高杆能到一号位，中高杆到二号，中低杆到三号，犀利的低杆到四号。先说出来，再出杆。"
+ },
+ "zh:lesson:separation-targets:2": {
+  "file": "zh-lesson-separation-targets-2.mp3",
+  "text": "主球不是直直地走到目标点的。它先沿着九十度线直走一小段，然后随着旋转转成弧线，最后又变回直线。出杆之前，把整条路线在脑子里走一遍。"
+ },
+ "zh:lesson:separation-targets:3": {
+  "file": "zh-lesson-separation-targets-3.mp3",
+  "text": "力度改变的是第一段直线。打得越用力，主球沿九十度线走得越远，才开始拐弯。所以同样的杆法，力度不同，落点就不同。先固定力度练，熟了再变化。"
+ },
  "zh:lesson:stop:1": {
   "file": "zh-lesson-stop-1.mp3",
   "text": "用中杆打真正的定杆，别用低杆去凑。每一杆用同样的力度，这样结果才说明问题。"
@@ -418,6 +1190,66 @@
  "zh:lesson:straight:2": {
   "file": "zh-lesson-straight-2.mp3",
   "text": "每次测试的摆法要完全一样，成绩才有可比性。最后几杆最容易着急，每一杆都按同样的节奏来，打完趴住，球进之前头别抬。"
+ },
+ "zh:lesson:stroke-straight:1": {
+  "file": "zh-lesson-stroke-straight-1.mp3",
+  "text": "趴下来，下巴轻轻贴住球杆，这样你能感觉到这条线。每一次往后拉、往前送，球杆都要一直在下巴正中间，不往左也不往右。"
+ },
+ "zh:lesson:stroke-straight:2": {
+  "file": "zh-lesson-stroke-straight-2.mp3",
+  "text": "大臂是发力的支点，要稳住，不要往左右带力。主要靠小臂来回摆动，打球的时候自然地加速。大臂一动，球杆就会离开那条线。"
+ },
+ "zh:lesson:stroke-straight:3": {
+  "file": "zh-lesson-stroke-straight-3.mp3",
+  "text": "大多数人慢慢运杆的时候是直的，一用力就偏了。遇到这种情况，别硬顶。把回杆和出杆都放慢，等球杆又直了，再一点一点把速度加上去。"
+ },
+ "zh:lesson:tip-accuracy:1": {
+  "file": "zh-lesson-tip-accuracy-1.mp3",
+  "text": "趴下之前先选好点：高杆、中杆还是低杆，而且一定在主球竖着的中线上。趴下来再想，往往就打到两个点中间去了。"
+ },
+ "zh:lesson:tip-accuracy:2": {
+  "file": "zh-lesson-tip-accuracy-2.mp3",
+  "text": "运杆是用来确认的。每一下都看看杆头停在球前面的位置，是不是还对着你选的那个点。明明瞄的是六点钟方向，杆头却到了五点钟，就会带塞，低杆效果也没了。"
+ },
+ "zh:lesson:tip-accuracy:3": {
+  "file": "zh-lesson-tip-accuracy-3.mp3",
+  "text": "打完以后，看一下主球上的巧粉印，或者直接看主球的反应：中杆会停住，低杆会回来，高杆会往前跟。一直练到放松、自然的出杆，就能打在你选的那个点上。"
+ },
+ "zh:lesson:track-line:1": {
+  "file": "zh-lesson-track-line-1.mp3",
+  "text": "先从下一颗球开始。画出它的进球线，然后穿过这颗球，一直往库边方向延长。这条延长线就是你的目标。你瞄的不再是一个点，而是一整条线。"
+ },
+ "zh:lesson:track-line:2": {
+  "file": "zh-lesson-track-line-2.mp3",
+  "text": "接着选主球的落库点，让它出库以后正好顺着这条延长线走。两条线一重合，主球停在线上任何地方，都还是同一杆球。力量就不再是问题了。"
+ },
+ "zh:lesson:track-line:3": {
+  "file": "zh-lesson-track-line-3.mp3",
+  "text": "最后想怎么打过去。从九十度分离线出发：高杆让主球往前弯，低杆让它往回弯，加一点塞能改变出库的角度。选最简单的那一种，能把主球送到线上就行。"
+ },
+ "zh:lesson:trouble-first:1": {
+  "file": "zh-lesson-trouble-first-1.mp3",
+  "text": "难点球从一开始就要放进计划里，越早处理越好。第一次没处理掉，后面还有别的球可以帮你再想办法。留到最后，只要失败一次，这一盘就断了。"
+ },
+ "zh:lesson:trouble-first:2": {
+  "file": "zh-lesson-trouble-first-2.mp3",
+  "text": "难点球靠在球堆里，别使劲去砸。找旁边一颗能打的球，留一个角度，让主球顺着自然的分离线，用合适的力量碰到难点球，把它撞开，又不会把其他球全打乱。"
+ },
+ "zh:lesson:trouble-first:3": {
+  "file": "zh-lesson-trouble-first-3.mp3",
+  "text": "除了难点球，其他球尽量别去碰。不要乱踢、乱撞、乱 K，自己的球保持平静。一小片一小片地打，打完再往下一片过渡。球型开放，就算出了点问题，也还好接着打。"
+ },
+ "zh:lesson:two-halves:1": {
+  "file": "zh-lesson-two-halves-1.mp3",
+  "text": "先别看手上这一颗，先看下一颗。把它的进球线在脑子里一直延长，穿过整张台面。这一条线把台面分成两半，主球该去哪一边，就靠它来定。"
+ },
+ "zh:lesson:two-halves:2": {
+  "file": "zh-lesson-two-halves-2.mp3",
+  "text": "再看第三颗球在哪一半，主球就停到另一半。从这一边打下一颗，主球分出去的方向正好朝着第三颗，不用硬拉硬推。"
+ },
+ "zh:lesson:two-halves:3": {
+  "file": "zh-lesson-two-halves-3.mp3",
+  "text": "要是停错了半区，就只能加塞、绕台去救，每一杆都越打越难。选对半区，比杆法打得漂亮更值钱。先想好停哪一半，再出杆。"
  },
  "zh:test:cut": {
   "file": "zh-test-cut.mp3",

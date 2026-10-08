@@ -1,25 +1,25 @@
 import { startSession, pause, resume, addTime, remainingMs, formatClock, next, back, toRecord, validateEntry, endSession } from '../../src/runner/session';
-import { getSession } from '../../src/plan';
+import { getBlock } from '../../src/plan';
 import { setLang } from '../../src/i18n';
 
-const blocks = getSession('am').blocks; // 10,12,16,12,10 minutes
+const blocks = ['am-straight-warmup', 'am-stop-ladder', 'am-draw-ladder', 'am-follow-ladder', 'am-precision-pocket'].map((id) => getBlock(id)!); // 10,12,16,12,10 minutes
 const MIN = 60000;
 const T0 = new Date(2026, 9, 7, 9, 0).getTime();
 
 test('timer counts down from block duration', () => {
-  const s = startSession('am', T0);
+  const s = startSession(1, T0);
   expect(remainingMs(s, blocks, T0)).toBe(10 * MIN);
   expect(remainingMs(s, blocks, T0 + 4 * MIN)).toBe(6 * MIN);
 });
 
 test('phone locked 25 minutes on a 10-minute block shows 15 minutes overtime', () => {
-  const s = startSession('am', T0);
+  const s = startSession(1, T0);
   expect(remainingMs(s, blocks, T0 + 25 * MIN)).toBe(-15 * MIN);
   expect(formatClock(-15 * MIN)).toBe('+15:00');
 });
 
 test('pause freezes the clock and excludes paused time', () => {
-  let s = startSession('am', T0);
+  let s = startSession(1, T0);
   s = pause(s, T0 + 2 * MIN);
   expect(remainingMs(s, blocks, T0 + 7 * MIN)).toBe(8 * MIN);
   s = resume(s, T0 + 7 * MIN);
@@ -27,14 +27,14 @@ test('pause freezes the clock and excludes paused time', () => {
 });
 
 test('addTime adds two minutes to the current block only', () => {
-  let s = addTime(startSession('am', T0), 2 * MIN);
+  let s = addTime(startSession(1, T0), 2 * MIN);
   expect(remainingMs(s, blocks, T0)).toBe(12 * MIN);
   s = next(s, blocks, T0 + MIN);
   expect(remainingMs(s, blocks, T0 + MIN)).toBe(12 * MIN);
 });
 
 test('next while paused records the block and does not count paused time as active', () => {
-  let s = startSession('am', T0);
+  let s = startSession(1, T0);
   s = pause(s, T0 + 5 * MIN);
   s = next(s, blocks, T0 + 20 * MIN);
   expect(s.blockIndex).toBe(1);
@@ -45,11 +45,12 @@ test('next while paused records the block and does not count paused time as acti
   expect(rec.endedAt).toBe(T0 + 24 * MIN); // last block recorded at 24 min, not the Finish tap at 60
   expect(rec.activeMinutes).toBe(9);
   expect(rec.date).toBe('2026-10-07');
+  expect(rec).toMatchObject({ sessionId: 'day', dayNumber: 1 });
   expect(rec.blocks.map((b) => b.blockId)).toEqual(blocks.map((b) => b.id));
 });
 
 test('entry is stored on the block it belongs to; back allows re-recording', () => {
-  let s = startSession('am', T0);
+  let s = startSession(1, T0);
   s = next(s, blocks, T0 + MIN);
   s = next(s, blocks, T0 + 2 * MIN, { generic: { made: 7, attempts: 10 } });
   expect(s.results['am-stop-ladder'].generic).toEqual({ made: 7, attempts: 10 });
@@ -61,9 +62,10 @@ test('entry is stored on the block it belongs to; back allows re-recording', () 
 });
 
 test('state survives JSON round-trip (resume after reload)', () => {
-  const s = pause(startSession('pm', T0), T0 + MIN);
+  const s = pause(startSession(9, T0), T0 + MIN);
   const r = JSON.parse(JSON.stringify(s));
-  expect(remainingMs(r, getSession('pm').blocks, T0 + 9 * MIN)).toBe(11 * MIN);
+  expect(r.dayNumber).toBe(9);
+  expect(remainingMs(r, [getBlock('pm-cut-blocks')!], T0 + 9 * MIN)).toBe(11 * MIN);
 });
 
 test('formatClock', () => {
@@ -74,7 +76,7 @@ test('formatClock', () => {
 });
 
 function finishedState() {
-  let s = startSession('am', T0);
+  let s = startSession(1, T0);
   for (let i = 0; i < blocks.length; i++) s = next(s, blocks, T0 + (i + 1) * MIN, i === blocks.length - 1 ? { notes: 'last' } : undefined);
   return s;
 }
@@ -96,7 +98,7 @@ test('back from finished returns to the last block, unfinished, timer reset', ()
 });
 
 test('back while paused does not count paused time as active', () => {
-  let s = next(startSession('am', T0), blocks, T0 + MIN);
+  let s = next(startSession(1, T0), blocks, T0 + MIN);
   s = pause(s, T0 + 2 * MIN);
   s = back(s, T0 + 12 * MIN);
   expect(s.pausedAt).toBeNull();
@@ -113,12 +115,12 @@ test('finished session ends at the last block, even when Finish is tapped the ne
 });
 
 test('unfinished session still ends at now', () => {
-  const s = next(startSession('am', T0), blocks, T0 + MIN);
+  const s = next(startSession(1, T0), blocks, T0 + MIN);
   expect(toRecord(s, blocks, 1, T0 + 3 * MIN)).toMatchObject({ endedAt: T0 + 3 * MIN, activeMinutes: 3 });
 });
 
 test('endSession records the current block as skipped and finishes at that moment', () => {
-  let s = next(startSession('am', T0), blocks, T0 + MIN);
+  let s = next(startSession(1, T0), blocks, T0 + MIN);
   s = pause(s, T0 + 2 * MIN);
   s = endSession(s, blocks, T0 + 4 * MIN);
   expect(s.finished).toBe(true);
@@ -132,7 +134,7 @@ test('endSession records the current block as skipped and finishes at that momen
 });
 
 test('endSession keeps an entry already recorded for the current block', () => {
-  let s = next(startSession('am', T0), blocks, T0 + MIN);
+  let s = next(startSession(1, T0), blocks, T0 + MIN);
   s = next(s, blocks, T0 + 2 * MIN, { generic: { made: 7, attempts: 10 } });
   s = back(s, T0 + 3 * MIN);
   s = endSession(s, blocks, T0 + 4 * MIN);

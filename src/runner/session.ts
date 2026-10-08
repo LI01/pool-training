@@ -1,18 +1,18 @@
-import type { Block, RecordKind, SessionId } from '../plan';
+import type { Block, RecordKind } from '../plan';
 import type { BlockResult, SessionRecord } from '../db/types';
 import { fromLen, t } from '../i18n';
 import { localDate } from '../stats/dates';
 
 export interface SessionRunState {
-  kind: 'session'; sessionId: SessionId; startedAt: number;
+  kind: 'session'; sessionId: 'day'; dayNumber: number; startedAt: number;
   blockIndex: number; blockStartedAt: number; pausedAt: number | null;
   pausedTotalMs: number; sessionPausedMs: number; extraMs: number;
   results: Record<string, BlockResult>; finished: boolean;
 }
 export type EntryInput = Partial<Pick<BlockResult, 'draw' | 'runs' | 'generic' | 'notes' | 'skipped'>>;
 
-export const startSession = (sessionId: SessionId, now: number): SessionRunState => ({
-  kind: 'session', sessionId, startedAt: now, blockIndex: 0, blockStartedAt: now, pausedAt: null,
+export const startSession = (dayNumber: number, now: number): SessionRunState => ({
+  kind: 'session', sessionId: 'day', dayNumber, startedAt: now, blockIndex: 0, blockStartedAt: now, pausedAt: null,
   pausedTotalMs: 0, sessionPausedMs: 0, extraMs: 0, results: {}, finished: false,
 });
 
@@ -71,7 +71,7 @@ export function toRecord(s0: SessionRunState, blocks: Block[], planVersion: numb
   const end = (s0.finished ? s0.results[blocks[s0.blockIndex]?.id]?.endedAt : undefined) ?? now;
   const s = resume(s0, end);
   return {
-    id: crypto.randomUUID(), date: localDate(s.startedAt), sessionId: s.sessionId, planVersion,
+    id: crypto.randomUUID(), date: localDate(s.startedAt), sessionId: s.sessionId, dayNumber: s.dayNumber, planVersion,
     startedAt: s.startedAt, endedAt: end,
     activeMinutes: Math.round((end - s.startedAt - s.sessionPausedMs) / 60000),
     blocks: blocks.filter((b) => s.results[b.id]).map((b) => s.results[b.id]),

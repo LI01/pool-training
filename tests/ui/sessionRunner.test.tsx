@@ -21,32 +21,35 @@ async function open(sessionHash: string) {
   return store;
 }
 
-test('shows first block with diagram, instructions and countdown', async () => {
-  await open('#/session/am');
+test('day 1 starts with the daily basics: a figure, instructions and countdown', async () => {
+  await open('#/day/1');
+  expect(await screen.findByText('Day 1 · Week 1 · Accuracy · the basics')).toBeInTheDocument();
   fireEvent.click(await screen.findByRole('button', { name: /start/i }));
-  expect(screen.getByText('Straight-ball warm-up')).toBeInTheDocument();
+  expect(screen.getByText('Dry strokes and rhythm')).toBeInTheDocument();
+  expect(screen.getByRole('img', { name: 'Stroke rhythm' })).toBeInTheDocument();
+  expect(screen.getByText('5:00')).toBeInTheDocument();
+  expect(screen.getByText(/0–5 min · Block 1\/8/)).toBeInTheDocument();
+  fireEvent.click(screen.getByRole('button', { name: /^next/i }));
+  expect(screen.getByText('Spot shot')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /open diagram/i })).toBeInTheDocument();
-  expect(screen.getByText('10:00')).toBeInTheDocument();
-  expect(screen.getByText(/Do sets of 5/)).toBeInTheDocument();
+  expect(screen.getByText(/5–15 min · Block 2\/8/)).toBeInTheDocument();
 });
 
 test('does not auto-advance at zero; shows overtime', async () => {
   vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
-  await open('#/session/am');
+  await open('#/day/1');
   fireEvent.click(await screen.findByRole('button', { name: /start/i }));
-  t += 11 * 60000;
+  t += 6 * 60000;
   await act(async () => { vi.advanceTimersByTime(1000); });
   expect(screen.getByText('+1:00')).toBeInTheDocument();
-  expect(screen.getByText('Straight-ball warm-up')).toBeInTheDocument();
+  expect(screen.getByText('Dry strokes and rhythm')).toBeInTheDocument();
   vi.useRealTimers();
 });
 
 test('draw ladder entry rejects invalid input and saves valid input; finishing saves session', async () => {
-  const store = await open('#/session/am');
+  const store = await open('#/day/14');                                             // week 3, B day
   fireEvent.click(await screen.findByRole('button', { name: /start/i }));
-  fireEvent.click(screen.getByRole('button', { name: /^next/i }));                  // warm-up (no record)
-  fireEvent.click(screen.getByRole('button', { name: /^next/i }));                  // stop ladder → optional sheet
-  fireEvent.click(await screen.findByRole('button', { name: /skip/i }));
+  for (let i = 0; i < 3; i++) fireEvent.click(screen.getByRole('button', { name: /^next/i })); // daily basics (no record)
   fireEvent.click(screen.getByRole('button', { name: /^next/i }));                  // draw ladder → sheet
   fireEvent.input(await screen.findByLabelText(/best/i), { target: { value: '-2' } });
   fireEvent.input(screen.getByLabelText(/typical/i), { target: { value: '10' } });
@@ -54,12 +57,16 @@ test('draw ladder entry rejects invalid input and saves valid input; finishing s
   expect(screen.getByRole('alert')).toBeInTheDocument();
   fireEvent.input(screen.getByLabelText(/best/i), { target: { value: '16' } });
   fireEvent.click(screen.getByRole('button', { name: /save/i }));
-  fireEvent.click(screen.getByRole('button', { name: /^next/i }));                  // follow → optional sheet
-  fireEvent.click(await screen.findByRole('button', { name: /skip/i }));
-  fireEvent.click(screen.getByRole('button', { name: /^next/i }));                  // precision (last)
+  for (const optional of [true, true, false]) {                                    // draw on cuts, stop ladder, tip accuracy
+    fireEvent.click(screen.getByRole('button', { name: /^next/i }));
+    if (optional) fireEvent.click(await screen.findByRole('button', { name: /skip/i }));
+  }
+  fireEvent.click(screen.getByRole('button', { name: /^next/i }));                  // review → notes sheet
+  fireEvent.click(await screen.findByRole('button', { name: /save/i }));
   fireEvent.click(await screen.findByRole('button', { name: /finish/i }));
   await waitFor(async () => expect(await store.listSessions()).toHaveLength(1));
   const [s] = await store.listSessions();
+  expect(s).toMatchObject({ sessionId: 'day', dayNumber: 14 });
   expect(s.blocks.find((b) => b.blockId === 'am-draw-ladder')?.draw).toEqual({ bestIn: 16, typicalIn: 10 });
   expect(await store.getActive()).toBeUndefined();
 });
@@ -67,17 +74,17 @@ test('draw ladder entry rejects invalid input and saves valid input; finishing s
 test('resumes active session from store after reload', async () => {
   const store = createStore(`sr-${++n}`);
   await store.setActive({ type: 'session', updatedAt: t, payload: {
-    kind: 'session', sessionId: 'pm', startedAt: t, blockIndex: 2, blockStartedAt: t, pausedAt: null,
+    kind: 'session', sessionId: 'day', dayNumber: 31, startedAt: t, blockIndex: 4, blockStartedAt: t, pausedAt: null,
     pausedTotalMs: 0, sessionPausedMs: 0, extraMs: 0, results: {}, finished: false } });
-  location.hash = '#/session/pm';
+  location.hash = '#/day/31';
   render(<App store={store} now={now} />);
   expect(await screen.findByText('3-ball pattern drill')).toBeInTheDocument();
 });
 
 test('corrupt saved state is cleared with a message and the pre-start screen shows', async () => {
   const store = createStore(`sr-${++n}`);
-  await store.setActive({ type: 'session', updatedAt: t, payload: { kind: 'session', sessionId: 'am', blockIndex: 99 } });
-  location.hash = '#/session/am';
+  await store.setActive({ type: 'session', updatedAt: t, payload: { kind: 'session', sessionId: 'day', dayNumber: 1, blockIndex: 99 } });
+  location.hash = '#/day/1';
   render(<App store={store} now={now} />);
   expect(await screen.findByText("Previous session couldn't be restored")).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /start/i })).toBeInTheDocument();
@@ -87,16 +94,16 @@ test('corrupt saved state is cleared with a message and the pre-start screen sho
 test('runs sheet records successes; Back pre-fills; Leave keeps the active session', async () => {
   const store = createStore(`sr-${++n}`);
   await store.setActive({ type: 'session', updatedAt: t, payload: {
-    kind: 'session', sessionId: 'pm', startedAt: t, blockIndex: 2, blockStartedAt: t, pausedAt: null,
+    kind: 'session', sessionId: 'day', dayNumber: 31, startedAt: t, blockIndex: 4, blockStartedAt: t, pausedAt: null,
     pausedTotalMs: 0, sessionPausedMs: 0, extraMs: 0, results: {}, finished: false } });
-  location.hash = '#/session/pm';
+  location.hash = '#/day/31';
   render(<App store={store} now={now} />);
   fireEvent.click(await screen.findByRole('button', { name: /^next/i }));
   fireEvent.click(await screen.findByRole('button', { name: 'Increase Layouts attempted' }));
   fireEvent.click(screen.getByRole('button', { name: 'Increase Layouts attempted' }));
   fireEvent.click(screen.getByRole('button', { name: 'Increase Successful runs' }));
   fireEvent.click(screen.getByRole('button', { name: /save/i }));
-  expect(await screen.findByText('5-ball clearance')).toBeInTheDocument();
+  expect(await screen.findByText('Play to a line')).toBeInTheDocument();
   await waitFor(async () => {
     const a = await store.getActive();
     expect((a?.payload as any).results['pm-3ball'].runs).toEqual({ success: 1, attempts: 2, failTags: [] });
@@ -107,15 +114,15 @@ test('runs sheet records successes; Back pre-fills; Leave keeps the active sessi
   expect(screen.getByLabelText('Successful runs')).toHaveValue('1');
   fireEvent.keyDown(document, { key: 'Escape' });
   fireEvent.click(screen.getByRole('button', { name: /leave session/i }));
-  expect(await screen.findByText('Afternoon Session')).toBeInTheDocument();
+  expect(await screen.findByText('Day 1 of 48')).toBeInTheDocument();
   expect((await store.getActive())?.type).toBe('session');
 });
 
 const runState = (over: Record<string, unknown> = {}) => ({
-  kind: 'session', sessionId: 'pm', startedAt: t, blockIndex: 4, blockStartedAt: t, pausedAt: null,
+  kind: 'session', sessionId: 'day', dayNumber: 31, startedAt: t, blockIndex: 7, blockStartedAt: t, pausedAt: null,
   pausedTotalMs: 0, sessionPausedMs: 0, extraMs: 0, results: {}, finished: true, ...over });
 
-async function openWith(payload: unknown, hash = '#/session/pm') {
+async function openWith(payload: unknown, hash = '#/day/31') {
   const store = createStore(`sr-${++n}`);
   await store.setActive({ type: 'session', updatedAt: t, payload });
   location.hash = hash;
@@ -137,7 +144,7 @@ test('putSession failure shows an alert, keeps the active session and re-enables
   const base = createStore(`sr-${++n}`);
   const store = { ...base, putSession: vi.fn(() => Promise.reject(new Error('disk full'))) };
   await store.setActive({ type: 'session', updatedAt: t, payload: runState() });
-  location.hash = '#/session/pm';
+  location.hash = '#/day/31';
   render(<App store={store} now={now} />);
   fireEvent.click(await screen.findByRole('button', { name: /finish/i }));
   expect(await screen.findByRole('alert')).toHaveTextContent(/couldn't save the session/i);
@@ -157,13 +164,13 @@ test('Finish after a failed active-clear reuses the record id: exactly one sessi
     }),
   };
   await base.setActive({ type: 'session', updatedAt: t, payload: runState() });
-  location.hash = '#/session/pm';
+  location.hash = '#/day/31';
   render(<App store={store} now={now} />);
   fireEvent.click(await screen.findByRole('button', { name: /finish/i }));
-  expect(await screen.findByText('Afternoon Session')).toBeInTheDocument(); // back on Today
+  expect(await screen.findByText(/^Day \d+ of 48$/)).toBeInTheDocument(); // back on Today
   expect(await base.listSessions()).toHaveLength(1);
   expect((await base.getActive())?.type).toBe('session'); // clear failed
-  location.hash = '#/session/pm';
+  location.hash = '#/day/31';
   fireEvent.click(await screen.findByRole('button', { name: /finish/i }));
   await waitFor(async () => expect(await base.getActive()).toBeUndefined());
   expect(await base.listSessions()).toHaveLength(1);
@@ -173,15 +180,15 @@ test('summary Back returns to the last block', async () => {
   await openWith(runState());
   fireEvent.click(await screen.findByRole('button', { name: /^back$/i }));
   expect(await screen.findByText('Short review / replay')).toBeInTheDocument();
-  expect(screen.getByText('Block 5/5', { exact: false })).toBeInTheDocument();
+  expect(screen.getByText('Block 8/8', { exact: false })).toBeInTheDocument();
 });
 
 test('chime: once when crossing zero, re-armed by +2 min, never when restoring in overtime', async () => {
   vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
   try {
-    await open('#/session/am');
+    await open('#/day/1');
     fireEvent.click(await screen.findByRole('button', { name: /start/i }));
-    t += 10 * 60000 - 1500;
+    t += 5 * 60000 - 1500;
     await act(async () => { vi.advanceTimersByTime(1000); });
     expect(playChime).not.toHaveBeenCalled();
     t += 2000;
@@ -197,7 +204,7 @@ test('chime: once when crossing zero, re-armed by +2 min, never when restoring i
     cleanup();
 
     vi.mocked(playChime).mockClear();
-    await openWith(runState({ sessionId: 'am', blockIndex: 0, blockStartedAt: t - 11 * 60000, finished: false }), '#/session/am');
+    await openWith(runState({ dayNumber: 1, blockIndex: 0, blockStartedAt: t - 6 * 60000, finished: false }), '#/day/1');
     expect(await screen.findByText(/^\+1:0\d$/)).toBeInTheDocument();
     t += 3000;
     await act(async () => { vi.advanceTimersByTime(3000); });
@@ -210,7 +217,7 @@ test('chime: once when crossing zero, re-armed by +2 min, never when restoring i
 test('wake lock: acquired on Start; unmount clears the tick interval and releases the lock', async () => {
   const clearSpy = vi.spyOn(window, 'clearInterval');
   const store = createStore(`sr-${++n}`);
-  location.hash = '#/session/am';
+  location.hash = '#/day/1';
   const { unmount } = render(<App store={store} now={now} />);
   fireEvent.click(await screen.findByRole('button', { name: /start/i }));
   expect(acquireWakeLock).toHaveBeenCalledTimes(1);
@@ -224,7 +231,7 @@ test('wake lock: acquired on Start; unmount clears the tick interval and release
 
 test('pause is persisted and a restore shows the paused remaining time', async () => {
   const store = createStore(`sr-${++n}`);
-  location.hash = '#/session/am';
+  location.hash = '#/day/1';
   const { unmount } = render(<App store={store} now={now} />);
   fireEvent.click(await screen.findByRole('button', { name: /start/i }));
   t += 30000;
@@ -234,20 +241,20 @@ test('pause is persisted and a restore shows the paused remaining time', async (
   act(() => { unmount(); });
   t += 5 * 60000;
   render(<App store={store} now={now} />);
-  expect(await screen.findByText('9:30')).toBeInTheDocument();
+  expect(await screen.findByText('4:30')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: 'Resume' })).toBeInTheDocument();
 });
 
 test('End session: confirm jumps to the summary, records the current block as skipped and ends at that moment', async () => {
-  const store = await open('#/session/am');
+  const store = await open('#/day/1');
   const t0 = t;
   fireEvent.click(await screen.findByRole('button', { name: /start/i }));
   t += 3 * 60000;
-  fireEvent.click(screen.getByRole('button', { name: /^next/i }));                 // warm-up done at 3 min
+  fireEvent.click(screen.getByRole('button', { name: /^next/i }));                 // dry strokes done at 3 min
   t += 2 * 60000;
   fireEvent.click(screen.getByRole('button', { name: 'End session' }));
   fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'Keep going' }));
-  expect(screen.getByText('Stop shot ladder')).toBeInTheDocument();
+  expect(screen.getByText('Spot shot')).toBeInTheDocument();
   fireEvent.click(screen.getByRole('button', { name: 'End session' }));
   fireEvent.click(within(screen.getByRole('dialog')).getByRole('button', { name: 'End session now' }));
   expect(await screen.findByText('Session complete')).toBeInTheDocument();
@@ -258,5 +265,5 @@ test('End session: confirm jumps to the summary, records the current block as sk
   const [rec] = await store.listSessions();
   expect(rec.endedAt).toBe(t0 + 5 * 60000);
   expect(rec.activeMinutes).toBe(5);
-  expect(rec.blocks.map((b) => [b.blockId, !!b.skipped])).toEqual([['am-straight-warmup', false], ['am-stop-ladder', true]]);
+  expect(rec.blocks.map((b) => [b.blockId, !!b.skipped])).toEqual([['basic-dry-stroke', false], ['basic-spot-shot', true]]);
 });

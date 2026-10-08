@@ -13,15 +13,15 @@ test('switching language in Settings shows Today in Chinese, and back in English
   expect(document.documentElement.lang).toBe('zh-CN');
 
   fireEvent.click(screen.getByRole('button', { name: '今天' }));
-  expect(await screen.findByText('第 1 天 / 共 30 天')).toBeInTheDocument();
-  expect(screen.getByText('上午训练')).toBeInTheDocument();
+  expect(await screen.findByText('第 1 天 / 共 48 天')).toBeInTheDocument();
+  expect(screen.getByText('第 1 天 · 第 1 周 · 准度 · 基本功')).toBeInTheDocument();
 
   fireEvent.click(screen.getByRole('button', { name: '设置' }));
   fireEvent.click(await screen.findByRole('button', { name: 'English' }));
   await waitFor(() => expect(screen.getByRole('heading', { name: 'Settings' })).toBeInTheDocument());
   fireEvent.click(screen.getByRole('button', { name: 'Today' }));
-  expect(await screen.findByText('Day 1 of 30')).toBeInTheDocument();
-  expect(screen.getByText('Morning Session')).toBeInTheDocument();
+  expect(await screen.findByText('Day 1 of 48')).toBeInTheDocument();
+  expect(screen.getByText('Day 1 · Week 1 · Accuracy · the basics')).toBeInTheDocument();
 });
 
 test('a saved Chinese setting is applied on startup', async () => {
@@ -29,5 +29,5 @@ test('a saved Chinese setting is applied on startup', async () => {
   await store.saveSettings({ soundOn: true, lang: 'zh' });
   location.hash = '#/';
   render(<App store={store} now={() => Date.now()} />);
-  expect(await screen.findByText('第 1 天 / 共 30 天')).toBeInTheDocument();
+  expect(await screen.findByText('第 1 天 / 共 48 天')).toBeInTheDocument();
 });

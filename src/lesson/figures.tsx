@@ -282,7 +282,33 @@ function railCheckFig(): Diagram {
   ]);
 }
 
+function railFrozenFig(): Diagram {
+  const o: Pt = { x: 60, y: BALL / 2 };
+  return table([
+    { t: 'pocket', id: 'TR' }, line(o, POCKETS.TR, 'objPath', true),
+    line({ x: 50, y: 20 }, { x: 58.6, y: 0.4 }, 'aim', true), line({ x: 36, y: 6 }, { x: o.x - BALL, y: o.y + 0.2 }, 'aim', true),
+    text({ x: 46, y: 25 }, L('big angle: rail first, a touch of side toward the pocket', '大角度：先打库，加一点袋口方向的塞')),
+    text({ x: 34, y: 10 }, L('small angle: aim the gap, no side', '小角度：瞄缝隙，不加塞')),
+    ob(o), cue({ x: 50, y: 20 }), cue({ x: 36, y: 6 }),
+  ], false);
+}
+
+function railHalfFig(): Diagram {
+  const o: Pt = { x: 58, y: BALL / 2 + 0.8 };
+  const u = unit(o, POCKETS.TR), n: Pt = { x: -u.y, y: u.x };
+  const cb: Pt = { x: 40, y: 12 };
+  return table([
+    { t: 'pocket', id: 'TR' },
+    line(add(o, n, BALL / 2), add(POCKETS.TR, n, BALL / 2), 'aim'), line(add(o, n, -BALL / 2), add(POCKETS.TR, n, -BALL / 2), 'aim'),
+    line(cb, ghostBall(o, 'TR'), 'cuePath', true),
+    text({ x: 50, y: 22 }, L('the ball rolls down a pipe: its edge to the jaw', '想象一条管道：目标球边缘对准袋角')),
+    text({ x: 50, y: 28 }, L('stun or a little low, hit it firmly', '中杆或中低杆，打实，别推虚')),
+    ob(o), cue(cb),
+  ], false);
+}
+
 const TABLE_FIGURES: Record<string, () => Diagram> = {
+  'rail-frozen': railFrozenFig, 'rail-half': railHalfFig,
   'ghost-ball': ghostBallFig, 'contact-half-ball': contactFig, 'cut-miss': cutMissFig,
   'tangent-stun': () => tangentFig(false), 'tangent-high-low': () => tangentFig(true), 'separation-path': separationFig,
   'track-line': trackLineFig, 'two-halves': twoHalvesFig, 'angle-leave': angleFig,
@@ -312,11 +338,11 @@ function T({ x, y, children, fill = C.line, size = 13, anchor = 'start', weight 
 }
 
 /** The cue ball face with the five vertical tip positions; `mark` is the one this lesson is about. */
-function TipFig({ mark }: { mark: 'center' | 'high' }) {
+function TipFig({ mark }: { mark: 'center' | 'high' | 'low' | 'all' }) {
   const cx = 110, cy = 100, r = 72;
   const levels = [L('follow', '高杆'), L('slight follow', '中高杆'), L('center (stop)', '中杆（定杆）'), L('slight draw', '中低杆'), L('draw', '低杆')];
   const ys = [-0.6, -0.3, 0, 0.3, 0.6].map((k) => cy + k * r);
-  const on = mark === 'center' ? 2 : 0;
+  const on = mark === 'center' ? 2 : mark === 'high' ? 0 : mark === 'low' ? 4 : -1;
   return (
     <Svg label={L('Tip position on the cue ball', '主球击球点')}>
       <circle cx={cx} cy={cy} r={r} fill={C.ball} />
@@ -324,11 +350,13 @@ function TipFig({ mark }: { mark: 'center' | 'high' }) {
       <line x1={cx - r} y1={cy} x2={cx + r} y2={cy} stroke="#c9cfc9" stroke-width="1.5" />
       {ys.map((y, i) => (
         <g key={i}>
-          <circle cx={cx} cy={y} r={i === on ? 11 : 4} fill={i === on ? C.tip : '#9aa39c'} stroke={i === on ? '#fff' : 'none'} stroke-width="2" />
-          <line x1={cx + r + 6} y1={y} x2={cx + r + 16} y2={y} stroke={i === on ? C.accent : C.dim} stroke-width="2" />
-          <T x={cx + r + 22} y={y} fill={i === on ? C.accent : C.dim} size={i === on ? 15 : 12}>{levels[i]}</T>
+          <circle cx={cx} cy={y} r={i === on ? 11 : on < 0 ? 7 : 4} fill={i === on || on < 0 ? C.tip : '#9aa39c'} stroke={i === on ? '#fff' : 'none'} stroke-width="2" />
+          <line x1={cx + r + 6} y1={y} x2={cx + r + 16} y2={y} stroke={i === on || on < 0 ? C.accent : C.dim} stroke-width="2" />
+          <T x={cx + r + 22} y={y} fill={i === on || on < 0 ? C.accent : C.dim} size={i === on ? 15 : on < 0 ? 13 : 12}>{levels[i]}</T>
         </g>
       ))}
+      {mark === 'low' && <T x={20} y={186} fill={C.good} size={12}>{L('keep the cue level, accelerate through', '球杆放平，加速穿过主球')}</T>}
+      {mark === 'all' && <T x={20} y={186} fill={C.good} size={12}>{L('aim a spot, then check where the tip hit', '先瞄一个点，打完看皮头打在了哪里')}</T>}
       {mark === 'high' && (
         <g>
           <circle cx={cx + 20} cy={ys[0] + 6} r={7} fill="none" stroke={C.bad} stroke-width="2" stroke-dasharray="3 2" />
@@ -428,7 +456,93 @@ function FreezeFig() {
   );
 }
 
+/** Side view of the stroke: chin on the cue, upper arm still, forearm swinging like a pendulum. */
+function ChinStrokeFig() {
+  return (
+    <Svg label={L('Straight stroke', '出杆直度')}>
+      <line x1={20} y1={120} x2={300} y2={120} stroke="#d9b98a" stroke-width="5" stroke-linecap="round" />
+      <circle cx={262} cy={120} r={9} fill={C.ball} />
+      <circle cx={196} cy={100} r={16} fill="none" stroke={C.line} stroke-width="3" />
+      <line x1={186} y1={98} x2={100} y2={70} stroke={C.line} stroke-width="6" stroke-linecap="round" />
+      <line x1={110} y1={74} x2={92} y2={92} stroke={C.accent} stroke-width="5" stroke-linecap="round" />
+      <line x1={92} y1={92} x2={84} y2={120} stroke={C.line} stroke-width="4" stroke-linecap="round" />
+      <path d="M 64 116 A 34 34 0 0 0 104 116" fill="none" stroke={C.good} stroke-width="2" stroke-dasharray="4 3" />
+      <line x1={186} y1={110} x2={240} y2={118} stroke={C.line} stroke-width="4" stroke-linecap="round" />
+      <T x={210} y={68}>{L('chin on the cue', '下巴贴着球杆')}</T>
+      <T x={20} y={48} fill={C.accent}>{L('upper arm still', '大臂不动')}</T>
+      <T x={20} y={150} fill={C.good}>{L('forearm swings like a pendulum', '小臂像钟摆一样前后摆')}</T>
+      <T x={20} y={176} size={12}>{L('head and body stay still', '头和身体都不动')}</T>
+    </Svg>
+  );
+}
+
+/** Top view of the break stance compared with the normal one. */
+function BreakStanceFig() {
+  const lx = 150;
+  return (
+    <Svg label={L('Break stance', '开球站位')} h={240}>
+      <line x1={lx} y1={8} x2={lx} y2={232} stroke={C.accent} stroke-width="2" stroke-dasharray="6 5" />
+      <circle cx={lx} cy={18} r={9} fill={C.ball} />
+      <line x1={lx} y1={30} x2={lx} y2={214} stroke="#d9b98a" stroke-width="5" stroke-linecap="round" />
+      <path d={`M ${lx - 14} 88 L ${lx} 74 L ${lx + 14} 88`} fill="none" stroke={C.line} stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+      <circle cx={lx} cy={150} r={7} fill={C.line} />
+      <ellipse cx={lx - 40} cy={128} rx={9} ry={18} fill={C.line} transform={`rotate(-15 ${lx - 40} 128)`} />
+      <ellipse cx={lx + 26} cy={212} rx={9} ry={18} fill={C.line} transform={`rotate(45 ${lx + 26} 212)`} />
+      <T x={lx + 22} y={80}>{L('bridge further back', '手架离主球更远')}</T>
+      <T x={lx + 16} y={150}>{L('grip one fist forward', '后手往前握一拳')}</T>
+      <T x={lx + 44} y={196} size={12}>{L('back foot back, turned out', '右脚后撤、脚尖外转')}</T>
+      <T x={12} y={110} fill={C.accent} size={12}>{L('front foot', '左脚')}</T>
+      <T x={12} y={128} fill={C.accent} size={12}>{L('a small step forward', '往前一小步')}</T>
+      <T x={12} y={228} fill={C.good} size={12}>{L('weight low, body turned a little', '重心压低，身体稍微侧转')}</T>
+    </Svg>
+  );
+}
+
+/** The power chain of the break, added in three stages. */
+function BreakPowerFig() {
+  const rows: [string, number][] = [
+    [L('① arm: tip on the line', '① 手臂：杆头打准'), 0.4],
+    [L('② + waist: shoulders down, hips forward', '② 加腰：压肩、往前顶腰'), 0.7],
+    [L('③ + legs: drive the hips, body wraps the cue', '③ 加蹬腿：推胯，身体裹着球杆'), 1],
+  ];
+  return (
+    <Svg label={L('Break power', '开球发力')}>
+      {rows.map(([label, k], i) => (
+        <g key={i}>
+          <T x={16} y={26 + i * 50}>{label}</T>
+          <rect x={16} y={40 + i * 50} width={288} height={10} rx={5} fill="#1c4a38" />
+          <rect x={16} y={40 + i * 50} width={288 * k} height={10} rx={5} fill={C.accent} />
+        </g>
+      ))}
+      <T x={160} y={184} anchor="middle" fill={C.good} size={12}>{L('legs → hips → arm → cue → cue ball → rack', '腿 → 胯 → 手臂 → 球杆 → 主球 → 球堆')}</T>
+    </Svg>
+  );
+}
+
+/** Where to hit the cue ball on the break, and the square hit on the head ball. */
+function BreakContactFig() {
+  const cx = 80, cy = 90, r = 56;
+  return (
+    <Svg label={L('Break contact', '开球击球点')}>
+      <circle cx={cx} cy={cy} r={r} fill={C.ball} />
+      <line x1={cx} y1={cy - r} x2={cx} y2={cy + r} stroke="#c9cfc9" stroke-width="1.5" />
+      <line x1={cx - r} y1={cy} x2={cx + r} y2={cy} stroke="#c9cfc9" stroke-width="1.5" />
+      <circle cx={cx} cy={cy} r={9} fill={C.tip} stroke="#fff" stroke-width="2" />
+      <circle cx={cx} cy={cy + 16} r={7} fill={C.tip} fill-opacity="0.55" />
+      <T x={20} y={170} size={12}>{L('centre or slightly low, no side', '中杆或略低，不加塞')}</T>
+      <line x1={170} y1={90} x2={234} y2={90} stroke={C.line} stroke-width="2" stroke-dasharray="5 4" />
+      <circle cx={246} cy={90} r={12} fill={C.ball} />
+      <circle cx={270} cy={90} r={12} fill="#f5c518" />
+      <circle cx={290} cy={78} r={12} fill="#888" /><circle cx={290} cy={102} r={12} fill="#888" />
+      <T x={250} y={130} anchor="middle" size={12}>{L('hit the head ball full', '整颗正撞头球')}</T>
+      <T x={250} y={150} anchor="middle" size={12} fill={C.good}>{L('the cue ball stays mid-table', '主球停在台面中间')}</T>
+    </Svg>
+  );
+}
+
 const CLOSE_UPS: Record<string, () => JSX.Element> = {
+  'tip-low': () => <TipFig mark="low" />, 'tip-levels': () => <TipFig mark="all" />,
+  'chin-stroke': ChinStrokeFig, 'break-stance': BreakStanceFig, 'break-power': BreakPowerFig, 'break-contact': BreakContactFig,
   'tip-center': () => <TipFig mark="center" />, 'tip-high': () => <TipFig mark="high" />,
   'cue-level': CueLevelFig, stance: StanceFig, rhythm: RhythmFig, freeze: FreezeFig,
 };

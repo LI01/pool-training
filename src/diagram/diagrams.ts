@@ -62,6 +62,91 @@ function oneRail(): Diagram {
   };
 }
 
+const FOOT: Pt = { x: (TABLE.width * 3) / 4, y: TABLE.height / 2 }; // foot spot
+const HEAD: Pt = { x: TABLE.width / 4, y: TABLE.height / 2 };      // head string, centre
+const FOOT_LINE = lineFromPocket('TR', FOOT);                         // corner pocket through the foot spot
+const SPOT_D = Math.hypot(TABLE.width - FOOT.x, FOOT.y);
+const TECH_CB: Pt = { x: TABLE.width / 4, y: TABLE.height - 5 };
+
+const RACK_GAP = TABLE.ball + 0.1; // drawn balls a hair apart
+/** A 15-ball rack, apex on the foot spot (ball 1 at the apex), rows toward the foot rail. */
+const RACK: Pt[] = [0, 1, 2, 3, 4].flatMap((row) => Array.from({ length: row + 1 }, (_, j) => ({
+  x: FOOT.x + row * RACK_GAP * 0.87, y: FOOT.y + (j - row / 2) * RACK_GAP,
+})));
+const rack = (): DiagramEl[] => RACK.map((at, i) => ({ t: 'ball', at, kind: 'object', num: i === 0 ? 1 : undefined }));
+
+function railBalls(): Diagram {
+  const frozen: Pt = { x: 60, y: TABLE.ball / 2 }, half: Pt = { x: 60, y: TABLE.ball / 2 + 0.6 };
+  return {
+    id: 'rail-balls', title: 'Rail shots',
+    caption: 'Frozen: big angle hits the rail first with a touch of side toward the pocket; small angle aims the gap. Half-frozen: edge to the jaw, firm.',
+    panels: [[
+      { t: 'pocket', id: 'TR' }, ob(frozen),
+      { t: 'line', from: frozen, to: POCKETS.TR, style: 'objPath', arrow: true },
+      cue({ x: 50, y: 22 }, 'big angle'), { t: 'line', from: { x: 50, y: 22 }, to: { x: 58.6, y: 0.4 }, style: 'aim', arrow: true },
+      cue({ x: 36, y: 6 }, 'small angle'), { t: 'line', from: { x: 36, y: 6 }, to: { x: frozen.x - TABLE.ball, y: frozen.y + 0.2 }, style: 'aim', arrow: true },
+      { t: 'label', at: { x: 30, y: 30 }, text: 'Frozen on the rail' },
+    ], [
+      { t: 'pocket', id: 'TR' }, ob(half),
+      { t: 'line', from: half, to: POCKETS.TR, style: 'objPath', arrow: true },
+      cue({ x: 38, y: 14 }), { t: 'line', from: { x: 38, y: 14 }, to: { x: half.x - TABLE.ball, y: half.y + 0.5 }, style: 'aim', arrow: true },
+      { t: 'label', at: { x: 30, y: 30 }, text: 'Half-frozen: edge to the jaw' },
+    ]],
+  };
+}
+
+function levelStops(): Diagram {
+  const OB = 24; // farther from the pocket, so the follow positions have room
+  const at = (d: number): Pt => S(OB + TABLE.ball + d);
+  // Where the cue ball stops for each tip height, labels alternating either side of the line.
+  const stops: [number, string][] = [[-15, 'follow'], [-7, 'slight follow'], [0, 'stop'], [7, 'slight draw'], [16, 'draw']];
+  return {
+    id: 'level-stops', title: 'Five tip heights',
+    caption: 'Same straight shot, five tip heights. Call where the CB will stop before each shot.',
+    panels: [[
+      { t: 'pocket', id: 'TR' }, ob(S(OB)), cue(at(30)),
+      { t: 'line', from: S(OB), to: POCKETS.TR, style: 'objPath', arrow: true },
+      ...stops.flatMap(([d, label], i): DiagramEl[] => [
+        { t: 'zone', shape: 'circle', at: at(d), r: 1.4 },
+        { t: 'label', at: along(at(d), SIDE, i % 2 ? -6 : 6), text: label },
+      ]),
+    ]],
+  };
+}
+
+function separationPositions(): Diagram {
+  const o: Pt = { x: 50, y: 12 };
+  const g = ghostBall(o, 'TR'), cb = cutCueBall(o, 'TR', 40, 'L', 16), tn = tangentDir(cb, o, 'TR'), fwd = unit(o, POCKETS.TR);
+  const pos = (k: number, f: number): Pt => along(along(g, tn, k), fwd, f);
+  return {
+    id: 'separation-positions', title: 'Positions 1–4 off the 90° line',
+    caption: 'Follow sends the CB forward of the 90° line (1, 2); draw sends it back (3, 4). Centre ball follows the line.',
+    panels: [[
+      { t: 'pocket', id: 'TR' }, ob(o), cue(cb),
+      { t: 'line', from: o, to: POCKETS.TR, style: 'objPath', arrow: true },
+      { t: 'line', from: cb, to: g, style: 'aim', arrow: true },
+      { t: 'line', from: g, to: along(g, tn, 18), style: 'aim', label: '90°' },
+      ...([[11, 9, '1'], [14, 4, '2'], [14, -4, '3'], [11, -9, '4']] as const).map(([k, f, n]): DiagramEl =>
+        ({ t: 'zone', shape: 'circle', at: pos(k, f), r: 1.8, label: n })),
+    ]],
+  };
+}
+
+function homework(): Diagram {
+  const o1: Pt = { x: 60, y: 10 }, o2: Pt = { x: 62, y: 30 }, cb: Pt = { x: 47, y: 16 };
+  return {
+    id: 'homework-route', title: 'Pot 1, play to 2',
+    caption: 'Ball in hand. Pot 1 in a foot corner and get position on 2. Find several routes; pick the safest.',
+    panels: [[
+      { t: 'pocket', id: 'TR' }, { t: 'pocket', id: 'BR' }, ob(o1, 1), ob(o2, 2), cue(cb, 'BIH'),
+      { t: 'line', from: o1, to: POCKETS.TR, style: 'objPath', arrow: true },
+      { t: 'line', from: o2, to: POCKETS.BR, style: 'objPath', arrow: true },
+      { t: 'line', from: cb, to: ghostBall(o1, 'TR'), style: 'aim', arrow: true },
+      { t: 'zone', shape: 'circle', at: { x: 54, y: 25 }, r: 4, label: 'for 2' },
+    ]],
+  };
+}
+
 const list: Diagram[] = [
   {
     id: 'am-straight-warmup', title: 'Straight-ball warm-up',
@@ -168,6 +253,43 @@ const list: Diagram[] = [
     panels: [[
       ob({ x: 16, y: 30 }, 1), ob({ x: 30, y: 10 }, 2), ob({ x: 46, y: 26 }, 3), ob({ x: 60, y: 10 }, 4), ob({ x: 68, y: 30 }, 5),
       { t: 'label', at: { x: 39, y: 19.5 }, text: 'Ball in hand' },
+    ]],
+  },
+  {
+    id: 'spot-shot', title: 'Spot shot',
+    caption: 'OB on the foot spot, CB straight behind it toward the corner. Step in, freeze 2 s after every shot.',
+    panels: [[
+      { t: 'pocket', id: 'TR' }, ob(FOOT_LINE(SPOT_D)), cue(FOOT_LINE(SPOT_D + 20)),
+      { t: 'line', from: FOOT_LINE(SPOT_D), to: POCKETS.TR, style: 'objPath', arrow: true },
+      { t: 'line', from: FOOT_LINE(SPOT_D + 20), to: FOOT_LINE(SPOT_D + TABLE.ball), style: 'aim', arrow: true },
+      { t: 'label', at: { x: 30, y: 12 }, text: 'Foot spot' },
+    ]],
+  },
+  {
+    id: 'cut-small', title: 'Small cuts',
+    caption: 'Ghost-ball aim on 10°, 20° and 30° cuts, both directions. Keep OB and pocket fixed.',
+    panels: [cutPanel('L', [10, 20, 30]), cutPanel('R', [10, 20, 30])],
+  },
+  railBalls(),
+  levelStops(),
+  separationPositions(),
+  homework(),
+  {
+    id: 'break-square', title: 'Square break',
+    caption: 'CB on the head string, centre or slightly low, no side. Hit the head ball full; CB should stay mid-table.',
+    panels: [[
+      ...rack(), cue(HEAD),
+      { t: 'line', from: HEAD, to: { x: FOOT.x - TABLE.ball, y: FOOT.y }, style: 'aim', arrow: true },
+      { t: 'zone', shape: 'circle', at: { x: 40, y: 19.5 }, r: 5, label: 'CB stops here' },
+    ]],
+  },
+  {
+    id: 'break-tech', title: 'Controlled break',
+    caption: 'CB 4–6" off a side rail on the head string. Hit the second ball, half a tip low, a touch of side, 70–80 % power.',
+    panels: [[
+      ...rack(), cue(TECH_CB),
+      { t: 'line', from: TECH_CB, to: { x: RACK[2].x - TABLE.ball * 0.9, y: RACK[2].y + 0.6 }, style: 'aim', arrow: true, label: 'second ball' },
+      { t: 'zone', shape: 'circle', at: { x: 40, y: 19.5 }, r: 5, label: 'CB ends mid-table' },
     ]],
   },
 ];

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { DiagramCard } from '../../diagram/TableDiagram';
-import { getDrillRef, getSession, plan, type Block, type SessionId } from '../../plan';
+import { getDay, getDrillRef, plan, type Block } from '../../plan';
 import type { BlockResult } from '../../db/types';
 import { t, toLen, type Key } from '../../i18n';
 import { acquireWakeLock, releaseWakeLock } from '../../platform/wakeLock';
@@ -13,6 +13,7 @@ import {
 import { BigButton } from '../components/BigButton';
 import { EntrySheet } from '../components/EntrySheet';
 import { LessonCard } from '../components/Lesson';
+import { LessonFigure } from '../../lesson/figures';
 import { ReadAloud } from '../components/ReadAloud';
 import { Sheet } from '../components/Sheet';
 import { Timer } from '../components/Timer';
@@ -25,9 +26,9 @@ const isNum = (v: unknown) => typeof v === 'number' && Number.isFinite(v);
 type RunState = SessionRunState & { recordId?: string };
 
 /** Validates a persisted payload; throws if it cannot be resumed. */
-function restore(payload: unknown, sessionId: SessionId, blocks: Block[]): RunState {
+function restore(payload: unknown, day: number, blocks: Block[]): RunState {
   const p = payload as RunState;
-  const ok = p && p.kind === 'session' && p.sessionId === sessionId
+  const ok = p && p.kind === 'session' && p.sessionId === 'day' && p.dayNumber === day
     && Number.isInteger(p.blockIndex) && p.blockIndex >= 0 && p.blockIndex < blocks.length
     && isNum(p.startedAt) && isNum(p.blockStartedAt) && isNum(p.pausedTotalMs) && isNum(p.sessionPausedMs)
     && isNum(p.extraMs) && (p.pausedAt === null || isNum(p.pausedAt))
@@ -51,15 +52,25 @@ function LeaveButton({ onLeave }: { onLeave: () => void }) {
   return <button type="button" class="runner__leave" aria-label={t('session.leave')} onClick={onLeave}>×</button>;
 }
 
-export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: NowFn }) {
+/** Whether the saved active state is a session of plan day `day`. */
+const isDay = (payload: unknown, day: number) => (payload as { dayNumber?: unknown } | null)?.dayNumber === day;
+
+/** Start time of each block within the day ("0–5 min"). */
+function timeLabels(blocks: Block[]): string[] {
+  let m = 0;
+  return blocks.map((b) => t('session.timeRange', { from: m, to: (m += b.minutes) }));
+}
+
+export function SessionRunner({ day, now }: { day: number; now: NowFn }) {
   const { store, active, refresh } = useAppData();
-  const session = getSession(sessionId);
-  const blocks = session.blocks;
+  const planDay = getDay(day);
+  const blocks = planDay.blocks;
+  const title = t('plan.dayTitle', { day, week: planDay.week, title: planDay.info.title });
 
   const [toast, setToast] = useState<string | null>(null);
   const [state, setState] = useState<RunState | null>(() => {
-    if (active?.type !== 'session' || (active.payload as { sessionId?: unknown } | null)?.sessionId !== sessionId) return null;
-    try { return restore(active.payload, sessionId, blocks); } catch { return null; }
+    if (active?.type !== 'session' || !isDay(active.payload, day)) return null;
+    try { return restore(active.payload, day, blocks); } catch { return null; }
   });
   const [sheetOpen, setSheetOpen] = useState(false);
   const [confirmEnd, setConfirmEnd] = useState(false);
@@ -72,7 +83,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
 
   // Corrupt saved state: clear it and tell the user.
   useEffect(() => {
-    if (state || active?.type !== 'session' || (active.payload as { sessionId?: unknown } | null)?.sessionId !== sessionId) return;
+    if (state || active?.type !== 'session' || !isDay(active.payload, day)) return;
     void store.setActive(undefined).then(refresh);
     setToast(t('session.restoreFailed'));
   }, []);
@@ -124,11 +135,11 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     return (
       <main class="screen runner-pre">
         <header class="runner__top">
-          <span class="runner__meta">{t(sessionId === 'am' ? 'session.am' : 'session.pm')}</span>
+          <span class="runner__meta">{t('plan.week', { n: planDay.week })} · {planDay.info.focus}</span>
           <LeaveButton onLeave={leave} />
         </header>
         {toast && <p class="notice notice--error" role="status">{toast}</p>}
-        <h1 class="runner-pre__title">{session.title}</h1>
+        <h1 class="runner-pre__title">{title}</h1>
         <details class="intro">
           <summary>{t('session.intro')}</summary>
           {plan.intro.split('\n\n').map((p, i) => <p key={i}>{p}</p>)}
@@ -141,7 +152,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
         <div class="runner-pre__start">
           <BigButton variant="good" onClick={() => {
             unlockAudio();
-            update(startSession(sessionId, now()));
+            update(startSession(day, now()));
             speakAuto(blockScript(blocks[0]));
           }}>{t('session.start')}</BigButton>
         </div>
@@ -182,7 +193,7 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
           <span class="runner__meta">{t('session.complete')}</span>
           <LeaveButton onLeave={leave} />
         </header>
-        <h1>{session.title}</h1>
+        <h1>{title}</h1>
         {saveError && <p class="notice notice--error" role="alert">{saveError}</p>}
         <p class="runner-summary__minutes"><strong>{preview.activeMinutes}</strong> {t(preview.activeMinutes === 1 ? 'session.activeMinute' : 'session.activeMinutes')}</p>
         <dl class="summary-list">
@@ -219,9 +230,11 @@ export function SessionRunner({ sessionId, now }: { sessionId: SessionId; now: N
     <>
       <main class="runner" onClickCapture={unlockAudio} aria-hidden={confirmEnd ? 'true' : undefined}>
         <div class="runner__head">
-          <DiagramCard key={block.diagramId} diagramId={block.diagramId} />
+          {block.diagramId.startsWith('figure:')
+            ? <figure key={block.diagramId} class="diagram-card"><LessonFigure id={block.diagramId.slice(7)} /></figure>
+            : <DiagramCard key={block.diagramId} diagramId={block.diagramId} />}
           <div class="runner__row">
-            <span class="runner__meta">{t('session.blockOf', { time: block.timeLabel, i: state.blockIndex + 1, n: blocks.length })}</span>
+            <span class="runner__meta">{t('session.blockOf', { time: timeLabels(blocks)[state.blockIndex], i: state.blockIndex + 1, n: blocks.length })}</span>
             <span class="runner__row">
               <button type="button" class="link-button" onClick={() => setConfirmEnd(true)}>{t('session.end')}</button>
               <LeaveButton onLeave={leave} />

@@ -103,7 +103,7 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
 .panel .big-button { width: 100%; }
 .row { display: flex; gap: 12px; align-items: center; }
 .row--between { justify-content: space-between; }
-.row input[type='date'] {
+.row input[type='text'] {
   flex: 1; min-width: 0; min-height: 48px; padding: 0 12px; font-size: 17px; box-sizing: border-box;
   background: var(--bg); color: var(--text); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 12px;
 }
@@ -316,3 +316,11 @@ h2 { font-size: 15px; margin: 0 0 12px; color: var(--muted); text-transform: upp
 .lesson__controls button { min-width: 56px; min-height: 52px; border: 1px solid #2c4a3d; border-radius: 12px; background: #13231d; color: inherit; font-size: 22px; }
 .lesson__controls button:disabled { opacity: 0.35; }
 .lesson__controls .lesson__play { flex: 0 1 220px; font-size: 17px; font-weight: 650; color: var(--accent); }
+.plan__daily { margin: 0; line-height: 1.5; }
+.plan__week h2 { margin: 24px 0 2px; color: var(--text); text-transform: none; letter-spacing: 0; font-size: 18px; }
+.plan__focus { margin: 0 0 10px; }
+.plan__week .cards { gap: 10px; margin-bottom: 8px; }
+.plan__week .card__title { font-size: 17px; }
+.card--next { border: 1px solid var(--accent); }
+.plan__rest { margin: 0; font-size: 14px; }
+.today-done { margin: -4px 0 12px; }

@@ -10,9 +10,9 @@ test('every key has a non-empty Chinese string (key parity is enforced by the ty
 
 test('t() interpolates params and follows the language', () => {
   expect(getLang()).toBe('en');
-  expect(t('today.dayOf30', { day: 3 })).toBe('Day 3 of 30');
+  expect(t('today.dayOf', { day: 3, total: 48 })).toBe('Day 3 of 48');
   setLang('zh');
-  expect(t('today.dayOf30', { day: 3 })).toBe('第 3 天 / 共 30 天');
+  expect(t('today.dayOf', { day: 3, total: 48 })).toBe('第 3 天 / 共 48 天');
   expect(document.documentElement.lang).toBe('zh-CN');
   setLang('en');
   expect(document.documentElement.lang).toBe('en');

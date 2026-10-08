@@ -4,7 +4,8 @@ import type { Backup } from '../../db/types';
 import { getLang, t, type Lang } from '../../i18n';
 import { setChimeEnabled } from '../../platform/chime';
 import { setAutoSpeak } from '../../platform/speech';
-import { resolveStartDate } from '../../stats';
+import { PLAN_DAYS } from '../../plan';
+import { nextPlanDay } from '../../stats';
 import { localDate } from '../../stats/dates';
 import { type NowFn } from '../nav';
 import { BigButton } from '../components/BigButton';
@@ -12,17 +13,17 @@ import { Sheet } from '../components/Sheet';
 import { useAppData } from '../useAppData';
 
 export function Settings({ now }: { now: NowFn }) {
-  const { store, sessions, tests, settings, today, refresh } = useAppData();
-  const [startDate, setStartDate] = useState(settings.startDate ?? '');
+  const { store, sessions, tests, settings, refresh } = useAppData();
+  const current = Math.min(nextPlanDay(sessions, settings), PLAN_DAYS);
+  // What the user typed; null shows the current progress.
+  const [typed, setTyped] = useState<string | null>(null);
+  const planDay = typed ?? String(current);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
   const [pendingImport, setPendingImport] = useState<Backup | null>(null);
   const [resetArmed, setResetArmed] = useState(false);
   const resetTimer = useRef<number | undefined>(undefined);
   useEffect(() => () => clearTimeout(resetTimer.current), []);
-  useEffect(() => setStartDate(settings.startDate ?? ''), [settings.startDate]);
-
-  const resolved = resolveStartDate(settings, sessions, tests) ?? today;
 
   /** Runs an action; a null result means it was cancelled (no message). */
   const run = async (label: string, fn: () => Promise<string | null>) => {
@@ -36,10 +37,13 @@ export function Settings({ now }: { now: NowFn }) {
     }
   };
 
-  const saveStart = () => run(t('common.save'), async () => {
-    await store.saveSettings({ ...settings, startDate: startDate || undefined });
+  const saveProgress = () => run(t('common.save'), async () => {
+    const n = Number(planDay);
+    if (!Number.isInteger(n) || n < 1 || n > PLAN_DAYS) throw new Error(t('settings.progressRange', { max: PLAN_DAYS }));
+    await store.saveSettings({ ...settings, planDay: n, planDaySetAt: now() });
     await refresh();
-    return t('settings.startSaved');
+    setTyped(null);
+    return t('settings.progressSaved');
   });
 
   const toggleSound = () => run(t('common.save'), async () => {
@@ -161,12 +165,13 @@ export function Settings({ now }: { now: NowFn }) {
       {message && <p class="notice notice--ok" role="status">{message}</p>}
 
       <section class="panel">
-        <h2>{t('settings.startDate')}</h2>
+        <h2>{t('settings.progress')}</h2>
         <div class="row">
-          <input type="date" aria-label={t('settings.startDateLabel')} value={startDate} onInput={(e) => setStartDate((e.currentTarget as HTMLInputElement).value)} />
-          <BigButton onClick={saveStart}>{t('common.save')}</BigButton>
+          <input type="text" inputMode="numeric" pattern="[0-9]*" autoComplete="off" aria-label={t('settings.progressLabel')} value={planDay}
+            onInput={(e) => setTyped((e.currentTarget as HTMLInputElement).value.replace(/\D/g, ''))} />
+          <BigButton onClick={saveProgress}>{t('common.save')}</BigButton>
         </div>
-        {!settings.startDate && <p class="muted">{t('settings.dayOneIs', { date: resolved })}</p>}
+        <p class="muted">{t('settings.progressHint')}</p>
       </section>
 
       <section class="panel">
